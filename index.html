@@ -73,7 +73,7 @@
             box-shadow: 0 12px 48px -8px rgba(58, 49, 42, 0.1);
         }
         .glass-dock {
-            background: rgba(253, 251, 247, 0.8);
+            background: rgba(253, 251, 247, 0.85);
             backdrop-filter: blur(30px) saturate(200%);
             -webkit-backdrop-filter: blur(30px) saturate(200%);
             border: 1px solid rgba(255, 255, 255, 0.85);
@@ -98,6 +98,13 @@
             box-shadow: 0 0 0 4px rgba(196, 164, 124, 0.2);
             outline: none;
         }
+        .cal-day {
+            transition: all 0.2s ease;
+        }
+        .cal-day:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.95);
+        }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .animation-delay-2000 { animation-delay: 2s; }
@@ -112,58 +119,72 @@
     <div class="fixed bottom-[-20%] left-[20%] w-[60vw] h-[60vw] bg-[#E2D4C3]/50 rounded-full mix-blend-multiply filter blur-[100px] animate-blob animation-delay-4000 z-0 pointer-events-none"></div>
 
     <!-- HEADER CON SELECTOR DE PERFIL -->
-    <header class="w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 pt-6 pb-4 flex flex-col md:flex-row items-center justify-between gap-4 z-20">
-        <div class="flex items-center gap-4 w-full md:w-auto justify-between md:justify-start">
-            <div class="flex items-center gap-3.5">
-                <label for="upload-logo" class="group relative w-12 h-12 rounded-[16px] glass-card flex items-center justify-center cursor-pointer overflow-hidden hover:shadow-md transition-all">
+    <header class="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-3 flex flex-col xl:flex-row items-center justify-between gap-3 z-20">
+        <div class="flex items-center gap-3 w-full xl:w-auto justify-between xl:justify-start shrink-0">
+            <div class="flex items-center gap-3">
+                <label for="upload-logo" class="group relative w-11 h-11 rounded-[15px] glass-card flex items-center justify-center cursor-pointer overflow-hidden hover:shadow-md transition-all shrink-0">
                     <img id="church-logo-img" src="" alt="Logo" class="hidden w-full h-full object-cover">
                     <div id="church-logo-placeholder" class="flex flex-col items-center justify-center text-cream-accent group-hover:scale-105 transition-transform">
-                        <i class="fa-solid fa-church text-xl"></i>
+                        <i class="fa-solid fa-church text-lg"></i>
                     </div>
                     <input type="file" id="upload-logo" accept="image/*" class="hidden" onchange="cargarLogoIglesia(event)">
                 </label>
                 <div>
-                    <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-cream-dark leading-none">Misión Central</h1>
-                    <span class="text-[10px] font-bold tracking-widest text-cream-gray uppercase mt-1 block" id="perfil-actual-label">PERFIL: FINANZAS GENERALES</span>
+                    <h1 class="text-lg sm:text-xl font-bold tracking-tight text-cream-dark leading-none">Misión Central</h1>
+                    <span class="text-[9px] font-bold tracking-widest text-cream-gray uppercase mt-1 block" id="perfil-actual-label">PERFIL: FINANZAS GENERALES</span>
                 </div>
             </div>
 
-            <!-- Botones móviles Drive/Notif -->
-            <div class="flex md:hidden items-center gap-2">
-                <button onclick="abrirModal('modal-notificaciones')" class="w-10 h-10 rounded-full glass-card flex items-center justify-center text-cream-dark relative">
-                    <i class="fa-solid fa-bell text-sm"></i>
+            <!-- Botones móviles -->
+            <div class="flex xl:hidden items-center gap-2">
+                <button onclick="abrirModal('modal-contactos')" class="w-9 h-9 rounded-full glass-card flex items-center justify-center text-[#25D366]" title="Contactos WhatsApp">
+                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                </button>
+                <button onclick="abrirModal('modal-notificaciones')" class="w-9 h-9 rounded-full glass-card flex items-center justify-center text-cream-dark relative">
+                    <i class="fa-solid fa-bell text-xs"></i>
                     <span id="badge-notif-mob" class="hidden absolute top-0 right-0 w-2.5 h-2.5 rounded-full bg-red-500"></span>
                 </button>
             </div>
         </div>
 
-        <!-- SELECTOR DE PERFILES -->
-        <div class="glass-card p-1.5 rounded-full flex items-center gap-1 overflow-x-auto max-w-full hide-scrollbar">
-            <button onclick="cambiarPerfil('general')" id="tab-perfil-general" class="perfil-tab px-4 py-2 rounded-full text-xs font-bold bg-cream-dark text-white shadow-sm transition-all whitespace-nowrap">
-                <i class="fa-solid fa-hand-holding-heart mr-1.5"></i>Finanzas Generales
+        <!-- SELECTOR DE PERFILES (6 COLUMNAS COMPACTAS SIN CORTARSE) -->
+        <div class="glass-card p-1 rounded-full flex items-center gap-0.5 overflow-x-auto max-w-full hide-scrollbar">
+            <button onclick="cambiarPerfil('general')" id="tab-perfil-general" class="perfil-tab px-3 py-2 rounded-full text-[11px] font-bold bg-cream-dark text-white shadow-sm transition-all whitespace-nowrap">
+                <i class="fa-solid fa-hand-holding-heart mr-1"></i>Finanzas
             </button>
-            <button onclick="cambiarPerfil('ministerios')" id="tab-perfil-ministerios" class="perfil-tab px-4 py-2 rounded-full text-xs font-bold text-cream-gray hover:text-cream-dark transition-all whitespace-nowrap">
-                <i class="fa-solid fa-vault mr-1.5"></i>Tesorería Ministerios
+            <button onclick="cambiarPerfil('ministerios')" id="tab-perfil-ministerios" class="perfil-tab px-3 py-2 rounded-full text-[11px] font-bold text-cream-gray hover:text-cream-dark transition-all whitespace-nowrap">
+                <i class="fa-solid fa-vault mr-1"></i>Tesorería
             </button>
-            <button onclick="cambiarPerfil('eventos')" id="tab-perfil-eventos" class="perfil-tab px-4 py-2 rounded-full text-xs font-bold text-cream-gray hover:text-cream-dark transition-all whitespace-nowrap">
-                <i class="fa-solid fa-calendar-star mr-1.5"></i>Eventos
+            <button onclick="cambiarPerfil('responsables')" id="tab-perfil-responsables" class="perfil-tab px-3 py-2 rounded-full text-[11px] font-bold text-cream-gray hover:text-cream-dark transition-all whitespace-nowrap">
+                <i class="fa-solid fa-user-check mr-1"></i>Responsables Tesorería
             </button>
-            <button onclick="cambiarPerfil('pendientes')" id="tab-perfil-pendientes" class="perfil-tab px-4 py-2 rounded-full text-xs font-bold text-cream-gray hover:text-cream-dark transition-all whitespace-nowrap">
-                <i class="fa-solid fa-list-check mr-1.5"></i>Pendientes
+            <button onclick="cambiarPerfil('calendario')" id="tab-perfil-calendario" class="perfil-tab px-3 py-2 rounded-full text-[11px] font-bold text-cream-gray hover:text-cream-dark transition-all whitespace-nowrap">
+                <i class="fa-solid fa-calendar-days mr-1"></i>Calendario
+            </button>
+            <button onclick="cambiarPerfil('eventos')" id="tab-perfil-eventos" class="perfil-tab px-3 py-2 rounded-full text-[11px] font-bold text-cream-gray hover:text-cream-dark transition-all whitespace-nowrap">
+                <i class="fa-solid fa-calendar-star mr-1"></i>Eventos
+            </button>
+            <button onclick="cambiarPerfil('pendientes')" id="tab-perfil-pendientes" class="perfil-tab px-3 py-2 rounded-full text-[11px] font-bold text-cream-gray hover:text-cream-dark transition-all whitespace-nowrap">
+                <i class="fa-solid fa-list-check mr-1"></i>Pendientes
             </button>
         </div>
 
         <!-- Acciones Escritorio -->
-        <div class="hidden md:flex items-center gap-3">
-            <button onclick="abrirModal('modal-drive')" id="btn-drive-status" class="glass-card hover:bg-white/80 px-4 py-2.5 rounded-full flex items-center gap-2 text-xs font-semibold text-cream-dark transition-all">
+        <div class="hidden xl:flex items-center gap-2 shrink-0">
+            <button onclick="abrirModal('modal-contactos')" class="glass-card hover:bg-white/80 px-3 py-2 rounded-full flex items-center gap-1.5 text-[11px] font-bold text-cream-dark transition-all" title="Administrar Números WhatsApp">
+                <i class="fa-brands fa-whatsapp text-[#25D366] text-sm"></i>
+                <span>(<span id="count-contactos-header">2</span>)</span>
+            </button>
+
+            <button onclick="abrirModal('modal-drive')" id="btn-drive-status" class="glass-card hover:bg-white/80 px-3.5 py-2 rounded-full flex items-center gap-1.5 text-[11px] font-semibold text-cream-dark transition-all">
                 <span id="drive-dot" class="w-2 h-2 rounded-full bg-orange-400"></span>
                 <i class="fa-brands fa-google-drive text-cream-gray"></i>
                 <span id="drive-label">Sincronizando...</span>
             </button>
 
-            <button onclick="abrirModal('modal-notificaciones')" class="w-10 h-10 rounded-full glass-card hover:bg-white/80 flex items-center justify-center text-cream-dark transition-all relative">
-                <i class="fa-solid fa-bell text-sm"></i>
-                <span id="badge-notif" class="hidden absolute top-0 right-0 w-3 h-3 border-2 border-cream-bg rounded-full bg-red-500"></span>
+            <button onclick="abrirModal('modal-notificaciones')" class="w-9 h-9 rounded-full glass-card hover:bg-white/80 flex items-center justify-center text-cream-dark transition-all relative">
+                <i class="fa-solid fa-bell text-xs"></i>
+                <span id="badge-notif" class="hidden absolute top-0 right-0 w-2.5 h-2.5 border-2 border-cream-bg rounded-full bg-red-500"></span>
             </button>
         </div>
     </header>
@@ -238,7 +259,7 @@
                 </div>
             </section>
 
-            <!-- FORMULARIOS DE REGISTRO GENERAL (LIBRE Y POR PERSONA) -->
+            <!-- FORMULARIOS DE REGISTRO GENERAL -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 
                 <!-- 1. Cultos Miércoles y Domingos -->
@@ -270,10 +291,10 @@
                                     <option value="Congregación (Libre)">Ofrenda Libre (Sin responsable)</option>
                                     <optgroup label="Servidores (Control Individual)">
                                         <option value="Kevin">Kevin</option>
-                                        <option value="Isabel">Isabel</option>
+                                        <option value="Isabell">Isabell</option>
                                         <option value="Alondra">Alondra</option>
                                         <option value="Marina">Marina</option>
-                                        <option value="Pablito Urias">Pablito Urias</option>
+                                        <option value="Pablo">Pablo</option>
                                         <option value="Hernan">Hernan</option>
                                         <option value="Hanna">Hanna</option>
                                         <option value="Sofia">Sofia</option>
@@ -319,7 +340,7 @@
                                 <input type="text" id="joven-nombre" list="lista-jovenes-sugeridos" placeholder="Nombre del Joven (o General)" class="w-full glass-input rounded-[18px] px-4 py-3.5 text-xs font-bold">
                                 <datalist id="lista-jovenes-sugeridos">
                                     <option value="Ofrenda General Jóvenes">
-                                    <option value="Pablito Urias">
+                                    <option value="Pablo">
                                     <option value="Kevin">
                                     <option value="Hanna">
                                     <option value="Sofia">
@@ -368,25 +389,28 @@
         </div>
 
         <!-- ========================================================= -->
-        <!-- PERFIL 2: TESORERÍA DE MINISTERIOS (PANDEROS, ALABANZA, ETC) -->
+        <!-- PERFIL 2: TESORERÍA DE MINISTERIOS                        -->
         <!-- ========================================================= -->
         <div id="vista-ministerios" class="view-section hidden flex-col gap-6 animate-fade-in">
             
-            <!-- Tarjetas de Cuentas por Ministerio -->
             <div class="glass-hero rounded-[32px] p-8">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                     <div>
                         <span class="text-[11px] tracking-[0.15em] text-cream-gray font-bold uppercase">Cuentas Departamentales</span>
                         <h2 class="text-2xl sm:text-3xl font-bold text-cream-dark">Tesorería por Ministerios</h2>
                     </div>
-                    <button onclick="cambiarVista('charts')" class="bg-white/70 hover:bg-white px-5 py-2.5 rounded-full text-xs font-bold text-cream-dark shadow-sm border border-white self-start">
-                        <i class="fa-solid fa-chart-pie mr-1.5 text-cream-accent"></i> Ver Gráficas Detalladas
-                    </button>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="cambiarPerfil('responsables')" class="bg-cream-dark text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-sm">
+                            <i class="fa-solid fa-user-check mr-1.5 text-cream-accent"></i> Corte Dominical Responsables
+                        </button>
+                        <button onclick="cambiarVista('charts')" class="bg-white/70 hover:bg-white px-5 py-2.5 rounded-full text-xs font-bold text-cream-dark shadow-sm border border-white">
+                            <i class="fa-solid fa-chart-pie mr-1.5 text-cream-accent"></i> Gráficas
+                        </button>
+                    </div>
                 </div>
                 <div id="grid-fondos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
             </div>
 
-            <!-- Formulario de Aportación a Ministerio + Bitácora -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <div class="lg:col-span-5 glass-card rounded-[32px] p-7">
                     <h3 class="text-xl font-bold text-cream-dark mb-5">Registrar en Ministerio</h3>
@@ -406,13 +430,13 @@
                             </select>
                         </div>
                         <select id="fondo-destino" class="w-full glass-input rounded-[18px] px-4 py-3.5 text-xs font-bold">
-                            <option value="" disabled selected>Cuenta Destino (Encargada/o)</option>
+                            <option value="" disabled selected>Cuenta Destino (Responsable)</option>
                             <option value="General">Iglesia General — Alondra</option>
-                            <option value="Alabanza">Alabanza — Isabel</option>
-                            <option value="Panderos">Panderos — Sofia</option>
+                            <option value="Jóvenes">Jóvenes — Pablo</option>
+                            <option value="Alabanza">Alabanza — Isabell</option>
                             <option value="Multimedia">Multimedia — Isis</option>
-                            <option value="Jóvenes">Jóvenes — Pablito Urias</option>
-                            <option value="Maestros">Maestros — Marina</option>
+                            <option value="Panderos">Panderos — Sofía</option>
+                            <option value="Maestros">Maestros — Persona Pendiente</option>
                             <option value="Eventos">Eventos — Isis</option>
                         </select>
                         <div class="grid grid-cols-2 gap-3">
@@ -446,21 +470,225 @@
         </div>
 
         <!-- ========================================================= -->
-        <!-- PERFIL 3: CONTROL DE EVENTOS Y NOTIFICACIÓN WHATSAPP      -->
+        <!-- PERFIL 3 (NUEVO): RESPONSABLES DE TESORERÍA Y CORTE DOMINICAL -->
+        <!-- ========================================================= -->
+        <div id="vista-responsables" class="view-section hidden flex-col gap-6 animate-fade-in">
+            
+            <!-- Encabezado y Tarjetas de Responsables -->
+            <div class="glass-hero rounded-[32px] p-8">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <span class="text-[11px] tracking-[0.15em] text-cream-gray font-bold uppercase">Orden Financiero Semanal</span>
+                        <h2 class="text-2xl sm:text-3xl font-bold text-cream-dark">Responsables de Tesorería</h2>
+                        <p class="text-xs text-cream-gray font-medium mt-1">Cada domingo cada responsable entrega la actualización del estado de su tesorería.</p>
+                    </div>
+                    <div class="flex items-center gap-2.5">
+                        <span id="badge-cortes-dominicales" class="px-4 py-2 rounded-full bg-white/80 text-xs font-bold text-cream-dark border border-white shadow-sm">
+                            0 / 5 Actualizados este Domingo
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Grid de 5 Responsables -->
+                <div id="grid-responsables-tesoreria" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4"></div>
+            </div>
+
+            <!-- Formulario de Actualización Dominical + Bitácora Semanal -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- Registrar Actualización del Domingo -->
+                <div class="lg:col-span-5 glass-card rounded-[32px] p-7">
+                    <div class="flex items-center justify-between mb-5">
+                        <div>
+                            <h3 class="text-lg font-bold text-cream-dark">Actualización Dominical</h3>
+                            <p class="text-xs text-cream-gray font-medium">Registra el reporte dominical de cada tesorería</p>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-white/80 flex items-center justify-center text-cream-accent shadow-sm">
+                            <i class="fa-solid fa-clipboard-check text-base"></i>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3.5">
+                        <div>
+                            <label class="text-[10px] font-bold uppercase text-cream-gray block mb-1 ml-1">Ministerio y Responsable</label>
+                            <select id="resp-ministerio" onchange="autocompletarSaldoResponsable()" class="w-full glass-input rounded-[18px] px-4 py-3.5 text-xs font-bold">
+                                <option value="Jóvenes">Jóvenes — Pablo</option>
+                                <option value="Alabanza">Alabanza — Isabell</option>
+                                <option value="Multimedia">Multimedia — Isis</option>
+                                <option value="Panderos">Panderos — Sofía</option>
+                                <option value="Maestros">Maestros — Persona Pendiente</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-[10px] font-bold uppercase text-cream-gray block mb-1 ml-1">Fecha Domingo</label>
+                                <input type="date" id="resp-fecha" class="w-full glass-input rounded-[18px] px-3.5 py-3 text-xs font-bold">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-bold uppercase text-cream-gray block mb-1 ml-1">Saldo Reportado</label>
+                                <div class="relative">
+                                    <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-cream-gray font-bold text-xs">$</span>
+                                    <input type="number" id="resp-saldo" placeholder="0.00" class="w-full glass-input rounded-[18px] pl-7 pr-3 py-3 text-xs font-bold">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="text-[10px] font-bold uppercase text-cream-gray block mb-1 ml-1">Estado de Revisión</label>
+                            <select id="resp-estado" class="w-full glass-input rounded-[18px] px-4 py-3 text-xs font-bold">
+                                <option value="Actualizado y en orden">Actualizado y en orden</option>
+                                <option value="Con movimientos pendientes">Con movimientos pendientes</option>
+                                <option value="Sin novedad (Sin movimientos)">Sin novedad (Sin movimientos)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="text-[10px] font-bold uppercase text-cream-gray block mb-1 ml-1">Notas / Detalle de gastos o ingresos</label>
+                            <textarea id="resp-notas" rows="2" placeholder="Ej. Se compraron pilas para micrófonos, queda efectivo en caja..." class="w-full glass-input rounded-[18px] px-4 py-3 text-xs font-semibold"></textarea>
+                        </div>
+
+                        <button onclick="registrarActualizacionDominical()" class="w-full bg-cream-dark text-white font-bold text-xs rounded-[18px] py-4 hover:bg-black transition-all shadow-md flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-check-double text-cream-accent"></i> Guardar Reporte del Domingo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Historial de Reportes Dominicales -->
+                <div class="lg:col-span-7 glass-card rounded-[32px] p-7 flex flex-col max-h-[500px]">
+                    <div class="flex items-center justify-between mb-5">
+                        <div>
+                            <h3 class="text-lg font-bold text-cream-dark">Bitácora de Cortes Dominicales</h3>
+                            <p class="text-xs text-cream-gray font-medium">Historial semanal ordenado por fecha de revisión</p>
+                        </div>
+                    </div>
+                    <div id="lista-reportes-dominicales" class="space-y-3 overflow-y-auto flex-1 pr-1 hide-scrollbar"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- PERFIL 4: CALENDARIO DE REUNIONES Y EVENTOS               -->
+        <!-- ========================================================= -->
+        <div id="vista-calendario" class="view-section hidden flex-col gap-6 animate-fade-in">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- Calendario Mensual Interactivo -->
+                <div class="lg:col-span-7 glass-hero rounded-[32px] p-6 sm:p-8 flex flex-col justify-between">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                        <div>
+                            <span class="text-[11px] tracking-[0.15em] text-cream-gray font-bold uppercase">Agenda Ministerial</span>
+                            <h2 id="cal-mes-titulo" class="text-2xl sm:text-3xl font-bold text-cream-dark capitalize">Noviembre 2026</h2>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="cambiarMesCalendario(-1)" class="w-10 h-10 rounded-full bg-white/75 hover:bg-white flex items-center justify-center text-cream-dark shadow-sm border border-white">
+                                <i class="fa-solid fa-chevron-left text-xs"></i>
+                            </button>
+                            <button onclick="irHoyCalendario()" class="px-4 py-2 rounded-full bg-white/75 hover:bg-white text-xs font-bold text-cream-dark shadow-sm border border-white">
+                                Hoy
+                            </button>
+                            <button onclick="cambiarMesCalendario(1)" class="w-10 h-10 rounded-full bg-white/75 hover:bg-white flex items-center justify-center text-cream-dark shadow-sm border border-white">
+                                <i class="fa-solid fa-chevron-right text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Leyenda de audiencias -->
+                    <div class="flex flex-wrap items-center gap-3 mb-4 text-[11px] font-bold">
+                        <span class="flex items-center gap-1.5 bg-white/60 px-3 py-1 rounded-full"><span class="w-2.5 h-2.5 rounded-full bg-[#3A312A]"></span> Pastor / Líderes</span>
+                        <span class="flex items-center gap-1.5 bg-white/60 px-3 py-1 rounded-full"><span class="w-2.5 h-2.5 rounded-full bg-[#C4A47C]"></span> Servidores</span>
+                        <span class="flex items-center gap-1.5 bg-white/60 px-3 py-1 rounded-full"><span class="w-2.5 h-2.5 rounded-full bg-[#25D366]"></span> Evento General</span>
+                    </div>
+
+                    <!-- Días de la semana -->
+                    <div class="grid grid-cols-7 gap-2 text-center mb-2">
+                        <span class="text-[11px] font-bold text-cream-gray uppercase">Dom</span>
+                        <span class="text-[11px] font-bold text-cream-gray uppercase">Lun</span>
+                        <span class="text-[11px] font-bold text-cream-gray uppercase">Mar</span>
+                        <span class="text-[11px] font-bold text-cream-gray uppercase">Mié</span>
+                        <span class="text-[11px] font-bold text-cream-gray uppercase">Jue</span>
+                        <span class="text-[11px] font-bold text-cream-gray uppercase">Vie</span>
+                        <span class="text-[11px] font-bold text-cream-gray uppercase">Sáb</span>
+                    </div>
+
+                    <!-- Cuadrícula de días -->
+                    <div id="grid-calendario" class="grid grid-cols-7 gap-2 flex-1"></div>
+                </div>
+
+                <!-- Panel Derecho: Agendar Reunión / Detalle del Día -->
+                <div class="lg:col-span-5 flex flex-col gap-6">
+                    
+                    <div class="glass-card rounded-[32px] p-7">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <h3 class="text-lg font-bold text-cream-dark">Convocar Reunión / Evento</h3>
+                                <p class="text-xs text-cream-gray font-medium">Solicita asistencia a servidores, líderes o pastor</p>
+                            </div>
+                            <button onclick="abrirModal('modal-contactos')" class="text-[11px] font-bold bg-white/80 hover:bg-white px-3 py-1.5 rounded-full text-cream-dark border border-white shadow-sm">
+                                <i class="fa-solid fa-user-plus text-cream-accent mr-1"></i> + Números
+                            </button>
+                        </div>
+
+                        <div class="space-y-3">
+                            <input type="text" id="reu-titulo" placeholder="Motivo (ej. Junta de Líderes y Servidores)" class="w-full glass-input rounded-[16px] px-4 py-3 text-xs font-bold">
+                            
+                            <div class="grid grid-cols-2 gap-3">
+                                <select id="reu-audiencia" class="w-full glass-input rounded-[16px] px-3.5 py-3 text-xs font-bold">
+                                    <option value="Servidores">Convocatoria: Servidores</option>
+                                    <option value="Líderes">Convocatoria: Líderes</option>
+                                    <option value="Pastor">Reunión con: Pastor</option>
+                                    <option value="Toda la Iglesia">Evento: Toda la Iglesia</option>
+                                </select>
+                                <input type="text" id="reu-lugar" placeholder="Lugar (ej. Salón Anexo)" value="Templo Principal" class="w-full glass-input rounded-[16px] px-3.5 py-3 text-xs font-bold">
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <input type="date" id="reu-fecha" class="w-full glass-input rounded-[16px] px-3.5 py-3 text-xs font-bold">
+                                <input type="time" id="reu-hora" value="19:00" class="w-full glass-input rounded-[16px] px-3.5 py-3 text-xs font-bold">
+                            </div>
+
+                            <div class="bg-white/65 rounded-[16px] p-3 border border-white">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-[10px] font-bold uppercase text-cream-gray">Enviar notificación WhatsApp a:</span>
+                                    <button type="button" onclick="seleccionarTodosContactos('reu-contactos-list', true)" class="text-[10px] font-bold text-cream-accent hover:underline">Seleccionar todos</button>
+                                </div>
+                                <div id="reu-contactos-list" class="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto hide-scrollbar"></div>
+                            </div>
+
+                            <button onclick="agendarReunionCalendario()" class="w-full bg-cream-dark text-white font-bold text-xs rounded-[16px] py-3.5 hover:bg-black transition-all shadow-md flex items-center justify-center gap-2">
+                                <i class="fa-brands fa-whatsapp text-[#25D366] text-sm"></i> Agendar en Calendario y Notificar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-[32px] p-7 flex-1 flex flex-col max-h-[300px]">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 id="cal-detalle-fecha-titulo" class="text-base font-bold text-cream-dark">Compromisos del Día</h4>
+                            <span id="cal-detalle-count" class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-white/80 text-cream-dark">0</span>
+                        </div>
+                        <div id="cal-lista-dia" class="space-y-2.5 overflow-y-auto flex-1 pr-1 hide-scrollbar"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- PERFIL 5: CONTROL DE EVENTOS Y NOTIFICACIÓN WHATSAPP      -->
         <!-- ========================================================= -->
         <div id="vista-eventos" class="view-section hidden flex-col gap-6 animate-fade-in">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 
-                <!-- Crear / Organizar Evento -->
                 <div class="lg:col-span-5 glass-hero rounded-[32px] p-8">
                     <div class="flex items-center justify-between mb-6">
                         <div>
                             <span class="text-[11px] tracking-[0.15em] text-cream-gray font-bold uppercase">Planificación</span>
                             <h2 class="text-2xl font-bold text-cream-dark">Nuevo Evento</h2>
                         </div>
-                        <div class="w-11 h-11 rounded-full bg-white/80 flex items-center justify-center text-cream-accent shadow-sm">
-                            <i class="fa-solid fa-calendar-plus text-lg"></i>
-                        </div>
+                        <button onclick="abrirModal('modal-contactos')" class="px-3.5 py-2 rounded-full bg-white/80 hover:bg-white text-xs font-bold text-cream-dark shadow-sm border border-white flex items-center gap-1.5">
+                            <i class="fa-brands fa-whatsapp text-[#25D366]"></i> + Números
+                        </button>
                     </div>
 
                     <div class="space-y-4">
@@ -471,7 +699,15 @@
                             <input type="time" id="ev-hora" class="w-full glass-input rounded-[18px] px-4 py-3.5 text-xs font-bold">
                         </div>
 
-                        <input type="text" id="ev-lugar" placeholder="Lugar / Dirección (ej. Templo Principal)" class="w-full glass-input rounded-[18px] px-4 py-3.5 text-xs font-bold">
+                        <div class="grid grid-cols-2 gap-3">
+                            <input type="text" id="ev-lugar" placeholder="Lugar (ej. Templo Principal)" class="w-full glass-input rounded-[18px] px-4 py-3.5 text-xs font-bold">
+                            <select id="ev-audiencia" class="w-full glass-input rounded-[18px] px-3.5 py-3.5 text-xs font-bold">
+                                <option value="Toda la Iglesia">Público: Toda la Iglesia</option>
+                                <option value="Servidores">Dirigido a: Servidores</option>
+                                <option value="Líderes">Dirigido a: Líderes</option>
+                                <option value="Pastor">Reunión: Pastor</option>
+                            </select>
+                        </div>
                         
                         <div class="grid grid-cols-2 gap-3">
                             <div class="relative">
@@ -483,10 +719,12 @@
 
                         <textarea id="ev-decoracion" rows="2" placeholder="Logística, Decoración y Detalles (ej. Flores blancas, sonido extra, cena...)" class="w-full glass-input rounded-[18px] px-4 py-3 text-xs font-semibold"></textarea>
 
-                        <!-- Aviso automático de destinatarios -->
-                        <div class="bg-white/65 rounded-[16px] p-3.5 border border-white flex items-center justify-between text-[11px]">
-                            <span class="font-bold text-cream-dark"><i class="fa-brands fa-whatsapp text-[#25D366] text-sm mr-1.5"></i>Notificación automática al crear:</span>
-                            <span class="font-bold text-cream-gray">Isis & Pastor</span>
+                        <div class="bg-white/65 rounded-[18px] p-3.5 border border-white">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-[11px] font-bold text-cream-dark"><i class="fa-brands fa-whatsapp text-[#25D366] text-sm mr-1"></i>Notificar por WhatsApp a:</span>
+                                <button type="button" onclick="abrirModal('modal-contactos')" class="text-[10px] font-bold text-cream-accent hover:underline">+ Agregar número</button>
+                            </div>
+                            <div id="ev-contactos-list" class="flex flex-wrap gap-1.5 max-h-28 overflow-y-auto hide-scrollbar"></div>
                         </div>
 
                         <button onclick="crearEvento()" class="w-full bg-cream-dark text-white font-bold text-sm rounded-[18px] py-4 hover:bg-black transition-all shadow-lg flex items-center justify-center gap-2">
@@ -495,24 +733,25 @@
                     </div>
                 </div>
 
-                <!-- Lista de Eventos Activos -->
                 <div class="lg:col-span-7 glass-card rounded-[32px] p-8 flex flex-col">
                     <div class="flex items-center justify-between mb-6">
                         <div>
                             <h3 class="text-2xl font-bold text-cream-dark">Agenda y Logística de Eventos</h3>
-                            <p class="text-xs text-cream-gray font-medium">Notificaciones directas a Isis (3345667476) y Pastor (3314795318) solo al crear evento nuevo</p>
+                            <p class="text-xs text-cream-gray font-medium">Sincronizado automáticamente con el Calendario de Reuniones</p>
                         </div>
+                        <button onclick="cambiarPerfil('calendario')" class="bg-white/75 hover:bg-white px-4 py-2 rounded-full text-xs font-bold text-cream-dark border border-white shadow-sm">
+                            <i class="fa-solid fa-calendar-days mr-1.5 text-cream-accent"></i> Ver Calendario
+                        </button>
                     </div>
 
-                    <div id="lista-eventos" class="space-y-4 overflow-y-auto max-h-[520px] pr-1 hide-scrollbar">
-                    </div>
+                    <div id="lista-eventos" class="space-y-4 overflow-y-auto max-h-[540px] pr-1 hide-scrollbar"></div>
                 </div>
 
             </div>
         </div>
 
         <!-- ========================================================= -->
-        <!-- PERFIL 4: COSAS PENDIENTES DE LA IGLESIA                  -->
+        <!-- PERFIL 6: COSAS PENDIENTES DE LA IGLESIA                  -->
         <!-- ========================================================= -->
         <div id="vista-pendientes" class="view-section hidden flex-col gap-6 animate-fade-in">
             <div class="glass-hero rounded-[32px] p-8 lg:p-10">
@@ -526,7 +765,6 @@
                     </div>
                 </div>
 
-                <!-- Agregar nuevo pendiente -->
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-3 mb-8 bg-white/50 p-4 rounded-[24px] border border-white">
                     <input type="text" id="tarea-titulo" placeholder="¿Qué necesitamos hacer o comprar? (ej. Comprar cables micrófono)" class="md:col-span-5 glass-input rounded-[16px] px-4 py-3 text-xs font-bold">
                     <select id="tarea-area" class="md:col-span-3 glass-input rounded-[16px] px-4 py-3 text-xs font-bold">
@@ -547,9 +785,7 @@
                     </button>
                 </div>
 
-                <!-- Lista de Pendientes -->
-                <div id="lista-pendientes" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                </div>
+                <div id="lista-pendientes" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
             </div>
         </div>
 
@@ -571,9 +807,17 @@
 
         <div id="vista-users" class="view-section hidden flex-col gap-6 animate-fade-in">
             <div class="glass-hero rounded-[32px] p-8 lg:p-12">
-                <div class="flex items-center justify-between mb-8">
-                    <h2 class="text-3xl font-bold text-cream-dark">Directorio de Servidores</h2>
-                    <button onclick="cambiarPerfil('general')" class="bg-white/70 hover:bg-white px-5 py-2.5 rounded-full text-xs font-bold text-cream-dark shadow-sm">Volver</button>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                    <div>
+                        <h2 class="text-3xl font-bold text-cream-dark">Directorio de Servidores</h2>
+                        <p class="text-xs text-cream-gray font-medium mt-1">Gestiona también los números de teléfono para notificaciones WhatsApp</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="abrirModal('modal-contactos')" class="bg-cream-dark text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-sm flex items-center gap-1.5">
+                            <i class="fa-brands fa-whatsapp text-[#25D366]"></i> Números WhatsApp
+                        </button>
+                        <button onclick="cambiarPerfil('general')" class="bg-white/70 hover:bg-white px-5 py-2.5 rounded-full text-xs font-bold text-cream-dark shadow-sm">Volver</button>
+                    </div>
                 </div>
                 <div id="grid-directorios" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             </div>
@@ -590,6 +834,12 @@
             <button onclick="cambiarPerfil('ministerios')" class="dock-item w-11 h-11 rounded-full flex items-center justify-center text-cream-dark hover:bg-white/70" title="Tesorería Ministerios">
                 <i class="fa-solid fa-vault text-base"></i>
             </button>
+            <button onclick="cambiarPerfil('responsables')" class="dock-item w-11 h-11 rounded-full flex items-center justify-center text-cream-dark hover:bg-white/70" title="Responsables Tesorería">
+                <i class="fa-solid fa-user-check text-base"></i>
+            </button>
+            <button onclick="cambiarPerfil('calendario')" class="dock-item w-11 h-11 rounded-full flex items-center justify-center text-cream-dark hover:bg-white/70" title="Calendario y Reuniones">
+                <i class="fa-solid fa-calendar-days text-base"></i>
+            </button>
             <button onclick="cambiarPerfil('eventos')" class="dock-item w-11 h-11 rounded-full flex items-center justify-center text-cream-dark hover:bg-white/70" title="Eventos">
                 <i class="fa-solid fa-calendar-star text-base"></i>
             </button>
@@ -600,10 +850,50 @@
                 <i class="fa-solid fa-users text-base"></i>
             </button>
             <div class="w-[1px] h-6 bg-cream-dark/15 mx-1"></div>
+            <button onclick="abrirModal('modal-contactos')" class="dock-item w-11 h-11 rounded-full flex items-center justify-center text-[#25D366] hover:bg-white/70" title="Números WhatsApp">
+                <i class="fa-brands fa-whatsapp text-lg"></i>
+            </button>
             <button onclick="abrirModal('modal-configuracion')" class="dock-item w-11 h-11 rounded-full flex items-center justify-center text-cream-gray hover:bg-white/70 hover:text-cream-dark" title="Configurar Meta">
                 <i class="fa-solid fa-gear text-base"></i>
             </button>
         </nav>
+    </div>
+
+    <!-- MODAL CONTACTOS WHATSAPP -->
+    <div id="modal-contactos" class="modal-overlay hidden fixed inset-0 bg-black/25 backdrop-blur-md z-50 items-center justify-center p-4">
+        <div class="bg-cream-bg/95 backdrop-blur-xl rounded-[32px] p-8 w-full max-w-lg relative animate-scale-up shadow-2xl border border-white flex flex-col max-h-[85vh]">
+            <button onclick="cerrarModal('modal-contactos')" class="absolute top-6 right-6 w-9 h-9 rounded-full bg-white/70 flex items-center justify-center text-cream-dark">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="flex items-center gap-3.5 mb-5">
+                <div class="w-12 h-12 rounded-[18px] bg-white shadow-sm flex items-center justify-center text-[#25D366] text-2xl">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-cream-dark">Números para Notificaciones</h3>
+                    <p class="text-xs text-cream-gray font-medium">Agrega servidores, líderes o pastores para enviarles avisos</p>
+                </div>
+            </div>
+
+            <div class="bg-white/65 rounded-[22px] p-4 border border-white mb-5 space-y-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <input type="text" id="nuevo-contacto-nombre" placeholder="Nombre (ej. Pablo / Líder Jóvenes)" class="w-full glass-input rounded-[14px] px-3.5 py-2.5 text-xs font-bold">
+                    <select id="nuevo-contacto-rol" class="w-full glass-input rounded-[14px] px-3.5 py-2.5 text-xs font-bold">
+                        <option value="Servidor">Rol: Servidor</option>
+                        <option value="Líder">Rol: Líder</option>
+                        <option value="Pastor">Rol: Pastor</option>
+                    </select>
+                </div>
+                <div class="flex gap-2">
+                    <input type="tel" id="nuevo-contacto-tel" placeholder="Teléfono 10 dígitos (ej. 3312345678)" class="flex-1 glass-input rounded-[14px] px-3.5 py-2.5 text-xs font-bold">
+                    <button onclick="agregarContactoWhatsApp()" class="bg-cream-dark text-white font-bold text-xs px-5 py-2.5 rounded-[14px] hover:bg-black transition-all whitespace-nowrap">
+                        + Agregar
+                    </button>
+                </div>
+            </div>
+
+            <div id="lista-contactos-modal" class="flex-1 overflow-y-auto space-y-2.5 pr-1 hide-scrollbar"></div>
+        </div>
     </div>
 
     <!-- MODAL DRIVE -->
@@ -622,14 +912,14 @@
                 </div>
             </div>
             <p class="text-xs font-medium text-cream-gray leading-relaxed mb-5">
-                Todos los movimientos de cultos, jóvenes, ministerios y eventos se leen y guardan automáticamente en tu hoja de cálculo personal.
+                Todos los movimientos de cultos, jóvenes, ministerios, reportes dominicales y eventos se guardan automáticamente en tu hoja de cálculo personal.
             </p>
             <div class="grid grid-cols-2 gap-3">
                 <button onclick="exportarCSV()" class="w-full bg-white border border-cream-border text-cream-dark font-bold text-xs rounded-[18px] py-3.5 shadow-sm">
                     Descargar Respaldo CSV
                 </button>
-                <button onclick="cerrarModal('modal-drive')" class="w-full bg-cream-dark text-white font-bold text-xs rounded-[18px] py-3.5">
-                    Entendido
+                <button onclick="cargarDatosDesdeDrive(); cerrarModal('modal-drive')" class="w-full bg-cream-dark text-white font-bold text-xs rounded-[18px] py-3.5">
+                    Sincronizar Ahora
                 </button>
             </div>
         </div>
@@ -667,7 +957,7 @@
                     <i class="fa-solid fa-circle-check text-cream-accent text-base mt-0.5"></i>
                     <div>
                         <span class="font-bold block">Sistema Integral Activo</span>
-                        Conectado a Google Sheets. Alertas WhatsApp configuradas para Isis y Pastor al crear eventos nuevos.
+                        Control dominical de responsables de tesorería, calendario y Google Sheets listos.
                     </div>
                 </div>
             </div>
@@ -676,75 +966,109 @@
 
     <!-- LÓGICA DE DATOS -->
     <script type="module">
-        // URL de Google Apps Script configurada
-        const driveWebhookUrl ="https://script.google.com/macros/s/AKfycbwGpp36DkGOlgaiEZ95TbbK1BccMemQnhkH8O7X2G4roByl_9TbvyEUlNpbKIm2j5LC/exec";
+        const driveWebhookUrl = "https://script.google.com/macros/s/AKfycbwGpp36DkGOlgaiEZ95TbbK1BccMemQnhkH8O7X2G4roByl_9TbvyEUlNpbKIm2j5LC/exec";
 
-        // Contactos exclusivos para notificación automática al crear un evento nuevo
-        const CONTACTOS_EVENTOS = [
-            { nombre: "Isis", telefono: "523345667476" },
-            { nombre: "Pastor", telefono: "523314795318" }
+        const CONTACTOS_DEFAULT = [
+            { id: 1, nombre: "Isis", rol: "Líder", telefono: "523345667476" },
+            { id: 2, nombre: "Pastor", rol: "Pastor", telefono: "523314795318" }
         ];
+        let contactosWhatsApp = JSON.parse(localStorage.getItem('mision_contactos_wa')) || CONTACTOS_DEFAULT;
+
+        // Responsables de Tesorería (Actualización Dominical)
+        const RESPONSABLES_DEFAULT = [
+            { ministerio: "Jóvenes", responsable: "Pablo", icon: "fa-fire", pendienteAsignar: false },
+            { ministerio: "Alabanza", responsable: "Isabell", icon: "fa-music", pendienteAsignar: false },
+            { ministerio: "Multimedia", responsable: "Isis", icon: "fa-photo-film", pendienteAsignar: false },
+            { ministerio: "Panderos", responsable: "Sofía", icon: "fa-compact-disc", pendienteAsignar: false },
+            { ministerio: "Maestros", responsable: "Persona Pendiente", icon: "fa-children", pendienteAsignar: true }
+        ];
+        let responsablesTesoreria = JSON.parse(localStorage.getItem('mision_responsables_tes')) || RESPONSABLES_DEFAULT;
+        let reportesDominicales = JSON.parse(localStorage.getItem('mision_reportes_dominicales')) || [];
 
         let META_MENSUAL = 20000;
         let aportaciones = [];
-        let eventos = [];
-        let pendientes = [];
+        let eventos = JSON.parse(localStorage.getItem('mision_eventos_cal')) || [];
+        let pendientes = JSON.parse(localStorage.getItem('mision_pendientes')) || [];
         let barChartInstance = null;
         let pieChartInstance = null;
         let cultosChartInstance = null;
 
+        let calFechaVista = new Date();
+        let calDiaSeleccionado = new Date().toISOString().split('T')[0];
+
+        function obtenerNombreResponsable(min) {
+            const found = responsablesTesoreria.find(r => r.ministerio === min);
+            return found ? found.responsable : "Por asignar";
+        }
+
         window.fondosInfo = {
             "General": { icon: "fa-church", encargada: "Alondra", desc: "Tesorería general de la iglesia." },
-            "Alabanza": { icon: "fa-music", encargada: "Isabel", desc: "Instrumentos, mantenimiento y equipo." },
-            "Panderos": { icon: "fa-compact-disc", encargada: "Sofia", desc: "Vestuarios, cintas y panderos." },
-            "Multimedia": { icon: "fa-photo-film", encargada: "Isis", desc: "Cámaras, transmisión y proyección." },
-            "Jóvenes": { icon: "fa-fire", encargada: "Pablito Urias", desc: "Sociedad de jóvenes y campamentos." },
-            "Maestros": { icon: "fa-children", encargada: "Marina", desc: "Material didáctico escuela dominical." },
+            "Jóvenes": { icon: "fa-fire", get encargada() { return obtenerNombreResponsable("Jóvenes"); }, desc: "Sociedad de jóvenes y campamentos." },
+            "Alabanza": { icon: "fa-music", get encargada() { return obtenerNombreResponsable("Alabanza"); }, desc: "Instrumentos, mantenimiento y equipo." },
+            "Multimedia": { icon: "fa-photo-film", get encargada() { return obtenerNombreResponsable("Multimedia"); }, desc: "Cámaras, transmisión y proyección." },
+            "Panderos": { icon: "fa-compact-disc", get encargada() { return obtenerNombreResponsable("Panderos"); }, desc: "Vestuarios, cintas y panderos." },
+            "Maestros": { icon: "fa-children", get encargada() { return obtenerNombreResponsable("Maestros"); }, desc: "Material didáctico escuela dominical." },
             "Eventos": { icon: "fa-calendar-check", encargada: "Isis", desc: "Fondo especial para congresos." }
         };
 
         window.servidores = {
-            "Alabanza": ["Kevin", "Isabel", "Alondra", "Marina", "Pablito Urias", "Hernan"],
-            "Panderos": ["Hanna", "Sofia", "Kendra", "Ximena", "Giselle"],
+            "Alabanza": ["Kevin", "Isabell", "Alondra", "Marina", "Pablo", "Hernan"],
+            "Panderos": ["Hanna", "Sofía", "Kendra", "Ximena", "Giselle"],
             "Multimedia": ["Carlos", "Isis", "Arturo", "Cesar"],
-            "Jóvenes": ["Pablito Urias", "Kevin", "Hanna", "Sofia", "Kendra", "Ximena", "Giselle", "Carlos", "Arturo"],
-            "Maestros": ["Marina", "Isabel", "Alondra"],
+            "Jóvenes": ["Pablo", "Kevin", "Hanna", "Sofía", "Kendra", "Ximena", "Giselle", "Carlos", "Arturo"],
+            "Maestros": ["Marina", "Isabell", "Alondra"],
             "Pastor": ["Pastor Principal"]
         };
 
-        // --- CARGAR DATOS DESDE GOOGLE SHEETS AL ABRIR LA PÁGINA (INMUNE A CORS) ---
-        function cargarDatosDesdeDrive() {
+        // --- CONEXIÓN A GOOGLE SHEETS ---
+        window.cargarDatosDesdeDrive = async function() {
             const dot = document.getElementById('drive-dot');
             const label = document.getElementById('drive-label');
-            const callbackName = 'googleSheetsCallback_' + Date.now();
+            if (dot) { dot.classList.remove('bg-green-500', 'bg-red-500'); dot.classList.add('bg-orange-400'); }
+            if (label) { label.innerText = "Sincronizando..."; }
 
-            window[callbackName] = function(json) {
+            try {
+                const response = await fetch(driveWebhookUrl, { method: 'GET', redirect: 'follow' });
+                const json = await response.json();
                 if (json && json.status === "success" && Array.isArray(json.data)) {
-                    aportaciones = json.data.reverse().map(item => {
-                        let tipo = 'ministerio';
-                        if (item.ministerio === 'Culto Miércoles' || item.ministerio === 'Culto Domingo') tipo = 'culto';
-                        else if (item.ministerio === 'Jóvenes Sábado') tipo = 'jovenes';
-                        return { ...item, tipo };
-                    });
-                    actualizarUI();
+                    procesarDatosDrive(json.data);
                     if (dot) { dot.classList.remove('bg-orange-400', 'bg-red-500'); dot.classList.add('bg-green-500'); }
                     if (label) { label.innerText = "Drive Conectado"; }
+                    return;
                 }
-                delete window[callbackName];
-                document.getElementById(callbackName)?.remove();
-            };
+            } catch (e) {
+                const callbackName = 'googleSheetsCallback_' + Date.now();
+                window[callbackName] = function(json) {
+                    if (json && json.status === "success" && Array.isArray(json.data)) {
+                        procesarDatosDrive(json.data);
+                        if (dot) { dot.classList.remove('bg-orange-400', 'bg-red-500'); dot.classList.add('bg-green-500'); }
+                        if (label) { label.innerText = "Drive Conectado"; }
+                    }
+                    delete window[callbackName];
+                    document.getElementById(callbackName)?.remove();
+                };
+                const script = document.createElement('script');
+                script.id = callbackName;
+                script.src = `${driveWebhookUrl}?callback=${callbackName}`;
+                script.onerror = function() {
+                    if (dot) { dot.classList.remove('bg-green-500', 'bg-orange-400'); dot.classList.add('bg-red-500'); }
+                    if (label) { label.innerText = "Error de Conexión"; }
+                };
+                document.body.appendChild(script);
+            }
+        };
 
-            const script = document.createElement('script');
-            script.id = callbackName;
-            script.src = `${driveWebhookUrl}?callback=${callbackName}`;
-            script.onerror = function() {
-                if (dot) { dot.classList.remove('bg-green-500', 'bg-orange-400'); dot.classList.add('bg-red-500'); }
-                if (label) { label.innerText = "Error de Conexión"; }
-            };
-            document.body.appendChild(script);
+        function procesarDatosDrive(dataArray) {
+            aportaciones = dataArray.reverse().map(item => {
+                let tipo = 'ministerio';
+                if (item.ministerio === 'Culto Miércoles' || item.ministerio === 'Culto Domingo') tipo = 'culto';
+                else if (item.ministerio === 'Jóvenes Sábado') tipo = 'jovenes';
+                return { ...item, tipo };
+            });
+            actualizarUI();
+            renderizarResponsablesTesoreria();
         }
 
-        // --- ENVIAR DATOS A GOOGLE SHEETS ---
         async function enviarADrive(fechaStr, ministerio, servidor, fondoDestino, monto) {
             const dot = document.getElementById('drive-dot');
             const label = document.getElementById('drive-label');
@@ -766,13 +1090,401 @@
                 });
                 if (dot) { dot.classList.remove('bg-orange-400', 'bg-red-500'); dot.classList.add('bg-green-500'); }
                 if (label) { label.innerText = "Drive Conectado"; }
-                setTimeout(cargarDatosDesdeDrive, 1500);
+                setTimeout(window.cargarDatosDesdeDrive, 1500);
             } catch (err) {
-                console.error("Error enviando a Drive:", err);
                 if (dot) { dot.classList.remove('bg-green-500', 'bg-orange-400'); dot.classList.add('bg-red-500'); }
                 if (label) { label.innerText = "Error al Guardar"; }
             }
         }
+
+        // --- RESPONSABLES DE TESORERÍA (CONTROL DOMINICAL) ---
+        function calcularSaldoFondo(fondoNombre) {
+            return aportaciones
+                .filter(a => a.tipo === 'ministerio' && a.fondoDestino === fondoNombre)
+                .reduce((acc, cur) => acc + (Number(cur.monto) || 0), 0);
+        }
+
+        window.asignarResponsableMaestros = function() {
+            const nuevoNombre = prompt("Escribe el nombre del responsable de Tesorería de Maestros:");
+            if (nuevoNombre && nuevoNombre.trim()) {
+                const idx = responsablesTesoreria.findIndex(r => r.ministerio === "Maestros");
+                if (idx !== -1) {
+                    responsablesTesoreria[idx].responsable = nuevoNombre.trim();
+                    responsablesTesoreria[idx].pendienteAsignar = false;
+                    localStorage.setItem('mision_responsables_tes', JSON.stringify(responsablesTesoreria));
+                    renderizarResponsablesTesoreria();
+                    actualizarUI();
+                    agregarNotificacion("Responsable Asignado", `${nuevoNombre.trim()} quedó a cargo de la tesorería de Maestros.`);
+                }
+            }
+        };
+
+        window.autocompletarSaldoResponsable = function() {
+            const min = document.getElementById('resp-ministerio').value;
+            const ultimoReporte = reportesDominicales.find(r => r.ministerio === min);
+            const saldoSistema = calcularSaldoFondo(min);
+            const sugerido = ultimoReporte ? ultimoReporte.saldo : saldoSistema;
+            document.getElementById('resp-saldo').value = sugerido > 0 ? sugerido : '';
+        };
+
+        window.registrarActualizacionDominical = function() {
+            const min = document.getElementById('resp-ministerio').value;
+            const fecha = document.getElementById('resp-fecha').value;
+            const saldo = parseFloat(document.getElementById('resp-saldo').value) || 0;
+            const estado = document.getElementById('resp-estado').value;
+            const notas = document.getElementById('resp-notas').value.trim() || "Corte dominical registrado en orden.";
+            const responsable = obtenerNombreResponsable(min);
+
+            if (!fecha) return;
+            const fechaStr = fecha.split('-').reverse().join('/');
+
+            const nuevoCorte = {
+                id: Date.now(),
+                ministerio: min,
+                responsable,
+                fechaISO: fecha,
+                fechaStr,
+                saldo,
+                estado,
+                notas
+            };
+
+            reportesDominicales.unshift(nuevoCorte);
+            localStorage.setItem('mision_reportes_dominicales', JSON.stringify(reportesDominicales));
+
+            renderizarResponsablesTesoreria();
+            enviarADrive(fechaStr, `Corte Dominical (${min})`, responsable, estado, saldo);
+            agregarNotificacion(`Corte Dominical: ${min}`, `${responsable} reportó $${saldo.toLocaleString('es-MX')} (${estado}).`);
+
+            document.getElementById('resp-notas').value = '';
+        };
+
+        window.eliminarReporteDominical = function(id) {
+            reportesDominicales = reportesDominicales.filter(r => r.id !== id);
+            localStorage.setItem('mision_reportes_dominicales', JSON.stringify(reportesDominicales));
+            renderizarResponsablesTesoreria();
+        };
+
+        function renderizarResponsablesTesoreria() {
+            const grid = document.getElementById('grid-responsables-tesoreria');
+            const lista = document.getElementById('lista-reportes-dominicales');
+            const badge = document.getElementById('badge-cortes-dominicales');
+            if (!grid || !lista) return;
+
+            const fechaSeleccionada = document.getElementById('resp-fecha')?.value || new Date().toISOString().split('T')[0];
+            let actualizadosHoy = 0;
+
+            grid.innerHTML = responsablesTesoreria.map(item => {
+                const ultimoReporte = reportesDominicales.find(r => r.ministerio === item.ministerio);
+                const saldoSistema = calcularSaldoFondo(item.ministerio);
+                const saldoMostrar = ultimoReporte ? ultimoReporte.saldo : saldoSistema;
+                const alDiaEnFecha = ultimoReporte && ultimoReporte.fechaISO === fechaSeleccionada;
+                if (alDiaEnFecha) actualizadosHoy++;
+
+                const statusBadge = alDiaEnFecha
+                    ? `<span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-green-100 text-green-700"><i class="fa-solid fa-check mr-0.5"></i>Al día</span>`
+                    : `<span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Pendiente Domingo</span>`;
+
+                const botonAsignar = item.pendienteAsignar
+                    ? `<button onclick="asignarResponsableMaestros()" class="mt-2 text-[10px] font-bold text-cream-accent hover:underline flex items-center gap-1"><i class="fa-solid fa-user-pen"></i> Asignar persona</button>`
+                    : `<span class="mt-2 text-[10px] font-semibold text-cream-gray block">${ultimoReporte ? 'Último corte: ' + ultimoReporte.fechaStr : 'Sin corte previo'}</span>`;
+
+                return `
+                <div class="bg-white/75 rounded-[24px] p-5 border border-white shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-3">
+                            <div class="w-9 h-9 rounded-full bg-cream-bg text-cream-accent flex items-center justify-center border border-cream-border">
+                                <i class="fa-solid ${item.icon} text-sm"></i>
+                            </div>
+                            ${statusBadge}
+                        </div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-cream-gray block">${item.ministerio}</span>
+                        <h4 class="text-base font-bold text-cream-dark leading-tight mt-0.5">${item.responsable}</h4>
+                        ${botonAsignar}
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-cream-dark/10">
+                        <span class="text-[9px] font-bold uppercase text-cream-gray block">Saldo en Tesorería</span>
+                        <span class="text-xl font-bold text-cream-dark">$${saldoMostrar.toLocaleString('es-MX')}</span>
+                    </div>
+                </div>`;
+            }).join('');
+
+            if (badge) {
+                badge.innerText = `${actualizadosHoy} / ${responsablesTesoreria.length} Actualizados en fecha`;
+            }
+
+            if (!reportesDominicales.length) {
+                lista.innerHTML = `<div class="text-center text-cream-gray text-xs py-12 font-semibold">Aún no hay actualizaciones dominicales registradas. Usa el formulario de la izquierda cada domingo.</div>`;
+                return;
+            }
+
+            lista.innerHTML = reportesDominicales.map(rep => `
+                <div class="bg-white/80 rounded-[20px] p-4 border border-white flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full bg-cream-dark text-white">${rep.ministerio}</span>
+                            <span class="text-xs font-bold text-cream-dark">Responsable: ${rep.responsable}</span>
+                            <span class="text-[10px] font-bold text-cream-accent">• ${rep.fechaStr}</span>
+                        </div>
+                        <p class="text-xs text-cream-gray font-medium mt-1.5">${rep.notas}</p>
+                        <span class="text-[10px] font-bold text-green-700 mt-1 inline-block"><i class="fa-solid fa-circle-check mr-1"></i>${rep.estado}</span>
+                    </div>
+                    <div class="flex sm:flex-col items-end justify-between gap-2 shrink-0">
+                        <span class="text-lg font-bold text-cream-dark">$${rep.saldo.toLocaleString('es-MX')}</span>
+                        <button onclick="eliminarReporteDominical(${rep.id})" class="text-cream-gray hover:text-red-500 text-xs" title="Eliminar registro">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // --- GESTIÓN DE CONTACTOS WHATSAPP ---
+        function guardarContactosStorage() {
+            localStorage.setItem('mision_contactos_wa', JSON.stringify(contactosWhatsApp));
+            renderizarContactos();
+        }
+
+        function formatearTelefonoMX(telRaw) {
+            const limpio = telRaw.replace(/\D/g, '');
+            if (limpio.length === 10) return '52' + limpio;
+            return limpio;
+        }
+
+        window.agregarContactoWhatsApp = function() {
+            const nombre = document.getElementById('nuevo-contacto-nombre').value.trim();
+            const rol = document.getElementById('nuevo-contacto-rol').value;
+            const telRaw = document.getElementById('nuevo-contacto-tel').value.trim();
+            const telefono = formatearTelefonoMX(telRaw);
+
+            if (!nombre || telefono.length < 10) return;
+
+            contactosWhatsApp.push({ id: Date.now(), nombre, rol, telefono });
+            guardarContactosStorage();
+
+            document.getElementById('nuevo-contacto-nombre').value = '';
+            document.getElementById('nuevo-contacto-tel').value = '';
+            agregarNotificacion(`Contacto Agregado`, `${nombre} (${rol}) añadido a la lista de WhatsApp.`);
+        };
+
+        window.eliminarContactoWhatsApp = function(id) {
+            contactosWhatsApp = contactosWhatsApp.filter(c => c.id !== id);
+            guardarContactosStorage();
+        };
+
+        window.seleccionarTodosContactos = function(containerId, checked) {
+            document.querySelectorAll(`#${containerId} input[type="checkbox"]`).forEach(cb => cb.checked = checked);
+        };
+
+        function renderizarContactos() {
+            const countHeader = document.getElementById('count-contactos-header');
+            if (countHeader) countHeader.innerText = contactosWhatsApp.length;
+
+            const modalList = document.getElementById('lista-contactos-modal');
+            if (modalList) {
+                modalList.innerHTML = contactosWhatsApp.map(c => `
+                    <div class="bg-white/80 rounded-[16px] p-3.5 flex items-center justify-between border border-white">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-full bg-[#25D366]/15 text-[#25D366] flex items-center justify-center font-bold text-xs">
+                                <i class="fa-brands fa-whatsapp text-base"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-cream-dark">${c.nombre} <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cream-accent/20 text-cream-dark ml-1">${c.rol}</span></p>
+                                <p class="text-[11px] font-semibold text-cream-gray">+${c.telefono}</p>
+                            </div>
+                        </div>
+                        <button onclick="eliminarContactoWhatsApp(${c.id})" class="text-cream-gray hover:text-red-500 text-xs px-2" title="Eliminar número">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            ['reu-contactos-list', 'ev-contactos-list'].forEach(containerId => {
+                const cont = document.getElementById(containerId);
+                if (!cont) return;
+                cont.innerHTML = contactosWhatsApp.map(c => `
+                    <label class="cursor-pointer inline-flex items-center gap-1.5 bg-white/90 hover:bg-white px-2.5 py-1.5 rounded-full border border-cream-border text-[11px] font-bold text-cream-dark shadow-sm select-none">
+                        <input type="checkbox" value="${c.id}" checked class="accent-[#3A312A] rounded">
+                        <span>${c.nombre}</span>
+                        <span class="text-[9px] text-cream-gray">(${c.rol})</span>
+                    </label>
+                `).join('');
+            });
+        }
+
+        function obtenerContactosSeleccionados(containerId) {
+            const ids = Array.from(document.querySelectorAll(`#${containerId} input[type="checkbox"]:checked`)).map(cb => Number(cb.value));
+            return contactosWhatsApp.filter(c => ids.includes(c.id));
+        }
+
+        // --- CALENDARIO INTERACTIVO ---
+        window.cambiarMesCalendario = function(delta) {
+            calFechaVista.setMonth(calFechaVista.getMonth() + delta);
+            renderizarCalendario();
+        };
+
+        window.irHoyCalendario = function() {
+            calFechaVista = new Date();
+            calDiaSeleccionado = new Date().toISOString().split('T')[0];
+            document.getElementById('reu-fecha').value = calDiaSeleccionado;
+            renderizarCalendario();
+        };
+
+        window.seleccionarDiaCalendario = function(fechaISO) {
+            calDiaSeleccionado = fechaISO;
+            document.getElementById('reu-fecha').value = fechaISO;
+            renderizarCalendario();
+        };
+
+        function renderizarCalendario() {
+            const grid = document.getElementById('grid-calendario');
+            const tituloMes = document.getElementById('cal-mes-titulo');
+            if (!grid || !tituloMes) return;
+
+            const year = calFechaVista.getFullYear();
+            const month = calFechaVista.getMonth();
+            const nombreMes = new Intl.DateTimeFormat('es-MX', { month: 'long', year: 'numeric' }).format(calFechaVista);
+            tituloMes.innerText = nombreMes;
+
+            const primerDiaSemana = new Date(year, month, 1).getDay();
+            const diasEnMes = new Date(year, month + 1, 0).getDate();
+            const hoyISO = new Date().toISOString().split('T')[0];
+
+            let html = '';
+            for (let i = 0; i < primerDiaSemana; i++) {
+                html += `<div class="rounded-[18px] bg-white/20 min-h-[68px]"></div>`;
+            }
+
+            for (let dia = 1; dia <= diasEnMes; dia++) {
+                const mesStr = String(month + 1).padStart(2, '0');
+                const diaStr = String(dia).padStart(2, '0');
+                const fechaISO = `${year}-${mesStr}-${diaStr}`;
+
+                const eventosDia = eventos.filter(e => e.fechaISO === fechaISO);
+                const esSeleccionado = fechaISO === calDiaSeleccionado;
+                const esHoy = fechaISO === hoyISO;
+
+                const borderClass = esSeleccionado ? 'ring-2 ring-cream-dark bg-white/95' : (esHoy ? 'border-cream-accent border-2 bg-white/80' : 'border-white bg-white/55');
+
+                const dotsHtml = eventosDia.slice(0, 3).map(ev => {
+                    let dotColor = 'bg-[#25D366]';
+                    if (ev.audiencia === 'Pastor' || ev.audiencia === 'Líderes') dotColor = 'bg-[#3A312A]';
+                    else if (ev.audiencia === 'Servidores') dotColor = 'bg-[#C4A47C]';
+                    return `<span class="w-2 h-2 rounded-full ${dotColor}" title="${ev.nombre}"></span>`;
+                }).join('');
+
+                html += `
+                <button onclick="seleccionarDiaCalendario('${fechaISO}')" class="cal-day min-h-[68px] rounded-[18px] p-2 border ${borderClass} flex flex-col justify-between items-start text-left shadow-sm">
+                    <span class="text-xs font-bold ${esHoy ? 'text-cream-accent' : 'text-cream-dark'}">${dia}</span>
+                    <div class="w-full">
+                        ${eventosDia.length ? `<span class="text-[9px] font-bold text-cream-dark truncate block w-full">${eventosDia[0].nombre}</span>` : ''}
+                        <div class="flex items-center gap-1 mt-1">${dotsHtml}</div>
+                    </div>
+                </button>`;
+            }
+
+            grid.innerHTML = html;
+            renderizarDetalleDiaCalendario();
+        }
+
+        function renderizarDetalleDiaCalendario() {
+            const tituloEl = document.getElementById('cal-detalle-fecha-titulo');
+            const countEl = document.getElementById('cal-detalle-count');
+            const listaEl = document.getElementById('cal-lista-dia');
+            if (!tituloEl || !listaEl) return;
+
+            const fechaLegible = calDiaSeleccionado.split('-').reverse().join('/');
+            tituloEl.innerText = `Agenda: ${fechaLegible}`;
+
+            const eventosDia = eventos.filter(e => e.fechaISO === calDiaSeleccionado);
+            countEl.innerText = `${eventosDia.length} ${eventosDia.length === 1 ? 'Actividad' : 'Actividades'}`;
+
+            if (!eventosDia.length) {
+                listaEl.innerHTML = `<div class="text-center text-cream-gray text-xs py-8 font-semibold">No hay reuniones o eventos agendados para este día.</div>`;
+                return;
+            }
+
+            listaEl.innerHTML = eventosDia.map(ev => `
+                <div class="bg-white/80 rounded-[18px] p-3.5 border border-white flex items-center justify-between gap-2">
+                    <div>
+                        <span class="text-[9px] font-bold uppercase px-2 py-0.5 rounded-full bg-cream-accent/20 text-cream-dark">${ev.audiencia || 'Evento'} • ${ev.hora} hrs</span>
+                        <p class="text-xs font-bold text-cream-dark mt-1">${ev.nombre}</p>
+                        <p class="text-[10px] font-semibold text-cream-gray"><i class="fa-solid fa-location-dot mr-1 text-cream-accent"></i>${ev.lugar}</p>
+                    </div>
+                    <button onclick="notificarEventoMasivo(${ev.id})" class="bg-[#25D366] hover:bg-[#1ebe5d] text-white text-[10px] font-bold px-3 py-2 rounded-full flex items-center gap-1 shadow-sm whitespace-nowrap">
+                        <i class="fa-brands fa-whatsapp"></i> Avisar
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        window.agendarReunionCalendario = function() {
+            const nombre = document.getElementById('reu-titulo').value.trim();
+            const audiencia = document.getElementById('reu-audiencia').value;
+            const lugar = document.getElementById('reu-lugar').value.trim() || 'Templo Principal';
+            const fecha = document.getElementById('reu-fecha').value;
+            const hora = document.getElementById('reu-hora').value || '19:00';
+
+            if (!nombre || !fecha) return;
+            const fechaStr = fecha.split('-').reverse().join('/');
+            const destinatarios = obtenerContactosSeleccionados('reu-contactos-list');
+
+            const nuevoEvento = {
+                id: Date.now(),
+                nombre,
+                audiencia,
+                fechaISO: fecha,
+                fechaStr,
+                hora,
+                lugar,
+                presupuesto: 0,
+                metaAsistentes: 30,
+                confirmados: 1,
+                decoracion: `Convocatoria dirigida a: ${audiencia}`,
+                destinatariosIds: destinatarios.map(d => d.id)
+            };
+
+            eventos.unshift(nuevoEvento);
+            localStorage.setItem('mision_eventos_cal', JSON.stringify(eventos));
+
+            calDiaSeleccionado = fecha;
+            renderizarCalendario();
+            renderizarEventos();
+
+            enviarADrive(fechaStr, `Reunión (${audiencia})`, lugar, nombre, 0);
+            agregarNotificacion(`Reunión Agendada: ${nombre}`, `Fecha: ${fechaStr} (${hora} hrs) • Enviando aviso a ${destinatarios.length} contactos.`);
+
+            enviarWhatsAppADestinatarios(nuevoEvento, destinatarios);
+            document.getElementById('reu-titulo').value = '';
+        };
+
+        function construirMensajeEvento(ev, destinatario) {
+            return `Hola *${destinatario}*, te notificamos de una *CONVOCATORIA / EVENTO* en Misión Central:%0A%0A` +
+                   `📌 *Actividad:* ${ev.nombre}%0A` +
+                   `👥 *Dirigido a:* ${ev.audiencia || 'Toda la Iglesia'}%0A` +
+                   `📅 *Fecha:* ${ev.fechaStr} a las ${ev.hora} hrs%0A` +
+                   `📍 *Lugar:* ${ev.lugar}%0A` +
+                   (ev.presupuesto > 0 ? `💰 *Presupuesto:* $${ev.presupuesto.toLocaleString('es-MX')}%0A` : '') +
+                   `✨ *Detalles:* ${ev.decoracion}`;
+        }
+
+        function enviarWhatsAppADestinatarios(ev, listaContactos) {
+            listaContactos.forEach((contacto, index) => {
+                const texto = construirMensajeEvento(ev, contacto.nombre);
+                const url = `https://api.whatsapp.com/send?phone=${contacto.telefono}&text=${texto}`;
+                setTimeout(() => { window.open(url, `_blank_wa_${contacto.id}_${index}`); }, index * 650);
+            });
+        }
+
+        window.notificarEventoMasivo = function(eventoId) {
+            const ev = eventos.find(e => e.id === eventoId);
+            if (!ev) return;
+            const lista = (ev.destinatariosIds && ev.destinatariosIds.length)
+                ? contactosWhatsApp.filter(c => ev.destinatariosIds.includes(c.id))
+                : contactosWhatsApp;
+            enviarWhatsAppADestinatarios(ev, lista);
+        };
 
         function agregarNotificacion(titulo, mensaje) {
             const lista = document.getElementById('lista-notificaciones');
@@ -813,10 +1525,14 @@
             const labels = {
                 'general': 'PERFIL: FINANZAS GENERALES',
                 'ministerios': 'PERFIL: TESORERÍA MINISTERIOS',
+                'responsables': 'PERFIL: RESPONSABLES TESORERÍA',
+                'calendario': 'PERFIL: CALENDARIO Y REUNIONES',
                 'eventos': 'PERFIL: CONTROL DE EVENTOS',
                 'pendientes': 'PERFIL: PENDIENTES IGLESIA'
             };
             document.getElementById('perfil-actual-label').innerText = labels[perfil] || 'GESTIÓN MISIÓN';
+            if (perfil === 'calendario') renderizarCalendario();
+            if (perfil === 'responsables') renderizarResponsablesTesoreria();
         };
 
         window.cambiarVista = function(vistaId) {
@@ -835,6 +1551,7 @@
                 document.getElementById('badge-notif')?.classList.add('hidden');
                 document.getElementById('badge-notif-mob')?.classList.add('hidden');
             }
+            if(id === 'modal-contactos') renderizarContactos();
         };
 
         window.cerrarModal = function(id) {
@@ -895,6 +1612,7 @@
 
             aportaciones.unshift({ tipo: 'ministerio', ministerio: min, servidor: serv, fondoDestino: fondo, monto, fechaISO: fecha, fechaStr });
             actualizarUI();
+            renderizarResponsablesTesoreria();
             enviarADrive(fechaStr, min, serv, fondo, monto);
 
             document.getElementById('monto').value = '';
@@ -903,40 +1621,44 @@
             document.getElementById('fondo-destino').selectedIndex = 0;
         };
 
-        function construirMensajeEvento(ev, destinatario) {
-            return `Hola *${destinatario}*, te notificamos de un *NUEVO EVENTO* registrado en Misión Central:%0A%0A` +
-                   `📌 *Evento:* ${ev.nombre}%0A` +
-                   `📅 *Fecha:* ${ev.fechaStr} a las ${ev.hora} hrs%0A` +
-                   `📍 *Lugar:* ${ev.lugar}%0A` +
-                   `💰 *Presupuesto:* $${ev.presupuesto.toLocaleString('es-MX')}%0A` +
-                   `👥 *Meta Asistentes:* ${ev.metaAsistentes}%0A` +
-                   `✨ *Logística/Decoración:* ${ev.decoracion}`;
-        }
-
         window.crearEvento = function() {
             const nombre = document.getElementById('ev-nombre').value.trim();
             const fecha = document.getElementById('ev-fecha').value;
             const hora = document.getElementById('ev-hora').value || '18:00';
             const lugar = document.getElementById('ev-lugar').value.trim() || 'Templo Principal';
+            const audiencia = document.getElementById('ev-audiencia').value;
             const presupuesto = parseFloat(document.getElementById('ev-presupuesto').value) || 0;
             const metaAsistentes = parseInt(document.getElementById('ev-participantes').value) || 50;
             const decoracion = document.getElementById('ev-decoracion').value.trim() || 'Estándar';
 
             if(!nombre || !fecha) return;
             const fechaStr = fecha.split('-').reverse().join('/');
+            const destinatarios = obtenerContactosSeleccionados('ev-contactos-list');
 
-            const nuevoEvento = { id: Date.now(), nombre, fechaStr, hora, lugar, presupuesto, gastado: 0, metaAsistentes, confirmados: 1, decoracion };
+            const nuevoEvento = {
+                id: Date.now(),
+                nombre,
+                audiencia,
+                fechaISO: fecha,
+                fechaStr,
+                hora,
+                lugar,
+                presupuesto,
+                gastado: 0,
+                metaAsistentes,
+                confirmados: 1,
+                decoracion,
+                destinatariosIds: destinatarios.map(d => d.id)
+            };
             eventos.unshift(nuevoEvento);
+            localStorage.setItem('mision_eventos_cal', JSON.stringify(eventos));
+
             renderizarEventos();
+            renderizarCalendario();
 
-            enviarADrive(fechaStr, 'Evento Nuevo', lugar, nombre, presupuesto);
-            agregarNotificacion(`Nuevo Evento: ${nombre}`, `Notificación enviada a Isis (3345667476) y Pastor (3314795318).`);
-
-            CONTACTOS_EVENTOS.forEach((contacto, index) => {
-                const texto = construirMensajeEvento(nuevoEvento, contacto.nombre);
-                const url = `https://api.whatsapp.com/send?phone=${contacto.telefono}&text=${texto}`;
-                setTimeout(() => { window.open(url, `_blank_${contacto.nombre}`); }, index * 600);
-            });
+            enviarADrive(fechaStr, `Evento (${audiencia})`, lugar, nombre, presupuesto);
+            agregarNotificacion(`Nuevo Evento: ${nombre}`, `Notificación enviada a ${destinatarios.length} contactos seleccionados.`);
+            enviarWhatsAppADestinatarios(nuevoEvento, destinatarios);
 
             document.getElementById('ev-nombre').value = '';
             document.getElementById('ev-lugar').value = '';
@@ -947,7 +1669,11 @@
 
         window.confirmarAsistenciaEvento = function(id) {
             const ev = eventos.find(e => e.id === id);
-            if(ev) { ev.confirmados++; renderizarEventos(); }
+            if(ev) {
+                ev.confirmados++;
+                localStorage.setItem('mision_eventos_cal', JSON.stringify(eventos));
+                renderizarEventos();
+            }
         };
 
         window.reenviarWhatsAppContacto = function(id, nombreContacto, telefono) {
@@ -960,26 +1686,30 @@
         function renderizarEventos() {
             const cont = document.getElementById('lista-eventos');
             if(!eventos.length) {
-                cont.innerHTML = `<div class="text-center text-cream-gray text-xs py-12 font-semibold">No hay eventos programados. Crea el primero a la izquierda para notificar a Isis y al Pastor.</div>`;
+                cont.innerHTML = `<div class="text-center text-cream-gray text-xs py-12 font-semibold">No hay eventos programados. Crea el primero a la izquierda o agéndalo desde el Calendario.</div>`;
                 return;
             }
             cont.innerHTML = eventos.map(ev => {
                 const pctAsistencia = Math.min(100, Math.round((ev.confirmados / ev.metaAsistentes) * 100));
+                const botonesContactos = contactosWhatsApp.slice(0, 4).map(c => `
+                    <button onclick="reenviarWhatsAppContacto(${ev.id}, '${c.nombre}', '${c.telefono}')" class="bg-[#25D366] hover:bg-[#1ebe5d] text-white font-bold text-[11px] px-3 py-1.5 rounded-full flex items-center gap-1 shadow-sm transition-all">
+                        <i class="fa-brands fa-whatsapp text-xs"></i> ${c.nombre}
+                    </button>
+                `).join('');
+
                 return `
                 <div class="bg-white/75 rounded-[24px] p-6 border border-white shadow-sm space-y-4">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div>
-                            <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-cream-accent/20 text-cream-dark">${ev.fechaStr} • ${ev.hora} hrs</span>
-                            <h4 class="text-lg font-bold text-cream-dark mt-1.5">${ev.nombre}</h4>
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-cream-accent/20 text-cream-dark">${ev.fechaStr} • ${ev.hora} hrs</span>
+                                <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-cream-dark text-white">${ev.audiencia || 'Evento'}</span>
+                            </div>
+                            <h4 class="text-lg font-bold text-cream-dark mt-2">${ev.nombre}</h4>
                             <p class="text-xs font-semibold text-cream-gray"><i class="fa-solid fa-location-dot mr-1 text-cream-accent"></i>${ev.lugar}</p>
                         </div>
-                        <div class="flex flex-wrap gap-2 self-start">
-                            <button onclick="reenviarWhatsAppContacto(${ev.id}, 'Isis', '523345667476')" class="bg-[#25D366] hover:bg-[#1ebe5d] text-white font-bold text-[11px] px-3 py-2 rounded-full flex items-center gap-1.5 shadow-sm transition-all">
-                                <i class="fa-brands fa-whatsapp text-xs"></i> Isis
-                            </button>
-                            <button onclick="reenviarWhatsAppContacto(${ev.id}, 'Pastor', '523314795318')" class="bg-[#25D366] hover:bg-[#1ebe5d] text-white font-bold text-[11px] px-3 py-2 rounded-full flex items-center gap-1.5 shadow-sm transition-all">
-                                <i class="fa-brands fa-whatsapp text-xs"></i> Pastor
-                            </button>
+                        <div class="flex flex-wrap gap-1.5 self-start max-w-xs justify-end">
+                            ${botonesContactos}
                         </div>
                     </div>
                     <div class="bg-cream-bg/80 rounded-[16px] p-3.5 text-xs text-cream-dark border border-cream-border">
@@ -1012,17 +1742,23 @@
             const prioridad = document.getElementById('tarea-prioridad').value;
             if(!titulo) return;
             pendientes.unshift({ id: Date.now(), titulo, area, prioridad, completada: false });
+            localStorage.setItem('mision_pendientes', JSON.stringify(pendientes));
             document.getElementById('tarea-titulo').value = '';
             renderizarPendientes();
         };
 
         window.togglePendiente = function(id) {
             const t = pendientes.find(p => p.id === id);
-            if(t) { t.completada = !t.completada; renderizarPendientes(); }
+            if(t) {
+                t.completada = !t.completada;
+                localStorage.setItem('mision_pendientes', JSON.stringify(pendientes));
+                renderizarPendientes();
+            }
         };
 
         window.eliminarPendiente = function(id) {
             pendientes = pendientes.filter(p => p.id !== id);
+            localStorage.setItem('mision_pendientes', JSON.stringify(pendientes));
             renderizarPendientes();
         };
 
@@ -1058,7 +1794,7 @@
         function actualizarUI() {
             let totalMiercoles = 0, totalDomingos = 0, totalSabados = 0, totalMinisterios = 0;
             const totalesMin = { "Alabanza": 0, "Panderos": 0, "Multimedia": 0, "Jóvenes": 0, "Maestros": 0, "Pastor": 0 };
-            const totalesFondo = { "General": 0, "Alabanza": 0, "Panderos": 0, "Multimedia": 0, "Jóvenes": 0, "Maestros": 0, "Eventos": 0 };
+            const totalesFondo = { "General": 0, "Jóvenes": 0, "Alabanza": 0, "Multimedia": 0, "Panderos": 0, "Maestros": 0, "Eventos": 0 };
 
             aportaciones.forEach(reg => {
                 if(reg.ministerio === 'Culto Miércoles') totalMiercoles += reg.monto;
@@ -1129,7 +1865,7 @@
                             <i class="fa-solid ${f.icon}"></i>
                         </div>
                         <div class="text-right">
-                            <span class="text-[9px] font-bold uppercase text-cream-gray block">Encargada/o</span>
+                            <span class="text-[9px] font-bold uppercase text-cream-gray block">Responsable</span>
                             <span class="text-xs font-bold text-cream-dark">${f.encargada}</span>
                         </div>
                     </div>
@@ -1152,7 +1888,7 @@
                         <div class="w-10 h-10 rounded-full bg-cream-bg text-cream-accent flex items-center justify-center"><i class="fa-solid ${info.icon}"></i></div>
                         <div>
                             <p class="font-bold text-cream-dark text-sm">${fondo}</p>
-                            <p class="text-[11px] text-cream-gray font-semibold">Encargado/a: ${info.encargada}</p>
+                            <p class="text-[11px] text-cream-gray font-semibold">Responsable: ${info.encargada}</p>
                         </div>
                     </div>
                     <div class="text-right">
@@ -1249,13 +1985,18 @@
             document.getElementById('joven-fecha').value = hoy;
             document.getElementById('fecha-aporte').value = hoy;
             document.getElementById('ev-fecha').value = hoy;
+            document.getElementById('reu-fecha').value = hoy;
+            document.getElementById('resp-fecha').value = hoy;
 
             inicializarGraficas();
+            renderizarContactos();
             renderizarDirectorio();
+            renderizarResponsablesTesoreria();
+            renderizarCalendario();
             renderizarEventos();
             renderizarPendientes();
             actualizarUI();
-            cargarDatosDesdeDrive();
+            window.cargarDatosDesdeDrive();
         });
     </script>
 </body>
