@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finanzas Misión — Beige Glass</title>
+    <title>Gestión Integral Misión — Beige Glass</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js -->
@@ -19,10 +19,10 @@
                         sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
                     },
                     colors: {
-                        'cream-bg': '#FDFBF7',      /* Fondo crema muy suave */
-                        'cream-dark': '#3A312A',    /* Texto principal: Espresso oscuro */
-                        'cream-gray': '#8C8177',    /* Texto secundario: Taupe cálido */
-                        'cream-accent': '#C4A47C',  /* Acento: Bronce/Oro suave */
+                        'cream-bg': '#FDFBF7',
+                        'cream-dark': '#3A312A',
+                        'cream-gray': '#8C8177',
+                        'cream-accent': '#C4A47C',
                         'cream-accent-hover': '#B39268',
                         'cream-border': 'rgba(255, 255, 255, 0.6)'
                     },
@@ -58,42 +58,36 @@
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
-
-        /* Glassmorphism Classes */
         .glass-card {
-            background: rgba(255, 255, 255, 0.45);
+            background: rgba(255, 255, 255, 0.48);
             backdrop-filter: blur(24px) saturate(180%);
             -webkit-backdrop-filter: blur(24px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.85);
             box-shadow: 0 8px 32px -4px rgba(58, 49, 42, 0.06);
         }
-
         .glass-hero {
-            background: rgba(255, 255, 255, 0.65);
+            background: rgba(255, 255, 255, 0.68);
             backdrop-filter: blur(30px) saturate(200%);
             -webkit-backdrop-filter: blur(30px) saturate(200%);
             border: 1px solid rgba(255, 255, 255, 0.9);
             box-shadow: 0 12px 48px -8px rgba(58, 49, 42, 0.1);
         }
-
         .glass-dock {
-            background: rgba(253, 251, 247, 0.75);
+            background: rgba(253, 251, 247, 0.8);
             backdrop-filter: blur(30px) saturate(200%);
             -webkit-backdrop-filter: blur(30px) saturate(200%);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 10px 40px -10px rgba(58, 49, 42, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.85);
+            box-shadow: 0 10px 40px -10px rgba(58, 49, 42, 0.18);
         }
-
         .dock-item {
             transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
         }
         .dock-item:hover {
-            transform: translateY(-4px) scale(1.1);
+            transform: translateY(-4px) scale(1.08);
         }
-
         .glass-input {
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.85);
             color: #3A312A;
             transition: all 0.2s ease;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
@@ -101,45 +95,70 @@
         .glass-input:focus {
             background: rgba(255, 255, 255, 0.95);
             border-color: #C4A47C;
-            box-shadow: 0 0 0 4px rgba(196, 164, 124, 0.2), inset 0 2px 4px rgba(0,0,0,0.01);
+            box-shadow: 0 0 0 4px rgba(196, 164, 124, 0.2);
             outline: none;
         }
-
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
         .animation-delay-2000 { animation-delay: 2s; }
         .animation-delay-4000 { animation-delay: 4s; }
     </style>
 </head>
-<body class="min-h-screen w-screen overflow-x-hidden flex flex-col justify-between font-sans selection:bg-cream-accent selection:text-white relative pb-28">
+<body class="min-h-screen w-screen overflow-x-hidden flex flex-col justify-between font-sans selection:bg-cream-accent selection:text-white relative pb-32">
 
-    <!-- Orbes de fondo (Efecto de cristal 3D) -->
+    <!-- Orbes de fondo -->
     <div class="fixed top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-[#E8D8C8]/60 rounded-full mix-blend-multiply filter blur-[100px] animate-blob z-0 pointer-events-none"></div>
     <div class="fixed top-[20%] right-[-10%] w-[45vw] h-[45vw] bg-[#F3E8DD]/50 rounded-full mix-blend-multiply filter blur-[90px] animate-blob animation-delay-2000 z-0 pointer-events-none"></div>
     <div class="fixed bottom-[-20%] left-[20%] w-[60vw] h-[60vw] bg-[#E2D4C3]/50 rounded-full mix-blend-multiply filter blur-[100px] animate-blob animation-delay-4000 z-0 pointer-events-none"></div>
 
-    <!-- HEADER -->
-    <header class="w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 pt-8 pb-4 flex items-center justify-between z-20">
-        <div class="flex items-center gap-4">
-            <label for="upload-logo" class="group relative w-12 h-12 rounded-[16px] glass-card flex items-center justify-center cursor-pointer overflow-hidden hover:shadow-md transition-all">
-                <img id="church-logo-img" src="" alt="Logo" class="hidden w-full h-full object-cover">
-                <div id="church-logo-placeholder" class="flex flex-col items-center justify-center text-cream-accent group-hover:scale-105 transition-transform">
-                    <i class="fa-solid fa-building-columns text-xl"></i>
+    <!-- HEADER CON SELECTOR DE PERFIL -->
+    <header class="w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 pt-6 pb-4 flex flex-col md:flex-row items-center justify-between gap-4 z-20">
+        <div class="flex items-center gap-4 w-full md:w-auto justify-between md:justify-start">
+            <div class="flex items-center gap-3.5">
+                <label for="upload-logo" class="group relative w-12 h-12 rounded-[16px] glass-card flex items-center justify-center cursor-pointer overflow-hidden hover:shadow-md transition-all">
+                    <img id="church-logo-img" src="" alt="Logo" class="hidden w-full h-full object-cover">
+                    <div id="church-logo-placeholder" class="flex flex-col items-center justify-center text-cream-accent group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-church text-xl"></i>
+                    </div>
+                    <input type="file" id="upload-logo" accept="image/*" class="hidden" onchange="cargarLogoIglesia(event)">
+                </label>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-cream-dark leading-none">Misión Central</h1>
+                    <span class="text-[10px] font-bold tracking-widest text-cream-gray uppercase mt-1 block" id="perfil-actual-label">PERFIL: FINANZAS GENERALES</span>
                 </div>
-                <input type="file" id="upload-logo" accept="image/*" class="hidden" onchange="cargarLogoIglesia(event)">
-            </label>
-            <div>
-                <h1 class="text-2xl font-bold tracking-tight text-cream-dark leading-none">Finanzas Misión</h1>
-                <span class="text-[11px] font-bold tracking-widest text-cream-gray uppercase mt-1.5 block" id="header-mes-label">CORTE MENSUAL</span>
+            </div>
+
+            <!-- Botones móviles Drive/Notif -->
+            <div class="flex md:hidden items-center gap-2">
+                <button onclick="abrirModal('modal-notificaciones')" class="w-10 h-10 rounded-full glass-card flex items-center justify-center text-cream-dark relative">
+                    <i class="fa-solid fa-bell text-sm"></i>
+                    <span id="badge-notif-mob" class="hidden absolute top-0 right-0 w-2.5 h-2.5 rounded-full bg-red-500"></span>
+                </button>
             </div>
         </div>
 
-        <div class="flex items-center gap-3">
+        <!-- SELECTOR DE PERFILES -->
+        <div class="glass-card p-1.5 rounded-full flex items-center gap-1 overflow-x-auto max-w-full hide-scrollbar">
+            <button onclick="cambiarPerfil('general')" id="tab-perfil-general" class="perfil-tab px-4 py-2 rounded-full text-xs font-bold bg-cream-dark text-white shadow-sm transition-all whitespace-nowrap">
+                <i class="fa-solid fa-hand-holding-heart mr-1.5"></i>Finanzas Generales
+            </button>
+            <button onclick="cambiarPerfil('ministerios')" id="tab-perfil-ministerios" class="perfil-tab px-4 py-2 rounded-full text-xs font-bold text-cream-gray hover:text-cream-dark transition-all whitespace-nowrap">
+                <i class="fa-solid fa-vault mr-1.5"></i>Tesorería Ministerios
+            </button>
+            <button onclick="cambiarPerfil('eventos')" id="tab-perfil-eventos" class="perfil-tab px-4 py-2 rounded-full text-xs font-bold text-cream-gray hover:text-cream-dark transition-all whitespace-nowrap">
+                <i class="fa-solid fa-calendar-star mr-1.5"></i>Eventos
+            </button>
+            <button onclick="cambiarPerfil('pendientes')" id="tab-perfil-pendientes" class="perfil-tab px-4 py-2 rounded-full text-xs font-bold text-cream-gray hover:text-cream-dark transition-all whitespace-nowrap">
+                <i class="fa-solid fa-list-check mr-1.5"></i>Pendientes
+            </button>
+        </div>
+
+        <!-- Acciones Escritorio -->
+        <div class="hidden md:flex items-center gap-3">
             <button onclick="abrirModal('modal-drive')" id="btn-drive-status" class="glass-card hover:bg-white/80 px-4 py-2.5 rounded-full flex items-center gap-2 text-xs font-semibold text-cream-dark transition-all">
-                <span id="drive-dot" class="w-2 h-2 rounded-full bg-orange-400"></span>
+                <span id="drive-dot" class="w-2 h-2 rounded-full bg-green-500"></span>
                 <i class="fa-brands fa-google-drive text-cream-gray"></i>
-                <span class="hidden sm:inline" id="drive-label">Conectar Drive</span>
+                <span id="drive-label">Drive Conectado</span>
             </button>
 
             <button onclick="abrirModal('modal-notificaciones')" class="w-10 h-10 rounded-full glass-card hover:bg-white/80 flex items-center justify-center text-cream-dark transition-all relative">
@@ -150,187 +169,397 @@
     </header>
 
     <!-- MAIN CONTENT -->
-    <main class="w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 flex-1 flex flex-col justify-center z-10 relative">
+    <main class="w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 flex-1 flex flex-col justify-start z-10 relative pt-2">
 
-        <!-- VISTA 1: DASHBOARD -->
-        <div id="vista-home" class="view-section flex flex-col gap-6 animate-fade-in">
+        <!-- ========================================================= -->
+        <!-- PERFIL 1: FINANZAS GENERALES (MIÉRCOLES, DOMINGOS, JÓVENES) -->
+        <!-- ========================================================= -->
+        <div id="vista-general" class="view-section flex flex-col gap-6 animate-fade-in">
             
+            <!-- KPIs Generales de la Iglesia -->
             <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                
-                <!-- Hero Card (Glassmorphism) -->
-                <div class="lg:col-span-7 glass-hero rounded-[32px] p-8 sm:p-10 text-cream-dark relative overflow-hidden flex flex-col justify-between min-h-[260px] animate-scale-up">
-                    <div class="flex items-start justify-between relative z-10">
+                <div class="lg:col-span-6 glass-hero rounded-[32px] p-8 text-cream-dark flex flex-col justify-between">
+                    <div class="flex items-start justify-between">
                         <div>
-                            <span class="text-[11px] tracking-[0.15em] text-cream-gray font-bold block mb-1.5 uppercase">Balance Recaudado</span>
-                            <h2 id="mesTitulo" class="text-2xl font-bold tracking-tight text-cream-dark">NOVIEMBRE</h2>
+                            <span class="text-[11px] tracking-[0.15em] text-cream-gray font-bold block mb-1 uppercase">Finanzas Generales Iglesia</span>
+                            <h2 class="text-2xl font-bold tracking-tight">Balance Consolidado</h2>
                         </div>
-                        <span id="status-sync" class="text-[10px] tracking-wide uppercase px-3 py-1.5 rounded-full bg-white/50 text-cream-dark border border-white/60 font-bold shadow-sm">
-                            <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Nube Activa
+                        <span class="text-[10px] uppercase px-3 py-1.5 rounded-full bg-white/60 text-cream-dark border border-white font-bold">
+                            Cultos + Ministerios
                         </span>
                     </div>
-
-                    <div class="my-6 relative z-10">
-                        <div id="granTotal" class="text-6xl sm:text-7xl lg:text-8xl font-bold tracking-tighter text-cream-dark tabular-nums drop-shadow-sm">
-                            $0
-                        </div>
+                    <div class="my-5">
+                        <div id="granTotalGlobal" class="text-5xl sm:text-7xl font-bold tracking-tighter text-cream-dark tabular-nums">$0</div>
+                        <p class="text-xs font-semibold text-cream-gray mt-2">
+                            Cultos Generales: <span id="subtotalCultos" class="text-cream-dark font-bold">$0</span> • 
+                            Jóvenes Sábados: <span id="subtotalJovenes" class="text-cream-dark font-bold">$0</span> • 
+                            Ministerios: <span id="subtotalMin" class="text-cream-dark font-bold">$0</span>
+                        </p>
                     </div>
-
-                    <div class="relative z-10">
-                        <div class="flex items-center justify-between text-[13px] text-cream-gray mb-2 font-semibold">
-                            <span>Progreso hacia <span id="texto-meta-objetivo" class="text-cream-dark">$20,000</span></span>
-                            <span id="porcentajeMeta" class="text-cream-dark font-bold text-sm">0%</span>
+                    <div>
+                        <div class="flex justify-between text-xs text-cream-gray mb-1.5 font-semibold">
+                            <span>Meta Mensual (<span id="texto-meta-objetivo">$20,000</span>)</span>
+                            <span id="porcentajeMeta" class="text-cream-dark font-bold">0%</span>
                         </div>
-                        <div class="w-full h-2.5 bg-black/5 rounded-full overflow-hidden shadow-inner">
-                            <div id="barra-meta" class="h-full bg-cream-accent rounded-full transition-all duration-1000 ease-out relative overflow-hidden" style="width: 0%">
-                                <div class="absolute inset-0 bg-white/20 w-full h-full"></div>
-                            </div>
+                        <div class="w-full h-2.5 bg-black/5 rounded-full overflow-hidden">
+                            <div id="barra-meta" class="h-full bg-cream-accent rounded-full transition-all duration-700" style="width: 0%"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- KPI Resumen -->
-                <div class="lg:col-span-5 glass-card rounded-[32px] p-8 flex flex-col justify-between animate-scale-up" style="animation-delay: 0.1s;">
+                <!-- Desglose por Día de Culto -->
+                <div class="lg:col-span-6 glass-card rounded-[32px] p-8 flex flex-col justify-between">
                     <div class="flex items-center justify-between mb-4">
                         <div>
-                            <span class="text-[11px] tracking-[0.15em] text-cream-gray font-bold block uppercase">Resumen</span>
-                            <h3 class="text-2xl font-bold tracking-tight text-cream-dark">Estado Operativo</h3>
-                        </div>
-                        <button onclick="cambiarVista('fondos')" class="w-10 h-10 rounded-full bg-white/60 border border-white/80 shadow-sm flex items-center justify-center text-cream-dark hover:bg-white transition-colors">
-                            <i class="fa-solid fa-arrow-right text-sm"></i>
-                        </button>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4 my-auto">
-                        <div class="bg-white/50 backdrop-blur-md rounded-[24px] p-5 border border-white/60 shadow-sm">
-                            <i class="fa-solid fa-chart-line text-cream-accent mb-3 text-xl"></i>
-                            <span id="totalOperaciones" class="text-3xl font-bold text-cream-dark block tracking-tight mb-1">0</span>
-                            <span class="text-[12px] font-semibold text-cream-gray">Movimientos</span>
-                        </div>
-                        <div class="bg-white/50 backdrop-blur-md rounded-[24px] p-5 border border-white/60 shadow-sm">
-                            <i class="fa-solid fa-wallet text-[#A88B68] mb-3 text-xl"></i>
-                            <span class="text-3xl font-bold text-cream-dark block tracking-tight mb-1">5</span>
-                            <span class="text-[12px] font-semibold text-cream-gray">Cuentas Activas</span>
+                            <span class="text-[11px] tracking-[0.15em] text-cream-gray font-bold block uppercase">Estadística Mensual</span>
+                            <h3 class="text-xl font-bold tracking-tight">Ingresos por Día de Reunión</h3>
                         </div>
                     </div>
-
-                    <div class="mt-5 pt-5 border-t border-cream-dark/5 flex flex-wrap gap-2">
-                        <span class="text-[11px] px-3.5 py-1.5 rounded-full bg-white/80 text-cream-dark font-bold border border-white shadow-sm">Alondra</span>
-                        <span class="text-[11px] px-3.5 py-1.5 rounded-full bg-white/80 text-cream-dark font-bold border border-white shadow-sm">Isis</span>
-                        <span class="text-[11px] px-3.5 py-1.5 rounded-full bg-white/80 text-cream-dark font-bold border border-white shadow-sm">Sofia</span>
-                        <span class="text-[11px] px-3.5 py-1.5 rounded-full bg-white/80 text-cream-dark font-bold border border-white shadow-sm">Isabel</span>
+                    <div class="grid grid-cols-3 gap-3 my-auto">
+                        <div class="bg-white/60 rounded-[22px] p-4 border border-white text-center">
+                            <span class="text-[11px] font-bold text-cream-gray uppercase block mb-1">Miércoles</span>
+                            <span id="totalMiercoles" class="text-2xl font-bold text-cream-dark block">$0</span>
+                            <span class="text-[10px] text-cream-accent font-semibold">Ofrenda / Diezmo</span>
+                        </div>
+                        <div class="bg-white/60 rounded-[22px] p-4 border border-white text-center">
+                            <span class="text-[11px] font-bold text-cream-gray uppercase block mb-1">Domingos</span>
+                            <span id="totalDomingos" class="text-2xl font-bold text-cream-dark block">$0</span>
+                            <span class="text-[10px] text-cream-accent font-semibold">Ofrenda / Diezmo</span>
+                        </div>
+                        <div class="bg-white/60 rounded-[22px] p-4 border border-white text-center">
+                            <span class="text-[11px] font-bold text-cream-gray uppercase block mb-1">Sáb. Jóvenes</span>
+                            <span id="totalSabados" class="text-2xl font-bold text-cream-dark block">$0</span>
+                            <span class="text-[10px] text-cream-accent font-semibold">Sociedad Jóvenes</span>
+                        </div>
+                    </div>
+                    <div class="h-32 w-full mt-4">
+                        <canvas id="cultosChart"></canvas>
                     </div>
                 </div>
-
             </section>
 
-            <!-- GRID WIDGETS -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pb-6">
+            <!-- FORMULARIOS DE REGISTRO GENERAL (LIBRE Y POR PERSONA) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 
-                <!-- Registro (5 col) -->
-                <div class="lg:col-span-5 glass-card rounded-[32px] p-7 sm:p-8 flex flex-col justify-between">
+                <!-- 1. Cultos Miércoles y Domingos -->
+                <div class="lg:col-span-4 glass-card rounded-[32px] p-7 flex flex-col justify-between">
                     <div>
-                        <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center justify-between mb-5">
                             <div>
-                                <h2 class="text-xl font-bold tracking-tight text-cream-dark">Nuevo Ingreso</h2>
+                                <h3 class="text-lg font-bold text-cream-dark">Cultos Miércoles y Domingos</h3>
+                                <p class="text-xs text-cream-gray font-medium">Ofrenda libre general o diezmo de servidor</p>
                             </div>
-                            <div class="w-10 h-10 rounded-full bg-white/60 shadow-sm flex items-center justify-center text-cream-accent border border-white/80">
-                                <i class="fa-solid fa-plus text-sm"></i>
+                            <div class="w-9 h-9 rounded-full bg-white/70 flex items-center justify-center text-cream-accent">
+                                <i class="fa-solid fa-church text-sm"></i>
                             </div>
                         </div>
-
-                        <div class="space-y-4">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div class="relative">
-                                    <select id="ministerio" onchange="actualizarServidores()" class="w-full glass-input rounded-[20px] px-4 py-4 text-[14px] font-semibold focus:outline-none appearance-none cursor-pointer">
-                                        <option value="" disabled selected>Ministerio</option>
-                                        <option value="Alabanza">Alabanza</option>
-                                        <option value="Panderos">Panderos</option>
-                                        <option value="Multimedia">Multimedia</option>
-                                        <option value="Pastor">Pastor</option>
-                                    </select>
-                                    <i class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-cream-gray text-[10px] pointer-events-none"></i>
-                                </div>
-                                <div class="relative">
-                                    <select id="servidor" class="w-full glass-input rounded-[20px] px-4 py-4 text-[14px] font-semibold focus:outline-none appearance-none cursor-pointer">
-                                        <option value="" disabled selected>Servidor</option>
-                                    </select>
-                                    <i class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-cream-gray text-[10px] pointer-events-none"></i>
-                                </div>
-                            </div>
-
-                            <div class="relative">
-                                <select id="fondo-destino" class="w-full glass-input rounded-[20px] px-4 py-4 text-[14px] font-semibold focus:outline-none appearance-none cursor-pointer">
-                                    <option value="" disabled selected>Cuenta Destino (Encargada)</option>
-                                    <option value="General">Iglesia General — Alondra</option>
-                                    <option value="Eventos">Eventos — Isis</option>
-                                    <option value="Multimedia">Multimedia — Isis</option>
-                                    <option value="Panderos">Panderos — Sofia</option>
-                                    <option value="Alabanza">Alabanza — Isabel</option>
+                        <div class="space-y-3.5">
+                            <div class="grid grid-cols-2 gap-3">
+                                <select id="culto-dia" class="w-full glass-input rounded-[18px] px-3.5 py-3.5 text-xs font-bold">
+                                    <option value="Culto Miércoles">Miércoles</option>
+                                    <option value="Culto Domingo">Domingo</option>
                                 </select>
-                                <i class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-cream-gray text-[10px] pointer-events-none"></i>
+                                <select id="culto-concepto" class="w-full glass-input rounded-[18px] px-3.5 py-3.5 text-xs font-bold">
+                                    <option value="Ofrenda General">Ofrenda</option>
+                                    <option value="Diezmo">Diezmo</option>
+                                    <option value="Primicias">Primicias</option>
+                                </select>
                             </div>
-
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="relative">
-                                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-cream-gray font-bold text-lg">$</span>
-                                    <input type="number" id="monto" placeholder="0.00" class="w-full glass-input rounded-[20px] pl-9 pr-4 py-4 text-[16px] font-bold focus:outline-none">
-                                </div>
-                                <div class="relative">
-                                    <input type="date" id="fecha-aporte" class="w-full glass-input rounded-[20px] px-4 py-4 text-[14px] font-semibold focus:outline-none cursor-pointer">
-                                </div>
+                            <div>
+                                <select id="culto-persona" class="w-full glass-input rounded-[18px] px-4 py-3.5 text-xs font-bold">
+                                    <option value="Congregación (Libre)">Ofrenda Libre (Sin responsable)</option>
+                                    <optgroup label="Servidores (Control Individual)">
+                                        <option value="Kevin">Kevin</option>
+                                        <option value="Isabel">Isabel</option>
+                                        <option value="Alondra">Alondra</option>
+                                        <option value="Marina">Marina</option>
+                                        <option value="Pablito Urias">Pablito Urias</option>
+                                        <option value="Hernan">Hernan</option>
+                                        <option value="Hanna">Hanna</option>
+                                        <option value="Sofia">Sofia</option>
+                                        <option value="Kendra">Kendra</option>
+                                        <option value="Ximena">Ximena</option>
+                                        <option value="Giselle">Giselle</option>
+                                        <option value="Carlos">Carlos</option>
+                                        <option value="Isis">Isis</option>
+                                        <option value="Arturo">Arturo</option>
+                                        <option value="Cesar">Cesar</option>
+                                        <option value="Pastor Principal">Pastor Principal</option>
+                                    </optgroup>
+                                </select>
                             </div>
-
-                            <button id="btn-registrar" onclick="registrarAportacion()" class="w-full bg-cream-dark text-white font-bold text-[15px] rounded-[20px] py-4 mt-2 hover:bg-black transition-all active:scale-95 shadow-lg shadow-cream-dark/20">
-                                Guardar Registro
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="relative">
+                                    <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-cream-gray font-bold text-sm">$</span>
+                                    <input type="number" id="culto-monto" placeholder="0.00" class="w-full glass-input rounded-[18px] pl-8 pr-3 py-3.5 text-sm font-bold">
+                                </div>
+                                <input type="date" id="culto-fecha" class="w-full glass-input rounded-[18px] px-3.5 py-3.5 text-xs font-bold">
+                            </div>
+                            <button onclick="registrarCultoGeneral()" class="w-full bg-cream-dark text-white font-bold text-xs rounded-[18px] py-3.5 hover:bg-black transition-all shadow-md">
+                                Registrar Culto
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Gráfica (4 col) -->
-                <div class="lg:col-span-4 glass-card rounded-[32px] p-7 sm:p-8 flex flex-col justify-between">
-                    <div class="flex items-center justify-between mb-4">
-                        <div>
-                            <h3 class="text-xl font-bold tracking-tight text-cream-dark">Por Ministerio</h3>
+                <!-- 2. Jóvenes Sábados -->
+                <div class="lg:col-span-4 glass-card rounded-[32px] p-7 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-5">
+                            <div>
+                                <h3 class="text-lg font-bold text-cream-dark">Jóvenes (Sábados)</h3>
+                                <p class="text-xs text-cream-gray font-medium">Control de ofrendas sabatinas por joven</p>
+                            </div>
+                            <div class="w-9 h-9 rounded-full bg-white/70 flex items-center justify-center text-cream-accent">
+                                <i class="fa-solid fa-fire text-sm"></i>
+                            </div>
                         </div>
-                        <button onclick="cambiarVista('charts')" class="text-cream-accent bg-white/60 border border-white/80 w-10 h-10 rounded-full flex items-center justify-center transition-colors shadow-sm hover:bg-white">
-                            <i class="fa-solid fa-chart-pie text-sm"></i>
-                        </button>
-                    </div>
-                    <div class="flex-1 min-h-[220px] w-full relative mt-2">
-                        <canvas id="barChart"></canvas>
+                        <div class="space-y-3.5">
+                            <div>
+                                <input type="text" id="joven-nombre" list="lista-jovenes-sugeridos" placeholder="Nombre del Joven (o General)" class="w-full glass-input rounded-[18px] px-4 py-3.5 text-xs font-bold">
+                                <datalist id="lista-jovenes-sugeridos">
+                                    <option value="Ofrenda General Jóvenes">
+                                    <option value="Pablito Urias">
+                                    <option value="Kevin">
+                                    <option value="Hanna">
+                                    <option value="Sofia">
+                                    <option value="Kendra">
+                                    <option value="Ximena">
+                                    <option value="Giselle">
+                                    <option value="Carlos">
+                                    <option value="Arturo">
+                                </datalist>
+                            </div>
+                            <div>
+                                <select id="joven-concepto" class="w-full glass-input rounded-[18px] px-4 py-3.5 text-xs font-bold">
+                                    <option value="Ofrenda Sábado">Ofrenda Reunión Sábado</option>
+                                    <option value="Diezmo Joven">Diezmo</option>
+                                    <option value="Cooperación Actividad">Cooperación Actividad</option>
+                                </select>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="relative">
+                                    <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-cream-gray font-bold text-sm">$</span>
+                                    <input type="number" id="joven-monto" placeholder="0.00" class="w-full glass-input rounded-[18px] pl-8 pr-3 py-3.5 text-sm font-bold">
+                                </div>
+                                <input type="date" id="joven-fecha" class="w-full glass-input rounded-[18px] px-3.5 py-3.5 text-xs font-bold">
+                            </div>
+                            <button onclick="registrarOfrendaJovenes()" class="w-full bg-cream-accent text-white font-bold text-xs rounded-[18px] py-3.5 hover:bg-cream-accent-hover transition-all shadow-md">
+                                Registrar Aporte Joven
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Bitácora (3 col) -->
-                <div class="lg:col-span-3 glass-card rounded-[32px] p-7 sm:p-8 flex flex-col max-h-[420px]">
-                    <div class="flex items-center justify-between mb-5">
-                        <h3 class="text-xl font-bold tracking-tight text-cream-dark">Bitácora</h3>
-                        <button onclick="exportarCSV()" class="text-cream-accent bg-white/60 border border-white/80 shadow-sm w-10 h-10 rounded-full flex items-center justify-center transition-colors hover:bg-white" title="Descargar Excel">
-                            <i class="fa-solid fa-download text-sm"></i>
+                <!-- 3. Historial Cultos y Jóvenes -->
+                <div class="lg:col-span-4 glass-card rounded-[32px] p-7 flex flex-col max-h-[390px]">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-cream-dark">Historial Cultos y Jóvenes</h3>
+                        <button onclick="exportarCSV()" class="text-cream-accent bg-white/70 w-9 h-9 rounded-full flex items-center justify-center shadow-sm hover:bg-white" title="Descargar Excel">
+                            <i class="fa-solid fa-download text-xs"></i>
                         </button>
                     </div>
-                    
-                    <div id="mensajeVacio" class="flex-1 flex flex-col items-center justify-center text-center text-cream-gray text-[14px] py-8 font-semibold">
-                        <i class="fa-regular fa-folder-open text-4xl mb-3 opacity-30"></i>
-                        <span>No hay movimientos hoy</span>
-                    </div>
-
-                    <div id="listaRegistros" class="space-y-3 overflow-y-auto flex-1 pr-1 hide-scrollbar">
-                        <!-- Items -->
+                    <div id="listaGeneralCultos" class="space-y-2.5 overflow-y-auto flex-1 pr-1 hide-scrollbar">
+                        <div class="text-center text-cream-gray text-xs py-10 font-semibold">Sin registros de cultos aún</div>
                     </div>
                 </div>
 
             </div>
         </div>
 
-        <!-- OTRAS VISTAS -->
-        <div id="vista-charts" class="view-section hidden flex-col gap-6 animate-fade-in pb-10">
+        <!-- ========================================================= -->
+        <!-- PERFIL 2: TESORERÍA DE MINISTERIOS (PANDEROS, ALABANZA, ETC) -->
+        <!-- ========================================================= -->
+        <div id="vista-ministerios" class="view-section hidden flex-col gap-6 animate-fade-in">
+            
+            <!-- Tarjetas de Cuentas por Ministerio -->
+            <div class="glass-hero rounded-[32px] p-8">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <span class="text-[11px] tracking-[0.15em] text-cream-gray font-bold uppercase">Cuentas Departamentales</span>
+                        <h2 class="text-2xl sm:text-3xl font-bold text-cream-dark">Tesorería por Ministerios</h2>
+                    </div>
+                    <button onclick="cambiarVista('charts')" class="bg-white/70 hover:bg-white px-5 py-2.5 rounded-full text-xs font-bold text-cream-dark shadow-sm border border-white self-start">
+                        <i class="fa-solid fa-chart-pie mr-1.5 text-cream-accent"></i> Ver Gráficas Detalladas
+                    </button>
+                </div>
+                <div id="grid-fondos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+            </div>
+
+            <!-- Formulario de Aportación a Ministerio + Bitácora -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-5 glass-card rounded-[32px] p-7">
+                    <h3 class="text-xl font-bold text-cream-dark mb-5">Registrar en Ministerio</h3>
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-2 gap-3">
+                            <select id="ministerio" onchange="actualizarServidores()" class="w-full glass-input rounded-[18px] px-4 py-3.5 text-xs font-bold">
+                                <option value="" disabled selected>Ministerio</option>
+                                <option value="Alabanza">Alabanza</option>
+                                <option value="Panderos">Panderos</option>
+                                <option value="Multimedia">Multimedia</option>
+                                <option value="Jóvenes">Jóvenes</option>
+                                <option value="Maestros">Maestros</option>
+                                <option value="Pastor">Pastor</option>
+                            </select>
+                            <select id="servidor" class="w-full glass-input rounded-[18px] px-4 py-3.5 text-xs font-bold">
+                                <option value="" disabled selected>Servidor</option>
+                            </select>
+                        </div>
+                        <select id="fondo-destino" class="w-full glass-input rounded-[18px] px-4 py-3.5 text-xs font-bold">
+                            <option value="" disabled selected>Cuenta Destino (Encargada/o)</option>
+                            <option value="General">Iglesia General — Alondra</option>
+                            <option value="Alabanza">Alabanza — Isabel</option>
+                            <option value="Panderos">Panderos — Sofia</option>
+                            <option value="Multimedia">Multimedia — Isis</option>
+                            <option value="Jóvenes">Jóvenes — Pablito Urias</option>
+                            <option value="Maestros">Maestros — Marina</option>
+                            <option value="Eventos">Eventos — Isis</option>
+                        </select>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="relative">
+                                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-cream-gray font-bold">$</span>
+                                <input type="number" id="monto" placeholder="0.00" class="w-full glass-input rounded-[18px] pl-8 pr-4 py-3.5 text-sm font-bold">
+                            </div>
+                            <input type="date" id="fecha-aporte" class="w-full glass-input rounded-[18px] px-4 py-3.5 text-xs font-bold">
+                        </div>
+                        <button onclick="registrarAportacion()" class="w-full bg-cream-dark text-white font-bold text-sm rounded-[18px] py-4 hover:bg-black transition-all shadow-md">
+                            Guardar en Tesorería
+                        </button>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-4 glass-card rounded-[32px] p-7 flex flex-col justify-between">
+                    <h3 class="text-xl font-bold text-cream-dark mb-3">Comparativa Ministerios</h3>
+                    <div class="flex-1 min-h-[210px] w-full relative">
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-3 glass-card rounded-[32px] p-7 flex flex-col max-h-[380px]">
+                    <h3 class="text-xl font-bold text-cream-dark mb-4">Movimientos</h3>
+                    <div id="mensajeVacio" class="flex-1 flex flex-col items-center justify-center text-center text-cream-gray text-xs py-6 font-semibold">
+                        <span>Sin movimientos registrados</span>
+                    </div>
+                    <div id="listaRegistros" class="space-y-2.5 overflow-y-auto flex-1 pr-1 hide-scrollbar"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- PERFIL 3: CONTROL DE EVENTOS Y NOTIFICACIÓN WHATSAPP      -->
+        <!-- ========================================================= -->
+        <div id="vista-eventos" class="view-section hidden flex-col gap-6 animate-fade-in">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- Crear / Organizar Evento -->
+                <div class="lg:col-span-5 glass-hero rounded-[32px] p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <span class="text-[11px] tracking-[0.15em] text-cream-gray font-bold uppercase">Planificación</span>
+                            <h2 class="text-2xl font-bold text-cream-dark">Nuevo Evento</h2>
+                        </div>
+                        <div class="w-11 h-11 rounded-full bg-white/80 flex items-center justify-center text-cream-accent shadow-sm">
+                            <i class="fa-solid fa-calendar-plus text-lg"></i>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <input type="text" id="ev-nombre" placeholder="Nombre del Evento (ej. Congreso Juvenil)" class="w-full glass-input rounded-[18px] px-4 py-3.5 text-xs font-bold">
+                        
+                        <div class="grid grid-cols-2 gap-3">
+                            <input type="date" id="ev-fecha" class="w-full glass-input rounded-[18px] px-4 py-3.5 text-xs font-bold">
+                            <input type="time" id="ev-hora" class="w-full glass-input rounded-[18px] px-4 py-3.5 text-xs font-bold">
+                        </div>
+
+                        <input type="text" id="ev-lugar" placeholder="Lugar / Dirección (ej. Templo Principal)" class="w-full glass-input rounded-[18px] px-4 py-3.5 text-xs font-bold">
+                        
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="relative">
+                                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-cream-gray font-bold text-xs">$</span>
+                                <input type="number" id="ev-presupuesto" placeholder="Presupuesto" class="w-full glass-input rounded-[18px] pl-7 pr-3 py-3.5 text-xs font-bold">
+                            </div>
+                            <input type="number" id="ev-participantes" placeholder="Meta Asistentes" class="w-full glass-input rounded-[18px] px-4 py-3.5 text-xs font-bold">
+                        </div>
+
+                        <textarea id="ev-decoracion" rows="2" placeholder="Logística, Decoración y Detalles (ej. Flores blancas, sonido extra, cena...)" class="w-full glass-input rounded-[18px] px-4 py-3 text-xs font-semibold"></textarea>
+
+                        <!-- Aviso automático de destinatarios -->
+                        <div class="bg-white/65 rounded-[16px] p-3.5 border border-white flex items-center justify-between text-[11px]">
+                            <span class="font-bold text-cream-dark"><i class="fa-brands fa-whatsapp text-[#25D366] text-sm mr-1.5"></i>Notificación automática al crear:</span>
+                            <span class="font-bold text-cream-gray">Isis & Pastor</span>
+                        </div>
+
+                        <button onclick="crearEvento()" class="w-full bg-cream-dark text-white font-bold text-sm rounded-[18px] py-4 hover:bg-black transition-all shadow-lg flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-whatsapp text-[#25D366] text-base"></i> Guardar Evento y Notificar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Lista de Eventos Activos -->
+                <div class="lg:col-span-7 glass-card rounded-[32px] p-8 flex flex-col">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 class="text-2xl font-bold text-cream-dark">Agenda y Logística de Eventos</h3>
+                            <p class="text-xs text-cream-gray font-medium">Notificaciones directas a Isis (3345667476) y Pastor (3314795318) solo al crear evento nuevo</p>
+                        </div>
+                    </div>
+
+                    <div id="lista-eventos" class="space-y-4 overflow-y-auto max-h-[520px] pr-1 hide-scrollbar">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- PERFIL 4: COSAS PENDIENTES DE LA IGLESIA                  -->
+        <!-- ========================================================= -->
+        <div id="vista-pendientes" class="view-section hidden flex-col gap-6 animate-fade-in">
+            <div class="glass-hero rounded-[32px] p-8 lg:p-10">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                    <div>
+                        <span class="text-[11px] tracking-[0.15em] text-cream-gray font-bold uppercase">Administración y Mantenimiento</span>
+                        <h2 class="text-3xl font-bold text-cream-dark">Pendientes de la Iglesia</h2>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span id="contador-pendientes" class="px-4 py-2 rounded-full bg-white/80 text-xs font-bold text-cream-dark border border-white">0 Pendientes</span>
+                    </div>
+                </div>
+
+                <!-- Agregar nuevo pendiente -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-3 mb-8 bg-white/50 p-4 rounded-[24px] border border-white">
+                    <input type="text" id="tarea-titulo" placeholder="¿Qué necesitamos hacer o comprar? (ej. Comprar cables micrófono)" class="md:col-span-5 glass-input rounded-[16px] px-4 py-3 text-xs font-bold">
+                    <select id="tarea-area" class="md:col-span-3 glass-input rounded-[16px] px-4 py-3 text-xs font-bold">
+                        <option value="Templo / General">Templo / General</option>
+                        <option value="Alabanza / Audio">Alabanza / Audio</option>
+                        <option value="Multimedia">Multimedia</option>
+                        <option value="Panderos">Panderos</option>
+                        <option value="Jóvenes">Jóvenes</option>
+                        <option value="Maestros / Niños">Maestros / Niños</option>
+                    </select>
+                    <select id="tarea-prioridad" class="md:col-span-2 glass-input rounded-[16px] px-4 py-3 text-xs font-bold">
+                        <option value="Alta">Urgente</option>
+                        <option value="Media" selected>Normal</option>
+                        <option value="Baja">Puede esperar</option>
+                    </select>
+                    <button onclick="agregarPendiente()" class="md:col-span-2 bg-cream-dark text-white font-bold text-xs rounded-[16px] py-3 hover:bg-black transition-all">
+                        + Agregar
+                    </button>
+                </div>
+
+                <!-- Lista de Pendientes -->
+                <div id="lista-pendientes" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                </div>
+            </div>
+        </div>
+
+        <!-- VISTAS SECUNDARIAS (Gráficas / Directorio) -->
+        <div id="vista-charts" class="view-section hidden flex-col gap-6 animate-fade-in">
             <div class="glass-hero rounded-[32px] p-8 lg:p-12">
-                <div class="flex items-center justify-between mb-10">
-                    <h2 class="text-3xl font-bold tracking-tight text-cream-dark">Distribución de Fondos</h2>
-                    <button onclick="cambiarVista('home')" class="bg-white/60 hover:bg-white border border-white/80 text-cream-dark px-6 py-3 rounded-full text-[14px] font-bold flex items-center gap-2 transition-colors shadow-sm">
-                        <i class="fa-solid fa-arrow-left"></i> Volver
+                <div class="flex items-center justify-between mb-8">
+                    <h2 class="text-3xl font-bold text-cream-dark">Distribución de Fondos</h2>
+                    <button onclick="cambiarPerfil('ministerios')" class="bg-white/70 hover:bg-white px-5 py-2.5 rounded-full text-xs font-bold text-cream-dark shadow-sm">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Volver
                     </button>
                 </div>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -340,140 +569,105 @@
             </div>
         </div>
 
-        <div id="vista-calendar" class="view-section hidden flex-col gap-6 animate-fade-in pb-10">
+        <div id="vista-users" class="view-section hidden flex-col gap-6 animate-fade-in">
             <div class="glass-hero rounded-[32px] p-8 lg:p-12">
-                <div class="flex items-center justify-between mb-10">
-                    <h2 class="text-3xl font-bold tracking-tight text-cream-dark">Calendario</h2>
-                    <button onclick="cambiarVista('home')" class="bg-white/60 hover:bg-white border border-white/80 text-cream-dark px-6 py-3 rounded-full text-[14px] font-bold flex items-center gap-2 transition-colors shadow-sm">
-                        Volver
-                    </button>
+                <div class="flex items-center justify-between mb-8">
+                    <h2 class="text-3xl font-bold text-cream-dark">Directorio de Servidores</h2>
+                    <button onclick="cambiarPerfil('general')" class="bg-white/70 hover:bg-white px-5 py-2.5 rounded-full text-xs font-bold text-cream-dark shadow-sm">Volver</button>
                 </div>
-                <div class="max-w-2xl mx-auto bg-white/70 backdrop-blur-md rounded-[32px] p-8 shadow-sm border border-white">
-                    <div class="grid grid-cols-7 gap-2 text-center text-[13px] font-bold text-cream-gray mb-4 uppercase tracking-wider">
-                        <div>D</div><div>L</div><div>M</div><div>M</div><div>J</div><div>V</div><div>S</div>
-                    </div>
-                    <div id="grid-calendario" class="grid grid-cols-7 gap-3"></div>
-                </div>
-            </div>
-        </div>
-
-        <div id="vista-users" class="view-section hidden flex-col gap-6 animate-fade-in pb-10">
-            <div class="glass-hero rounded-[32px] p-8 lg:p-12">
-                <div class="flex items-center justify-between mb-10">
-                    <h2 class="text-3xl font-bold tracking-tight text-cream-dark">Servidores</h2>
-                    <button onclick="cambiarVista('home')" class="bg-white/60 hover:bg-white border border-white/80 text-cream-dark px-6 py-3 rounded-full text-[14px] font-bold flex items-center gap-2 transition-colors shadow-sm">Volver</button>
-                </div>
-                <div id="grid-directorios" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
-            </div>
-        </div>
-
-        <div id="vista-fondos" class="view-section hidden flex-col gap-6 animate-fade-in pb-10">
-            <div class="glass-hero rounded-[32px] p-8 lg:p-12">
-                <div class="flex items-center justify-between mb-10">
-                    <h2 class="text-3xl font-bold tracking-tight text-cream-dark">Cuentas y Encargadas</h2>
-                    <button onclick="cambiarVista('home')" class="bg-white/60 hover:bg-white border border-white/80 text-cream-dark px-6 py-3 rounded-full text-[14px] font-bold flex items-center gap-2 transition-colors shadow-sm">Volver</button>
-                </div>
-                <div id="grid-fondos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                <div id="grid-directorios" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             </div>
         </div>
 
     </main>
 
-    <!-- DOCK FLOTANTE (Glassmorphism) -->
-    <div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40">
-        <nav class="glass-dock px-3 py-3 rounded-full flex items-center gap-1 sm:gap-2">
-            <button id="btn-nav-home" onclick="cambiarVista('home')" class="nav-btn dock-item w-12 h-12 rounded-full flex items-center justify-center text-white bg-cream-dark shadow-lg" title="Inicio">
-                <i class="fa-solid fa-house text-lg"></i>
+    <!-- DOCK FLOTANTE INFERIOR -->
+    <div class="fixed bottom-5 left-1/2 -translate-x-1/2 z-40">
+        <nav class="glass-dock px-3 py-2.5 rounded-full flex items-center gap-1.5">
+            <button onclick="cambiarPerfil('general')" class="dock-item w-11 h-11 rounded-full flex items-center justify-center text-cream-dark hover:bg-white/70" title="Finanzas Generales">
+                <i class="fa-solid fa-hand-holding-heart text-base"></i>
             </button>
-            <button id="btn-nav-fondos" onclick="cambiarVista('fondos')" class="nav-btn dock-item w-12 h-12 rounded-full flex items-center justify-center text-cream-gray hover:bg-white/60 hover:text-cream-dark" title="Cuentas">
-                <i class="fa-solid fa-wallet text-lg"></i>
+            <button onclick="cambiarPerfil('ministerios')" class="dock-item w-11 h-11 rounded-full flex items-center justify-center text-cream-dark hover:bg-white/70" title="Tesorería Ministerios">
+                <i class="fa-solid fa-vault text-base"></i>
             </button>
-            <button id="btn-nav-charts" onclick="cambiarVista('charts')" class="nav-btn dock-item w-12 h-12 rounded-full flex items-center justify-center text-cream-gray hover:bg-white/60 hover:text-cream-dark" title="Reportes">
-                <i class="fa-solid fa-chart-pie text-lg"></i>
+            <button onclick="cambiarPerfil('eventos')" class="dock-item w-11 h-11 rounded-full flex items-center justify-center text-cream-dark hover:bg-white/70" title="Eventos">
+                <i class="fa-solid fa-calendar-star text-base"></i>
             </button>
-            <button id="btn-nav-calendar" onclick="cambiarVista('calendar')" class="nav-btn dock-item w-12 h-12 rounded-full flex items-center justify-center text-cream-gray hover:bg-white/60 hover:text-cream-dark" title="Calendario">
-                <i class="fa-regular fa-calendar text-lg"></i>
+            <button onclick="cambiarPerfil('pendientes')" class="dock-item w-11 h-11 rounded-full flex items-center justify-center text-cream-dark hover:bg-white/70" title="Pendientes">
+                <i class="fa-solid fa-list-check text-base"></i>
             </button>
-            <button id="btn-nav-users" onclick="cambiarVista('users')" class="nav-btn dock-item w-12 h-12 rounded-full flex items-center justify-center text-cream-gray hover:bg-white/60 hover:text-cream-dark" title="Servidores">
-                <i class="fa-solid fa-user-group text-lg"></i>
+            <button onclick="cambiarVista('users')" class="dock-item w-11 h-11 rounded-full flex items-center justify-center text-cream-dark hover:bg-white/70" title="Directorio Servidores">
+                <i class="fa-solid fa-users text-base"></i>
             </button>
-            
-            <div class="w-[1.5px] h-8 bg-cream-dark/10 mx-2 rounded-full"></div>
-            
-            <button onclick="abrirModal('modal-configuracion')" class="dock-item w-12 h-12 rounded-full flex items-center justify-center text-cream-gray hover:bg-white/60 hover:text-cream-dark" title="Ajustes">
-                <i class="fa-solid fa-gear text-lg"></i>
+            <div class="w-[1px] h-6 bg-cream-dark/15 mx-1"></div>
+            <button onclick="abrirModal('modal-configuracion')" class="dock-item w-11 h-11 rounded-full flex items-center justify-center text-cream-gray hover:bg-white/70 hover:text-cream-dark" title="Configurar Meta">
+                <i class="fa-solid fa-gear text-base"></i>
             </button>
         </nav>
     </div>
 
     <!-- MODAL DRIVE -->
-    <div id="modal-drive" class="modal-overlay hidden fixed inset-0 bg-black/20 backdrop-blur-md z-50 items-center justify-center p-4 transition-opacity">
-        <div class="bg-cream-bg/90 backdrop-blur-xl rounded-[32px] p-8 w-full max-w-lg relative animate-scale-up shadow-2xl border border-white">
-            <button onclick="cerrarModal('modal-drive')" class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/60 hover:bg-white shadow-sm flex items-center justify-center text-cream-dark transition-all">
+    <div id="modal-drive" class="modal-overlay hidden fixed inset-0 bg-black/25 backdrop-blur-md z-50 items-center justify-center p-4">
+        <div class="bg-cream-bg/95 backdrop-blur-xl rounded-[32px] p-8 w-full max-w-lg relative animate-scale-up shadow-2xl border border-white">
+            <button onclick="cerrarModal('modal-drive')" class="absolute top-6 right-6 w-9 h-9 rounded-full bg-white/70 flex items-center justify-center text-cream-dark">
                 <i class="fa-solid fa-xmark"></i>
             </button>
             <div class="flex items-center gap-4 mb-4">
-                <div class="w-14 h-14 rounded-[20px] bg-white shadow-sm flex items-center justify-center text-cream-accent text-3xl">
+                <div class="w-12 h-12 rounded-[18px] bg-white shadow-sm flex items-center justify-center text-cream-accent text-2xl">
                     <i class="fa-brands fa-google-drive"></i>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-bold text-cream-dark tracking-tight">Vincular Drive</h3>
+                    <h3 class="text-xl font-bold text-cream-dark">Sincronización Google Drive</h3>
+                    <span class="text-xs font-bold text-green-600"><i class="fa-solid fa-circle-check mr-1"></i>Enlace Activo</span>
                 </div>
             </div>
-            <p class="text-[14px] font-medium text-cream-gray leading-relaxed mb-6">
-                Ingresa la URL de tu Google Apps Script para sincronización en tiempo real, o descarga el respaldo directamente.
+            <p class="text-xs font-medium text-cream-gray leading-relaxed mb-5">
+                Todos los movimientos de cultos, jóvenes, ministerios y eventos se envían automáticamente a tu hoja de cálculo.
             </p>
-            <div class="space-y-5">
-                <div>
-                    <input type="url" id="input-drive-webhook" placeholder="https://script.google.com/..." class="w-full glass-input rounded-[20px] px-5 py-4 text-[14px] font-semibold">
-                </div>
-                <div class="grid grid-cols-2 gap-3 pt-2">
-                    <button onclick="exportarCSV()" class="w-full bg-white hover:bg-gray-50 border border-cream-border text-cream-dark font-bold text-[14px] rounded-[20px] py-4 transition-colors shadow-sm">
-                        Descargar CSV
-                    </button>
-                    <button onclick="guardarConexionDrive()" class="w-full bg-cream-dark text-white font-bold text-[14px] rounded-[20px] py-4 hover:bg-black transition-colors shadow-md">
-                        Guardar Vínculo
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL CONFIG -->
-    <div id="modal-configuracion" class="modal-overlay hidden fixed inset-0 bg-black/20 backdrop-blur-md z-50 items-center justify-center p-4">
-        <div class="bg-cream-bg/90 backdrop-blur-xl rounded-[32px] p-8 w-full max-w-sm relative animate-scale-up shadow-2xl border border-white">
-            <button onclick="cerrarModal('modal-configuracion')" class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/60 hover:bg-white shadow-sm flex items-center justify-center text-cream-dark transition-all">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <h3 class="text-2xl font-bold text-cream-dark mb-2 tracking-tight">Meta Mensual</h3>
-            <p class="text-[14px] font-medium text-cream-gray mb-6">Define el objetivo económico del mes.</p>
-            
-            <div class="space-y-4">
-                <div class="relative">
-                    <span class="absolute left-5 top-1/2 -translate-y-1/2 text-cream-gray font-bold text-lg">$</span>
-                    <input type="number" id="input-meta" class="w-full glass-input rounded-[20px] pl-10 pr-4 py-4 font-bold text-xl focus:outline-none">
-                </div>
-                <button onclick="guardarConfiguracion()" class="w-full bg-cream-dark text-white font-bold text-[15px] rounded-[20px] py-4 hover:bg-black transition-colors shadow-md">
-                    Actualizar
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="exportarCSV()" class="w-full bg-white border border-cream-border text-cream-dark font-bold text-xs rounded-[18px] py-3.5 shadow-sm">
+                    Descargar Respaldo CSV
+                </button>
+                <button onclick="cerrarModal('modal-drive')" class="w-full bg-cream-dark text-white font-bold text-xs rounded-[18px] py-3.5">
+                    Entendido
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL NOTIF -->
-    <div id="modal-notificaciones" class="modal-overlay hidden fixed inset-0 bg-black/20 backdrop-blur-md z-50 items-center justify-center p-4">
-        <div class="bg-cream-bg/90 backdrop-blur-xl rounded-[32px] p-8 w-full max-w-md relative flex flex-col max-h-[80vh] animate-scale-up shadow-2xl border border-white">
-            <button onclick="cerrarModal('modal-notificaciones')" class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/60 hover:bg-white shadow-sm flex items-center justify-center text-cream-dark transition-all">
+    <!-- MODAL CONFIGURACIÓN -->
+    <div id="modal-configuracion" class="modal-overlay hidden fixed inset-0 bg-black/25 backdrop-blur-md z-50 items-center justify-center p-4">
+        <div class="bg-cream-bg/95 backdrop-blur-xl rounded-[32px] p-8 w-full max-w-sm relative animate-scale-up shadow-2xl border border-white">
+            <button onclick="cerrarModal('modal-configuracion')" class="absolute top-6 right-6 w-9 h-9 rounded-full bg-white/70 flex items-center justify-center text-cream-dark">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            <h3 class="text-2xl font-bold text-cream-dark mb-6 tracking-tight">Actividad</h3>
-            
+            <h3 class="text-xl font-bold text-cream-dark mb-2">Meta Mensual</h3>
+            <p class="text-xs text-cream-gray mb-5">Define el objetivo financiero global del mes.</p>
+            <div class="space-y-4">
+                <div class="relative">
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-cream-gray font-bold">$</span>
+                    <input type="number" id="input-meta" placeholder="20000" class="w-full glass-input rounded-[18px] pl-9 pr-4 py-3.5 font-bold text-lg">
+                </div>
+                <button onclick="guardarConfiguracion()" class="w-full bg-cream-dark text-white font-bold text-sm rounded-[18px] py-3.5">
+                    Actualizar Meta
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL NOTIFICACIONES -->
+    <div id="modal-notificaciones" class="modal-overlay hidden fixed inset-0 bg-black/25 backdrop-blur-md z-50 items-center justify-center p-4">
+        <div class="bg-cream-bg/95 backdrop-blur-xl rounded-[32px] p-8 w-full max-w-md relative flex flex-col max-h-[80vh] animate-scale-up shadow-2xl border border-white">
+            <button onclick="cerrarModal('modal-notificaciones')" class="absolute top-6 right-6 w-9 h-9 rounded-full bg-white/70 flex items-center justify-center text-cream-dark">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-xl font-bold text-cream-dark mb-5">Centro de Notificaciones</h3>
             <div id="lista-notificaciones" class="flex-1 overflow-y-auto space-y-3 hide-scrollbar pr-1">
-                <div class="bg-white/60 rounded-[24px] p-5 text-[14px] font-medium text-cream-dark flex gap-4 border border-white shadow-sm">
-                    <i class="fa-solid fa-circle-check text-cream-accent mt-0.5 text-xl"></i>
+                <div class="bg-white/70 rounded-[20px] p-4 text-xs font-medium text-cream-dark flex gap-3 border border-white">
+                    <i class="fa-solid fa-circle-check text-cream-accent text-base mt-0.5"></i>
                     <div>
-                        <span class="font-bold block mb-1">Sistema Iniciado</span>
-                        Listo para registrar operaciones y sincronizar en la nube.
+                        <span class="font-bold block">Sistema Integral Activo</span>
+                        Conectado a Google Sheets. Alertas WhatsApp configuradas para Isis y Pastor al crear eventos nuevos.
                     </div>
                 </div>
             </div>
@@ -482,82 +676,183 @@
 
     <!-- LÓGICA DE DATOS -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, onSnapshot, addDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        // URL fija de Google Apps Script
+        const driveWebhookUrl = "https://script.google.com/a/macros/my.unitec.edu.mx/s/AKfycbx2pxwhiMt7e6NckApNUkQUcvi-oVmQ-LH8y2onUkQzyxJG27AjlGwOmRX8xeP7Axol/exec";
 
-        // URL fija de tu Google Apps Script
-        const driveWebhookUrl = "https://script.google.com/macros/s/AKfycbxMf_E0rnG7o9dUWSBQQavxW66isMWb0KXftPGpM5aJgyAMgh-AZPFRmv8vTgNcganC/exec";
+        // Contactos exclusivos para notificación automática al crear un evento nuevo
+        const CONTACTOS_EVENTOS = [
+            { nombre: "Isis", telefono: "523345667476" },
+            { nombre: "Pastor", telefono: "523314795318" }
+        ];
 
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'finanzas-mision-app';
-        let firebaseConfig = null;
-        try { firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null; } catch(e) {}
-        const initialToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-        
-        // Variables globales
         let META_MENSUAL = 20000;
         let aportaciones = [];
+        let eventos = [];
+        let pendientes = [];
         let barChartInstance = null;
         let pieChartInstance = null;
-        let totalesMinisterio = {};
-        let totalesFondo = {};
-        
+        let cultosChartInstance = null;
+
         window.fondosInfo = {
-            "General": { icon: "fa-church", encargada: "Alondra", desc: "Fondo principal de la iglesia." },
-            "Eventos": { icon: "fa-calendar-check", encargada: "Isis", desc: "Fondos para eventos." },
-            "Multimedia": { icon: "fa-photo-film", encargada: "Isis", desc: "Fondos para multimedia." },
-            "Panderos": { icon: "fa-compact-disc", encargada: "Sofia", desc: "Fondo para el ministerio de Panderos." },
-            "Alabanza": { icon: "fa-music", encargada: "Isabel", desc: "Fondo para el ministerio de Alabanza." }
+            "General": { icon: "fa-church", encargada: "Alondra", desc: "Tesorería general de la iglesia." },
+            "Alabanza": { icon: "fa-music", encargada: "Isabel", desc: "Instrumentos, mantenimiento y equipo." },
+            "Panderos": { icon: "fa-compact-disc", encargada: "Sofia", desc: "Vestuarios, cintas y panderos." },
+            "Multimedia": { icon: "fa-photo-film", encargada: "Isis", desc: "Cámaras, transmisión y proyección." },
+            "Jóvenes": { icon: "fa-fire", encargada: "Pablito Urias", desc: "Sociedad de jóvenes y campamentos." },
+            "Maestros": { icon: "fa-children", encargada: "Marina", desc: "Material didáctico escuela dominical." },
+            "Eventos": { icon: "fa-calendar-check", encargada: "Isis", desc: "Fondo especial para congresos." }
         };
-        
+
         window.servidores = {
-            "Alabanza": ["Kevin", "Isabel", "Alondra", "Marina", "Pablo Urias", "Hernan"],
+            "Alabanza": ["Kevin", "Isabel", "Alondra", "Marina", "Pablito Urias", "Hernan"],
             "Panderos": ["Hanna", "Sofia", "Kendra", "Ximena", "Giselle"],
             "Multimedia": ["Carlos", "Isis", "Arturo", "Cesar"],
+            "Jóvenes": ["Pablito Urias", "Kevin", "Hanna", "Sofia", "Kendra", "Ximena", "Giselle", "Carlos", "Arturo"],
+            "Maestros": ["Marina", "Isabel", "Alondra"],
             "Pastor": ["Pastor Principal"]
         };
 
-        // Asignando funciones a window para ser accesibles desde el HTML
+        // --- ENVÍO A GOOGLE SHEETS ---
+        function enviarADrive(fechaStr, ministerio, servidor, fondoDestino, monto) {
+            fetch(driveWebhookUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fechaStr, ministerio, servidor, fondoDestino, monto })
+            }).then(() => {
+                const dot = document.getElementById('drive-dot');
+                if(dot) { dot.classList.remove('bg-orange-400'); dot.classList.add('bg-green-500'); }
+            }).catch(err => console.error("Error Drive:", err));
+        }
+
+        function agregarNotificacion(titulo, mensaje) {
+            const lista = document.getElementById('lista-notificaciones');
+            const badge = document.getElementById('badge-notif');
+            const badgeMob = document.getElementById('badge-notif-mob');
+            if(badge) badge.classList.remove('hidden');
+            if(badgeMob) badgeMob.classList.remove('hidden');
+
+            lista.insertAdjacentHTML('afterbegin', `
+                <div class="bg-white/90 rounded-[20px] p-4 text-xs font-medium text-cream-dark flex gap-3 border border-cream-accent/40 shadow-sm animate-fade-in">
+                    <i class="fa-solid fa-bell text-cream-accent text-base mt-0.5"></i>
+                    <div>
+                        <span class="font-bold block">${titulo}</span>
+                        ${mensaje}
+                    </div>
+                </div>
+            `);
+        }
+
+        // --- CAMBIO DE PERFILES Y VISTAS ---
+        window.cambiarPerfil = function(perfil) {
+            document.querySelectorAll('.view-section').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('flex');
+            });
+            const target = document.getElementById(`vista-${perfil}`);
+            if(target) {
+                target.classList.remove('hidden');
+                target.classList.add('flex');
+            }
+
+            document.querySelectorAll('.perfil-tab').forEach(btn => {
+                btn.classList.remove('bg-cream-dark', 'text-white', 'shadow-sm');
+                btn.classList.add('text-cream-gray');
+            });
+            const activeTab = document.getElementById(`tab-perfil-${perfil}`);
+            if(activeTab) {
+                activeTab.classList.add('bg-cream-dark', 'text-white', 'shadow-sm');
+                activeTab.classList.remove('text-cream-gray');
+            }
+
+            const labels = {
+                'general': 'PERFIL: FINANZAS GENERALES',
+                'ministerios': 'PERFIL: TESORERÍA MINISTERIOS',
+                'eventos': 'PERFIL: CONTROL DE EVENTOS',
+                'pendientes': 'PERFIL: PENDIENTES IGLESIA'
+            };
+            document.getElementById('perfil-actual-label').innerText = labels[perfil] || 'GESTIÓN MISIÓN';
+        };
+
         window.cambiarVista = function(vistaId) {
             document.querySelectorAll('.view-section').forEach(el => {
                 el.classList.add('hidden');
                 el.classList.remove('flex');
             });
-            
-            const selected = document.getElementById(`vista-${vistaId}`);
-            if(selected) {
-                selected.classList.remove('hidden');
-                selected.classList.add('flex');
-            }
-
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('bg-cream-dark', 'text-white', 'shadow-lg');
-                btn.classList.add('text-cream-gray');
-            });
-            
-            const activeBtn = document.getElementById(`btn-nav-${vistaId}`);
-            if(activeBtn) {
-                activeBtn.classList.add('bg-cream-dark', 'text-white', 'shadow-lg');
-                activeBtn.classList.remove('text-cream-gray');
+            const target = document.getElementById(`vista-${vistaId}`);
+            if(target) {
+                target.classList.remove('hidden');
+                target.classList.add('flex');
             }
         };
 
         window.abrirModal = function(id) {
-            const modal = document.getElementById(id);
-            if(modal) {
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
+            const m = document.getElementById(id);
+            if(m) { m.classList.remove('hidden'); m.classList.add('flex'); }
+            if(id === 'modal-notificaciones') {
+                document.getElementById('badge-notif')?.classList.add('hidden');
+                document.getElementById('badge-notif-mob')?.classList.add('hidden');
             }
         };
 
         window.cerrarModal = function(id) {
-            const modal = document.getElementById(id);
-            if(modal) {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }
+            const m = document.getElementById(id);
+            if(m) { m.classList.add('hidden'); m.classList.remove('flex'); }
         };
 
+        // --- REGISTRO 1: CULTOS MIÉRCOLES Y DOMINGOS ---
+        window.registrarCultoGeneral = function() {
+            const dia = document.getElementById('culto-dia').value;
+            const concepto = document.getElementById('culto-concepto').value;
+            const persona = document.getElementById('culto-persona').value;
+            const monto = parseFloat(document.getElementById('culto-monto').value);
+            const fecha = document.getElementById('culto-fecha').value;
+
+            if(!monto || !fecha) return;
+            const fechaStr = fecha.split('-').reverse().join('/');
+
+            aportaciones.unshift({
+                tipo: 'culto',
+                ministerio: dia,
+                servidor: persona,
+                fondoDestino: concepto,
+                monto: monto,
+                fechaISO: fecha,
+                fechaStr: fechaStr
+            });
+
+            enviarADrive(fechaStr, dia, persona, concepto, monto);
+            actualizarUI();
+            document.getElementById('culto-monto').value = '';
+        };
+
+        // --- REGISTRO 2: JÓVENES SÁBADOS ---
+        window.registrarOfrendaJovenes = function() {
+            const nombre = document.getElementById('joven-nombre').value.trim() || 'Ofrenda General Jóvenes';
+            const concepto = document.getElementById('joven-concepto').value;
+            const monto = parseFloat(document.getElementById('joven-monto').value);
+            const fecha = document.getElementById('joven-fecha').value;
+
+            if(!monto || !fecha) return;
+            const fechaStr = fecha.split('-').reverse().join('/');
+
+            aportaciones.unshift({
+                tipo: 'jovenes',
+                ministerio: 'Jóvenes Sábado',
+                servidor: nombre,
+                fondoDestino: concepto,
+                monto: monto,
+                fechaISO: fecha,
+                fechaStr: fechaStr
+            });
+
+            enviarADrive(fechaStr, 'Jóvenes Sábado', nombre, concepto, monto);
+            actualizarUI();
+            document.getElementById('joven-nombre').value = '';
+            document.getElementById('joven-monto').value = '';
+        };
+
+        // --- REGISTRO 3: TESORERÍA MINISTERIOS ---
         window.actualizarServidores = function() {
             const min = document.getElementById('ministerio').value;
             const selectServ = document.getElementById('servidor');
@@ -576,233 +871,359 @@
             const monto = parseFloat(document.getElementById('monto').value);
             const fecha = document.getElementById('fecha-aporte').value;
 
-            if(!min || !serv || !fondo || !monto || !fecha) {
-                return;
-            }
-
-            const fechaFormateada = fecha.split('-').reverse().join('/');
+            if(!min || !serv || !fondo || !monto || !fecha) return;
+            const fechaStr = fecha.split('-').reverse().join('/');
 
             aportaciones.unshift({
+                tipo: 'ministerio',
                 ministerio: min,
                 servidor: serv,
                 fondoDestino: fondo,
                 monto: monto,
                 fechaISO: fecha,
-                fechaStr: fechaFormateada
+                fechaStr: fechaStr
             });
 
+            enviarADrive(fechaStr, min, serv, fondo, monto);
             actualizarUI();
-            
-            // --- CÓDIGO PARA ENVIAR AUTOMÁTICAMENTE A DRIVE ---
-            fetch(driveWebhookUrl, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    fechaStr: fechaFormateada,
-                    ministerio: min,
-                    servidor: serv,
-                    fondoDestino: fondo,
-                    monto: monto
-                })
-            }).then(() => {
-                console.log("¡Registro sincronizado con Drive exitosamente!");
-                const driveDot = document.getElementById('drive-dot');
-                if(driveDot) {
-                    driveDot.classList.remove('bg-orange-400');
-                    driveDot.classList.add('bg-green-500');
-                }
-            }).catch(error => {
-                console.error("Error al sincronizar con Drive:", error);
-            });
-            // ---------------------------------------------------
-            
+
             document.getElementById('monto').value = '';
             document.getElementById('ministerio').selectedIndex = 0;
             document.getElementById('servidor').innerHTML = '<option value="" disabled selected>Servidor</option>';
             document.getElementById('fondo-destino').selectedIndex = 0;
-            document.getElementById('fecha-aporte').value = '';
         };
 
-        window.cargarLogoIglesia = function(event) {
-            const file = event.target.files[0];
-            if(file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = document.getElementById('church-logo-img');
-                    const placeholder = document.getElementById('church-logo-placeholder');
-                    img.src = e.target.result;
-                    img.classList.remove('hidden');
-                    placeholder.classList.add('hidden');
-                }
-                reader.readAsDataURL(file);
-            }
-        };
+        // --- GESTIÓN DE EVENTOS (WHATSAPP AUTOMÁTICO SOLO AL CREAR EVENTO NUEVO) ---
+        function construirMensajeEvento(ev, destinatario) {
+            return `Hola *${destinatario}*, te notificamos de un *NUEVO EVENTO* registrado en Misión Central:%0A%0A` +
+                   `📌 *Evento:* ${ev.nombre}%0A` +
+                   `📅 *Fecha:* ${ev.fechaStr} a las ${ev.hora} hrs%0A` +
+                   `📍 *Lugar:* ${ev.lugar}%0A` +
+                   `💰 *Presupuesto:* $${ev.presupuesto.toLocaleString('es-MX')}%0A` +
+                   `👥 *Meta Asistentes:* ${ev.metaAsistentes}%0A` +
+                   `✨ *Logística/Decoración:* ${ev.decoracion}`;
+        }
 
-        window.guardarConfiguracion = function() {
-            const meta = parseFloat(document.getElementById('input-meta').value);
-            if(meta) {
-                META_MENSUAL = meta;
-                actualizarUI();
-                window.cerrarModal('modal-configuracion');
-            }
-        };
+        window.crearEvento = function() {
+            const nombre = document.getElementById('ev-nombre').value.trim();
+            const fecha = document.getElementById('ev-fecha').value;
+            const hora = document.getElementById('ev-hora').value || '18:00';
+            const lugar = document.getElementById('ev-lugar').value.trim() || 'Templo Principal';
+            const presupuesto = parseFloat(document.getElementById('ev-presupuesto').value) || 0;
+            const metaAsistentes = parseInt(document.getElementById('ev-participantes').value) || 50;
+            const decoracion = document.getElementById('ev-decoracion').value.trim() || 'Estándar';
 
-        window.guardarConexionDrive = function() {
-            window.cerrarModal('modal-drive');
-        };
+            if(!nombre || !fecha) return;
+            const fechaStr = fecha.split('-').reverse().join('/');
 
-        window.exportarCSV = function() {
-            let csvContent = "data:text/csv;charset=utf-8,Fecha,Ministerio,Servidor,Fondo Destino,Monto\n";
-            aportaciones.forEach(row => {
-                csvContent += `${row.fechaStr},${row.ministerio},${row.servidor},${row.fondoDestino},${row.monto}\n`;
+            const nuevoEvento = {
+                id: Date.now(),
+                nombre,
+                fechaStr,
+                hora,
+                lugar,
+                presupuesto,
+                gastado: 0,
+                metaAsistentes,
+                confirmados: 1,
+                decoracion
+            };
+
+            eventos.unshift(nuevoEvento);
+            renderizarEventos();
+
+            // 1. Guardar en Google Sheets
+            enviarADrive(fechaStr, 'Evento Nuevo', lugar, nombre, presupuesto);
+
+            // 2. Notificación interna en campana
+            agregarNotificacion(`Nuevo Evento: ${nombre}`, `Notificación enviada a Isis (3345667476) y Pastor (3314795318).`);
+
+            // 3. Disparar notificación por WhatsApp ÚNICAMENTE a Isis y al Pastor
+            CONTACTOS_EVENTOS.forEach((contacto, index) => {
+                const texto = construirMensajeEvento(nuevoEvento, contacto.nombre);
+                const url = `https://api.whatsapp.com/send?phone=${contacto.telefono}&text=${texto}`;
+                setTimeout(() => {
+                    window.open(url, `_blank_${contacto.nombre}`);
+                }, index * 600);
             });
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "finanzas_mision.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+
+            // Limpiar formulario
+            document.getElementById('ev-nombre').value = '';
+            document.getElementById('ev-lugar').value = '';
+            document.getElementById('ev-presupuesto').value = '';
+            document.getElementById('ev-participantes').value = '';
+            document.getElementById('ev-decoracion').value = '';
         };
-        
-        function actualizarUI() {
-            totalesMinisterio = { "Alabanza": 0, "Panderos": 0, "Multimedia": 0, "Pastor": 0 };
-            totalesFondo = { "General": 0, "Eventos": 0, "Multimedia": 0, "Panderos": 0, "Alabanza": 0 };
 
-            aportaciones.forEach(reg => {
-                if(totalesMinisterio[reg.ministerio] !== undefined) totalesMinisterio[reg.ministerio] += reg.monto;
-                if(totalesFondo[reg.fondoDestino] !== undefined) totalesFondo[reg.fondoDestino] += reg.monto;
-            });
-
-            const listaHTML = document.getElementById('listaRegistros');
-            const mensajeVacio = document.getElementById('mensajeVacio');
-            if (mensajeVacio) {
-                mensajeVacio.style.display = aportaciones.length ? 'none' : 'flex';
+        window.confirmarAsistenciaEvento = function(id) {
+            const ev = eventos.find(e => e.id === id);
+            if(ev) {
+                ev.confirmados++;
+                renderizarEventos();
             }
-            
-            listaHTML.innerHTML = aportaciones.map(reg => `
-                <div class="bg-white/60 rounded-[20px] p-4 flex items-center justify-between shadow-sm border border-white transition-all hover:bg-white">
-                    <div class="flex items-center gap-4">
-                        <div class="w-11 h-11 rounded-full bg-cream-dark text-white flex items-center justify-center font-bold text-[15px] shrink-0">
-                            ${reg.servidor.charAt(0)}
-                        </div>
+        };
+
+        window.reenviarWhatsAppContacto = function(id, nombreContacto, telefono) {
+            const ev = eventos.find(e => e.id === id);
+            if(!ev) return;
+            const texto = construirMensajeEvento(ev, nombreContacto);
+            window.open(`https://api.whatsapp.com/send?phone=${telefono}&text=${texto}`, '_blank');
+        };
+
+        function renderizarEventos() {
+            const cont = document.getElementById('lista-eventos');
+            if(!eventos.length) {
+                cont.innerHTML = `<div class="text-center text-cream-gray text-xs py-12 font-semibold">No hay eventos programados. Crea el primero a la izquierda para notificar a Isis y al Pastor.</div>`;
+                return;
+            }
+            cont.innerHTML = eventos.map(ev => {
+                const pctAsistencia = Math.min(100, Math.round((ev.confirmados / ev.metaAsistentes) * 100));
+                return `
+                <div class="bg-white/75 rounded-[24px] p-6 border border-white shadow-sm space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div>
-                            <p class="text-[14px] font-bold text-cream-dark leading-tight mb-1">${reg.servidor}</p>
-                            <p class="text-[11px] font-bold text-cream-gray uppercase tracking-wide">${reg.ministerio} → <span class="text-cream-accent">${reg.fondoDestino}</span></p>
+                            <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-cream-accent/20 text-cream-dark">${ev.fechaStr} • ${ev.hora} hrs</span>
+                            <h4 class="text-lg font-bold text-cream-dark mt-1.5">${ev.nombre}</h4>
+                            <p class="text-xs font-semibold text-cream-gray"><i class="fa-solid fa-location-dot mr-1 text-cream-accent"></i>${ev.lugar}</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 self-start">
+                            <button onclick="reenviarWhatsAppContacto(${ev.id}, 'Isis', '523345667476')" class="bg-[#25D366] hover:bg-[#1ebe5d] text-white font-bold text-[11px] px-3 py-2 rounded-full flex items-center gap-1.5 shadow-sm transition-all">
+                                <i class="fa-brands fa-whatsapp text-xs"></i> Isis
+                            </button>
+                            <button onclick="reenviarWhatsAppContacto(${ev.id}, 'Pastor', '523314795318')" class="bg-[#25D366] hover:bg-[#1ebe5d] text-white font-bold text-[11px] px-3 py-2 rounded-full flex items-center gap-1.5 shadow-sm transition-all">
+                                <i class="fa-brands fa-whatsapp text-xs"></i> Pastor
+                            </button>
                         </div>
                     </div>
+                    
+                    <div class="bg-cream-bg/80 rounded-[16px] p-3.5 text-xs text-cream-dark border border-cream-border">
+                        <span class="font-bold block text-[11px] uppercase text-cream-gray mb-0.5">Decoración y Logística:</span>
+                        ${ev.decoracion}
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 pt-1">
+                        <div>
+                            <div class="flex justify-between text-[11px] font-bold mb-1">
+                                <span class="text-cream-gray">Participación</span>
+                                <span class="text-cream-dark">${ev.confirmados} / ${ev.metaAsistentes} (${pctAsistencia}%)</span>
+                            </div>
+                            <div class="w-full h-2 bg-black/5 rounded-full overflow-hidden mb-2">
+                                <div class="h-full bg-cream-accent rounded-full" style="width: ${pctAsistencia}%"></div>
+                            </div>
+                            <button onclick="confirmarAsistenciaEvento(${ev.id})" class="text-[11px] font-bold text-cream-accent hover:underline">+ Confirmar Asistente</button>
+                        </div>
+                        <div class="text-right flex flex-col justify-center">
+                            <span class="text-[11px] font-bold text-cream-gray uppercase">Presupuesto Asignado</span>
+                            <span class="text-xl font-bold text-cream-dark">$${ev.presupuesto.toLocaleString('es-MX')}</span>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        // --- PENDIENTES DE LA IGLESIA ---
+        window.agregarPendiente = function() {
+            const titulo = document.getElementById('tarea-titulo').value.trim();
+            const area = document.getElementById('tarea-area').value;
+            const prioridad = document.getElementById('tarea-prioridad').value;
+
+            if(!titulo) return;
+            pendientes.unshift({ id: Date.now(), titulo, area, prioridad, completada: false });
+            document.getElementById('tarea-titulo').value = '';
+            renderizarPendientes();
+        };
+
+        window.togglePendiente = function(id) {
+            const t = pendientes.find(p => p.id === id);
+            if(t) { t.completada = !t.completada; renderizarPendientes(); }
+        };
+
+        window.eliminarPendiente = function(id) {
+            pendientes = pendientes.filter(p => p.id !== id);
+            renderizarPendientes();
+        };
+
+        function renderizarPendientes() {
+            const cont = document.getElementById('lista-pendientes');
+            const activos = pendientes.filter(p => !p.completada).length;
+            document.getElementById('contador-pendientes').innerText = `${activos} Pendientes`;
+
+            if(!pendientes.length) {
+                cont.innerHTML = `<div class="col-span-2 text-center text-cream-gray text-xs py-10 font-semibold">No hay tareas pendientes registradas.</div>`;
+                return;
+            }
+
+            cont.innerHTML = pendientes.map(p => {
+                const badgeColor = p.prioridad === 'Alta' ? 'bg-red-100 text-red-700' : (p.prioridad === 'Media' ? 'bg-amber-100 text-amber-800' : 'bg-stone-200 text-stone-700');
+                return `
+                <div class="bg-white/75 rounded-[20px] p-4 border border-white flex items-center justify-between gap-3 ${p.completada ? 'opacity-50' : ''}">
+                    <div class="flex items-center gap-3 cursor-pointer" onclick="togglePendiente(${p.id})">
+                        <div class="w-6 h-6 rounded-full border-2 border-cream-accent flex items-center justify-center ${p.completada ? 'bg-cream-accent text-white' : ''}">
+                            ${p.completada ? '<i class="fa-solid fa-check text-[10px]"></i>' : ''}
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-cream-dark ${p.completada ? 'line-through' : ''}">${p.titulo}</p>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-[10px] font-bold text-cream-gray">${p.area}</span>
+                                <span class="text-[9px] font-bold px-2 py-0.5 rounded-full ${badgeColor}">${p.prioridad}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="eliminarPendiente(${p.id})" class="text-cream-gray hover:text-red-500 text-xs px-2">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+                `;
+            }).join('');
+        }
+
+        // --- ACTUALIZACIÓN GLOBAL DE UI Y GRÁFICAS ---
+        function actualizarUI() {
+            let totalMiercoles = 0;
+            let totalDomingos = 0;
+            let totalSabados = 0;
+            let totalMinisterios = 0;
+
+            const totalesMin = { "Alabanza": 0, "Panderos": 0, "Multimedia": 0, "Jóvenes": 0, "Maestros": 0, "Pastor": 0 };
+            const totalesFondo = { "General": 0, "Alabanza": 0, "Panderos": 0, "Multimedia": 0, "Jóvenes": 0, "Maestros": 0, "Eventos": 0 };
+
+            aportaciones.forEach(reg => {
+                if(reg.ministerio === 'Culto Miércoles') totalMiercoles += reg.monto;
+                else if(reg.ministerio === 'Culto Domingo') totalDomingos += reg.monto;
+                else if(reg.ministerio === 'Jóvenes Sábado') totalSabados += reg.monto;
+                else {
+                    totalMinisterios += reg.monto;
+                    if(totalesMin[reg.ministerio] !== undefined) totalesMin[reg.ministerio] += reg.monto;
+                    if(totalesFondo[reg.fondoDestino] !== undefined) totalesFondo[reg.fondoDestino] += reg.monto;
+                }
+            });
+
+            const subtotalCultos = totalMiercoles + totalDomingos;
+            const granTotalGlobal = subtotalCultos + totalSabados + totalMinisterios;
+
+            document.getElementById('granTotalGlobal').innerText = `$${granTotalGlobal.toLocaleString('es-MX')}`;
+            document.getElementById('subtotalCultos').innerText = `$${subtotalCultos.toLocaleString('es-MX')}`;
+            document.getElementById('subtotalJovenes').innerText = `$${totalSabados.toLocaleString('es-MX')}`;
+            document.getElementById('subtotalMin').innerText = `$${totalMinisterios.toLocaleString('es-MX')}`;
+
+            document.getElementById('totalMiercoles').innerText = `$${totalMiercoles.toLocaleString('es-MX')}`;
+            document.getElementById('totalDomingos').innerText = `$${totalDomingos.toLocaleString('es-MX')}`;
+            document.getElementById('totalSabados').innerText = `$${totalSabados.toLocaleString('es-MX')}`;
+
+            document.getElementById('texto-meta-objetivo').innerText = `$${META_MENSUAL.toLocaleString('es-MX')}`;
+            const pct = Math.min(100, granTotalGlobal > 0 ? (granTotalGlobal / META_MENSUAL) * 100 : 0);
+            document.getElementById('porcentajeMeta').innerText = `${pct.toFixed(0)}%`;
+            document.getElementById('barra-meta').style.width = `${pct}%`;
+
+            // Renderizar historial Cultos y Jóvenes
+            const cultosList = aportaciones.filter(a => a.tipo === 'culto' || a.tipo === 'jovenes');
+            const contGeneral = document.getElementById('listaGeneralCultos');
+            if(cultosList.length) {
+                contGeneral.innerHTML = cultosList.map(reg => `
+                    <div class="bg-white/70 rounded-[18px] p-3.5 flex items-center justify-between border border-white">
+                        <div>
+                            <p class="text-xs font-bold text-cream-dark">${reg.servidor}</p>
+                            <p class="text-[10px] font-bold text-cream-gray uppercase">${reg.ministerio} • <span class="text-cream-accent">${reg.fondoDestino}</span></p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-sm font-bold text-cream-dark block">$${reg.monto.toLocaleString('es-MX')}</span>
+                            <span class="text-[10px] text-cream-gray">${reg.fechaStr}</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Renderizar historial Ministerios
+            const minList = aportaciones.filter(a => a.tipo === 'ministerio');
+            const msgVacio = document.getElementById('mensajeVacio');
+            if(msgVacio) msgVacio.style.display = minList.length ? 'none' : 'flex';
+            document.getElementById('listaRegistros').innerHTML = minList.map(reg => `
+                <div class="bg-white/70 rounded-[18px] p-3.5 flex items-center justify-between border border-white">
+                    <div>
+                        <p class="text-xs font-bold text-cream-dark">${reg.servidor}</p>
+                        <p class="text-[10px] font-bold text-cream-gray uppercase">${reg.ministerio} → <span class="text-cream-accent">${reg.fondoDestino}</span></p>
+                    </div>
                     <div class="text-right">
-                        <span class="text-[16px] font-bold text-cream-dark block tracking-tight">$${reg.monto.toLocaleString('es-MX')}</span>
-                        <span class="text-[11px] font-semibold text-cream-gray">${reg.fechaStr}</span>
+                        <span class="text-sm font-bold text-cream-dark block">$${reg.monto.toLocaleString('es-MX')}</span>
+                        <span class="text-[10px] text-cream-gray">${reg.fechaStr}</span>
                     </div>
                 </div>
             `).join('');
 
-            const granTotal = Object.values(totalesFondo).reduce((acc, curr) => acc + curr, 0);
-            
-            const elGranTotal = document.getElementById('granTotal');
-            if (elGranTotal) elGranTotal.innerText = `$${granTotal.toLocaleString('es-MX')}`;
-            
-            const elTotalOperaciones = document.getElementById('totalOperaciones');
-            if (elTotalOperaciones) elTotalOperaciones.innerText = aportaciones.length;
-
-            const elMetaObjetivo = document.getElementById('texto-meta-objetivo');
-            if (elMetaObjetivo) elMetaObjetivo.innerText = `$${META_MENSUAL.toLocaleString('es-MX')}`;
-            
-            let porcentaje = granTotal > 0 ? (granTotal / META_MENSUAL) * 100 : 0;
-            if(porcentaje > 100) porcentaje = 100;
-            
-            const elPorcentajeMeta = document.getElementById('porcentajeMeta');
-            if (elPorcentajeMeta) elPorcentajeMeta.innerText = `${porcentaje.toFixed(0)}%`;
-            
-            const barraMeta = document.getElementById('barra-meta');
-            if (barraMeta) barraMeta.style.width = `${porcentaje}%`;
-
-            if (barChartInstance && pieChartInstance) {
-                barChartInstance.data.datasets[0].data = [totalesMinisterio['Alabanza'], totalesMinisterio['Panderos'], totalesMinisterio['Multimedia'], totalesMinisterio['Pastor']];
-                barChartInstance.update();
-
-                pieChartInstance.data.datasets[0].data = [totalesFondo['General'], totalesFondo['Eventos'], totalesFondo['Multimedia'], totalesFondo['Panderos'], totalesFondo['Alabanza']];
-                pieChartInstance.update();
-            }
-
-            actualizarTablaReportes();
-            renderizarFondos();
-            renderizarCalendario();
-        }
-
-        function actualizarTablaReportes() {
-            const container = document.getElementById('tabla-reportes');
-            const total = Object.values(totalesFondo).reduce((acc, curr) => acc + curr, 0);
-            
-            container.innerHTML = Object.keys(window.fondosInfo).map(fondo => {
-                const monto = totalesFondo[fondo] || 0;
-                const info = window.fondosInfo[fondo];
-                const pct = total === 0 ? 0 : ((monto/total)*100).toFixed(1);
-                return `
-                <div class="bg-white/60 rounded-[24px] p-5 flex justify-between items-center border border-white shadow-sm hover:bg-white transition-colors">
-                    <div class="flex items-center gap-4">
-                        <div class="w-14 h-14 rounded-full bg-cream-bg text-cream-accent border border-cream-border flex items-center justify-center text-xl">
-                            <i class="fa-solid ${info.icon}"></i>
-                        </div>
-                        <div>
-                            <p class="font-bold tracking-tight text-cream-dark text-[16px] mb-1">${fondo}</p>
-                            <p class="text-[12px] font-semibold text-cream-gray uppercase tracking-wider">Encargada: ${info.encargada}</p>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <p class="font-bold tracking-tight text-cream-dark text-[18px]">$${monto.toLocaleString('es-MX')}</p>
-                        <p class="text-[12px] font-bold text-cream-accent">${pct}%</p>
-                    </div>
-                </div>
-                `;
-            }).join('');
-        }
-
-        function renderizarFondos() {
-            const grid = document.getElementById('grid-fondos');
-            grid.innerHTML = Object.keys(window.fondosInfo).map(fondo => {
+            // Actualizar Cuentas Ministeriales
+            document.getElementById('grid-fondos').innerHTML = Object.keys(window.fondosInfo).map(fondo => {
                 const f = window.fondosInfo[fondo];
                 const monto = totalesFondo[fondo] || 0;
                 return `
-                <div class="bg-white/60 backdrop-blur-md rounded-[32px] p-8 flex flex-col justify-between shadow-sm border border-white transition-all hover:shadow-md hover:bg-white">
-                    <div class="flex justify-between items-start mb-8">
-                        <div class="w-16 h-16 rounded-full bg-cream-bg text-cream-accent border border-cream-border flex items-center justify-center text-2xl shadow-inner">
+                <div class="bg-white/65 rounded-[26px] p-6 border border-white shadow-sm flex flex-col justify-between">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 rounded-full bg-cream-bg text-cream-accent border border-cream-border flex items-center justify-center text-lg">
                             <i class="fa-solid ${f.icon}"></i>
                         </div>
                         <div class="text-right">
-                            <span class="text-[10px] font-bold tracking-widest text-cream-gray uppercase block mb-1">Responsable</span>
-                            <span class="text-[16px] text-cream-dark font-bold">${f.encargada}</span>
+                            <span class="text-[9px] font-bold uppercase text-cream-gray block">Encargada/o</span>
+                            <span class="text-xs font-bold text-cream-dark">${f.encargada}</span>
                         </div>
                     </div>
                     <div>
-                        <h3 class="font-bold tracking-tight text-[24px] text-cream-dark">${fondo}</h3>
-                        <p class="text-[14px] font-medium text-cream-gray mb-6 mt-2 leading-relaxed">${f.desc}</p>
-                        <div class="text-4xl font-bold text-cream-dark tracking-tighter drop-shadow-sm">$${monto.toLocaleString('es-MX')}</div>
+                        <h4 class="font-bold text-lg text-cream-dark">${fondo}</h4>
+                        <p class="text-xs text-cream-gray mb-3">${f.desc}</p>
+                        <div class="text-2xl font-bold text-cream-dark">$${monto.toLocaleString('es-MX')}</div>
                     </div>
                 </div>
                 `;
             }).join('');
+
+            // Actualizar Tabla Reportes
+            const totalReportes = Object.values(totalesFondo).reduce((a, b) => a + b, 0);
+            document.getElementById('tabla-reportes').innerHTML = Object.keys(window.fondosInfo).map(fondo => {
+                const monto = totalesFondo[fondo] || 0;
+                const info = window.fondosInfo[fondo];
+                const pctRep = totalReportes === 0 ? 0 : ((monto / totalReportes) * 100).toFixed(1);
+                return `
+                <div class="bg-white/65 rounded-[20px] p-4 flex justify-between items-center border border-white">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-cream-bg text-cream-accent flex items-center justify-center">
+                            <i class="fa-solid ${info.icon}"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-cream-dark text-sm">${fondo}</p>
+                            <p class="text-[11px] text-cream-gray font-semibold">Encargado/a: ${info.encargada}</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-bold text-cream-dark text-sm">$${monto.toLocaleString('es-MX')}</p>
+                        <p class="text-[11px] font-bold text-cream-accent">${pctRep}%</p>
+                    </div>
+                </div>
+                `;
+            }).join('');
+
+            // Actualizar Gráficas
+            if(cultosChartInstance) {
+                cultosChartInstance.data.datasets[0].data = [totalMiercoles, totalDomingos, totalSabados];
+                cultosChartInstance.update();
+            }
+            if(barChartInstance) {
+                barChartInstance.data.datasets[0].data = [totalesMin['Alabanza'], totalesMin['Panderos'], totalesMin['Multimedia'], totalesMin['Jóvenes'], totalesMin['Maestros']];
+                barChartInstance.update();
+            }
+            if(pieChartInstance) {
+                pieChartInstance.data.datasets[0].data = Object.values(totalesFondo);
+                pieChartInstance.update();
+            }
         }
 
         function renderizarDirectorio() {
-            const grid = document.getElementById('grid-directorios');
-            grid.innerHTML = Object.entries(window.servidores).map(([ministerio, personas]) => `
-                <div class="bg-white/60 backdrop-blur-md rounded-[32px] p-8 shadow-sm border border-white hover:bg-white transition-colors">
-                    <div class="flex items-center gap-4 mb-6 pb-5 border-b border-cream-dark/5">
-                        <div class="w-10 h-10 rounded-full bg-cream-dark text-white flex items-center justify-center shadow-md">
-                            <i class="fa-solid fa-users text-[13px]"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold tracking-tight text-cream-dark">${ministerio}</h3>
-                    </div>
-                    <div class="space-y-3">
+            document.getElementById('grid-directorios').innerHTML = Object.entries(window.servidores).map(([min, personas]) => `
+                <div class="bg-white/65 rounded-[28px] p-6 border border-white">
+                    <h3 class="text-lg font-bold text-cream-dark mb-4 pb-3 border-b border-cream-dark/10">${min}</h3>
+                    <div class="space-y-2">
                         ${personas.map(p => `
-                            <div class="flex items-center justify-between text-[14px] text-cream-dark font-bold bg-cream-bg border border-cream-border px-5 py-3.5 rounded-[16px] shadow-sm">
+                            <div class="flex items-center justify-between text-xs font-bold text-cream-dark bg-cream-bg px-4 py-2.5 rounded-[14px]">
                                 <span>${p}</span>
-                                <i class="fa-solid fa-circle-check text-cream-accent text-[16px]"></i>
+                                <i class="fa-solid fa-circle-check text-cream-accent"></i>
                             </div>
                         `).join('')}
                     </div>
@@ -810,130 +1231,109 @@
             `).join('');
         }
 
-        function renderizarCalendario() {
-            const grid = document.getElementById('grid-calendario');
-            const hoy = new Date();
-            const diasMes = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0).getDate();
-            const primerDia = new Date(hoy.getFullYear(), hoy.getMonth(), 1).getDay();
-            
-            const diasConAporte = aportaciones.map(a => {
-                if(!a.fechaISO) return null;
-                return parseInt(a.fechaISO.split('-')[2]);
-            }).filter(d => d !== null);
+        window.guardarConfiguracion = function() {
+            const meta = parseFloat(document.getElementById('input-meta').value);
+            if(meta > 0) { META_MENSUAL = meta; actualizarUI(); cerrarModal('modal-configuracion'); }
+        };
 
-            let html = '';
-            for(let i=0; i<primerDia; i++) html += `<div class="aspect-square"></div>`;
-            
-            for(let i=1; i<=diasMes; i++) {
-                const esHoy = i === hoy.getDate();
-                const tieneAporte = diasConAporte.includes(i);
-                
-                let clases = "aspect-square rounded-full flex flex-col items-center justify-center text-[15px] font-bold relative transition-all ";
-                if(esHoy) {
-                    clases += "bg-cream-dark text-white shadow-lg scale-110 z-10";
-                } else if(tieneAporte) {
-                    clases += "bg-cream-bg text-cream-accent border border-cream-accent/20";
-                } else {
-                    clases += "text-cream-dark hover:bg-white hover:shadow-sm";
-                }
-
-                html += `
-                <div class="${clases}">
-                    <span>${i}</span>
-                    ${tieneAporte && !esHoy ? `<span class="absolute bottom-1.5 w-1.5 h-1.5 rounded-full bg-cream-accent"></span>` : ''}
-                </div>`;
+        window.cargarLogoIglesia = function(event) {
+            const file = event.target.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    const img = document.getElementById('church-logo-img');
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+                    document.getElementById('church-logo-placeholder').classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
             }
-            grid.innerHTML = html;
-        }
+        };
+
+        window.exportarCSV = function() {
+            let csv = "data:text/csv;charset=utf-8,Fecha,Categoria/Ministerio,Persona/Servidor,Concepto/Fondo,Monto\n";
+            aportaciones.forEach(r => { csv += `${r.fechaStr},${r.ministerio},${r.servidor},${r.fondoDestino},${r.monto}\n`; });
+            const link = document.createElement("a");
+            link.setAttribute("href", encodeURI(csv));
+            link.setAttribute("download", "finanzas_iglesia_completo.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        };
 
         function inicializarGraficas() {
             Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif';
             Chart.defaults.color = '#8C8177';
-            Chart.defaults.font.weight = '600';
 
-            const ctxBar = document.getElementById('barChart').getContext('2d');
-            barChartInstance = new Chart(ctxBar, {
+            cultosChartInstance = new Chart(document.getElementById('cultosChart').getContext('2d'), {
                 type: 'bar',
                 data: {
-                    labels: ['Alabanza', 'Panderos', 'Multimedia', 'Pastor'],
+                    labels: ['Miércoles', 'Domingos', 'Sáb. Jóvenes'],
                     datasets: [{
-                        data: [0, 0, 0, 0],
-                        /* Paleta de tonos cremosos / arena / espresso */
-                        backgroundColor: ['#C4A47C', '#A88B68', '#3A312A', '#E6D7C3'],
+                        data: [0, 0, 0],
+                        backgroundColor: ['#C4A47C', '#3A312A', '#A88B68'],
                         borderRadius: 8,
-                        maxBarThickness: 36,
-                        borderSkipped: false
+                        maxBarThickness: 40
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: 'rgba(58, 49, 42, 0.95)',
-                            titleColor: '#fff',
-                            bodyColor: '#C4A47C',
-                            padding: 16,
-                            displayColors: false,
-                            cornerRadius: 16,
-                            callbacks: { label: ctx => '$' + ctx.parsed.y.toLocaleString('es-MX') }
-                        }
-                    },
+                    plugins: { legend: { display: false } },
                     scales: {
-                        y: {
-                            beginAtZero: true,
-                            border: { display: false },
-                            grid: { color: 'rgba(58, 49, 42, 0.05)' },
-                            ticks: { font: { size: 12 }, callback: v => v === 0 ? '$0' : '$' + (v/1000) + 'k' }
-                        },
-                        x: {
-                            border: { display: false },
-                            grid: { display: false },
-                            ticks: { font: { size: 13 }, color: '#3A312A' }
-                        }
+                        y: { beginAtZero: true, border: { display: false }, grid: { color: 'rgba(58,49,42,0.05)' } },
+                        x: { border: { display: false }, grid: { display: false } }
                     }
                 }
             });
 
-            const ctxPie = document.getElementById('pieChart').getContext('2d');
-            pieChartInstance = new Chart(ctxPie, {
-                type: 'doughnut',
+            barChartInstance = new Chart(document.getElementById('barChart').getContext('2d'), {
+                type: 'bar',
                 data: {
-                    labels: ['General', 'Eventos', 'Multimedia', 'Panderos', 'Alabanza'],
+                    labels: ['Alabanza', 'Panderos', 'Multimedia', 'Jóvenes', 'Maestros'],
                     datasets: [{
                         data: [0, 0, 0, 0, 0],
-                        /* Paleta Premium Crema */
-                        backgroundColor: ['#3A312A', '#C4A47C', '#A88B68', '#E6D7C3', '#8C8177'],
-                        borderWidth: 0,
-                        hoverOffset: 8
+                        backgroundColor: ['#C4A47C', '#A88B68', '#3A312A', '#D6BFA2', '#8C8177'],
+                        borderRadius: 8,
+                        maxBarThickness: 32
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    cutout: '72%',
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: { padding: 24, usePointStyle: true, pointStyle: 'circle', font: { size: 13, weight: 'bold' }, color: '#3A312A' }
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(58, 49, 42, 0.95)',
-                            padding: 16,
-                            cornerRadius: 16,
-                            bodyColor: '#C4A47C',
-                            callbacks: { label: ctx => ' $' + ctx.parsed.toLocaleString('es-MX') }
-                        }
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, border: { display: false }, grid: { color: 'rgba(58,49,42,0.05)' } },
+                        x: { border: { display: false }, grid: { display: false } }
                     }
                 }
+            });
+
+            pieChartInstance = new Chart(document.getElementById('pieChart').getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(window.fondosInfo),
+                    datasets: [{
+                        data: [0, 0, 0, 0, 0, 0, 0],
+                        backgroundColor: ['#3A312A', '#C4A47C', '#A88B68', '#E6D7C3', '#8C8177', '#D6BFA2', '#B39268'],
+                        borderWidth: 0
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, cutout: '70%' }
             });
         }
 
-        // Inicialización inicial
         document.addEventListener('DOMContentLoaded', () => {
+            const hoy = new Date().toISOString().split('T')[0];
+            document.getElementById('culto-fecha').value = hoy;
+            document.getElementById('joven-fecha').value = hoy;
+            document.getElementById('fecha-aporte').value = hoy;
+            document.getElementById('ev-fecha').value = hoy;
+
             inicializarGraficas();
             renderizarDirectorio();
+            renderizarEventos();
+            renderizarPendientes();
             actualizarUI();
         });
     </script>
