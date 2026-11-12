@@ -156,9 +156,9 @@
         <!-- Acciones Escritorio -->
         <div class="hidden md:flex items-center gap-3">
             <button onclick="abrirModal('modal-drive')" id="btn-drive-status" class="glass-card hover:bg-white/80 px-4 py-2.5 rounded-full flex items-center gap-2 text-xs font-semibold text-cream-dark transition-all">
-                <span id="drive-dot" class="w-2 h-2 rounded-full bg-green-500"></span>
+                <span id="drive-dot" class="w-2 h-2 rounded-full bg-orange-400"></span>
                 <i class="fa-brands fa-google-drive text-cream-gray"></i>
-                <span id="drive-label">Drive Conectado</span>
+                <span id="drive-label">Sincronizando...</span>
             </button>
 
             <button onclick="abrirModal('modal-notificaciones')" class="w-10 h-10 rounded-full glass-card hover:bg-white/80 flex items-center justify-center text-cream-dark transition-all relative">
@@ -622,7 +622,7 @@
                 </div>
             </div>
             <p class="text-xs font-medium text-cream-gray leading-relaxed mb-5">
-                Todos los movimientos de cultos, jóvenes, ministerios y eventos se envían automáticamente a tu hoja de cálculo.
+                Todos los movimientos de cultos, jóvenes, ministerios y eventos se leen y guardan automáticamente en tu hoja de cálculo personal.
             </p>
             <div class="grid grid-cols-2 gap-3">
                 <button onclick="exportarCSV()" class="w-full bg-white border border-cream-border text-cream-dark font-bold text-xs rounded-[18px] py-3.5 shadow-sm">
@@ -676,8 +676,8 @@
 
     <!-- LÓGICA DE DATOS -->
     <script type="module">
-        // URL de Google Apps Script
-        const driveWebhookUrl = "https://script.google.com/a/macros/my.unitec.edu.mx/s/AKfycbx2pxwhiMt7e6NckApNUkQUcvi-oVmQ-LH8y2onUkQzyxJG27AjlGwOmRX8xeP7Axol/exec";
+        // URL de Google Apps Script configurada
+        const driveWebhookUrl = "https://script.google.com/macros/s/AKfycbzler8u8qscgSduFJ2QSyG1sGcIh19faV968ijaZFh8uYxes4I6Rh2KkVN_XGaiip5z/exec";
 
         // Contactos exclusivos para notificación automática al crear un evento nuevo
         const CONTACTOS_EVENTOS = [
@@ -712,33 +712,59 @@
             "Pastor": ["Pastor Principal"]
         };
 
-        // --- ENVÍO A GOOGLE SHEETS ---
-        function enviarADrive(fechaStr, ministerio, servidor, fondoDestino, monto) {
-            fetch(driveWebhookUrl, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify({
-                    fechaStr: fechaStr,
-                    ministerio: ministerio,
-                    servidor: servidor,
-                    fondoDestino: fondoDestino,
-                    monto: Number(monto) || 0
-                })
-            }).then(() => {
-                const dot = document.getElementById('drive-dot');
-                if(dot) {
-                    dot.classList.remove('bg-orange-400', 'bg-red-500');
-                    dot.classList.add('bg-green-500');
+        // --- CARGAR DATOS DESDE GOOGLE SHEETS AL ABRIR LA PÁGINA ---
+        async function cargarDatosDesdeDrive() {
+            const dot = document.getElementById('drive-dot');
+            const label = document.getElementById('drive-label');
+            try {
+                const res = await fetch(driveWebhookUrl);
+                const json = await res.json();
+                if (json.status === "success" && Array.isArray(json.data)) {
+                    aportaciones = json.data.reverse().map(item => {
+                        let tipo = 'ministerio';
+                        if (item.ministerio === 'Culto Miércoles' || item.ministerio === 'Culto Domingo') tipo = 'culto';
+                        else if (item.ministerio === 'Jóvenes Sábado') tipo = 'jovenes';
+                        return { ...item, tipo };
+                    });
+                    actualizarUI();
+                    if (dot) { dot.classList.remove('bg-orange-400', 'bg-red-500'); dot.classList.add('bg-green-500'); }
+                    if (label) { label.innerText = "Drive Conectado"; }
                 }
-            }).catch(err => {
-                console.error("Error Drive:", err);
-                const dot = document.getElementById('drive-dot');
-                if(dot) {
-                    dot.classList.remove('bg-green-500');
-                    dot.classList.add('bg-red-500');
-                }
-            });
+            } catch (err) {
+                console.error("Error leyendo Sheets:", err);
+                if (dot) { dot.classList.remove('bg-green-500', 'bg-orange-400'); dot.classList.add('bg-red-500'); }
+                if (label) { label.innerText = "Error de Conexión"; }
+            }
+        }
+
+        // --- ENVIAR DATOS A GOOGLE SHEETS ---
+        async function enviarADrive(fechaStr, ministerio, servidor, fondoDestino, monto) {
+            const dot = document.getElementById('drive-dot');
+            const label = document.getElementById('drive-label');
+            if (dot) { dot.classList.remove('bg-green-500', 'bg-red-500'); dot.classList.add('bg-orange-400'); }
+            if (label) { label.innerText = "Guardando..."; }
+
+            try {
+                await fetch(driveWebhookUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({
+                        fechaStr: fechaStr,
+                        ministerio: ministerio,
+                        servidor: servidor,
+                        fondoDestino: fondoDestino,
+                        monto: Number(monto) || 0
+                    })
+                });
+                if (dot) { dot.classList.remove('bg-orange-400', 'bg-red-500'); dot.classList.add('bg-green-500'); }
+                if (label) { label.innerText = "Drive Conectado"; }
+                setTimeout(cargarDatosDesdeDrive, 1500);
+            } catch (err) {
+                console.error("Error enviando a Drive:", err);
+                if (dot) { dot.classList.remove('bg-green-500', 'bg-orange-400'); dot.classList.add('bg-red-500'); }
+                if (label) { label.innerText = "Error al Guardar"; }
+            }
         }
 
         function agregarNotificacion(titulo, mensaje) {
@@ -759,17 +785,13 @@
             `);
         }
 
-        // --- CAMBIO DE PERFILES Y VISTAS ---
         window.cambiarPerfil = function(perfil) {
             document.querySelectorAll('.view-section').forEach(el => {
                 el.classList.add('hidden');
                 el.classList.remove('flex');
             });
             const target = document.getElementById(`vista-${perfil}`);
-            if(target) {
-                target.classList.remove('hidden');
-                target.classList.add('flex');
-            }
+            if(target) { target.classList.remove('hidden'); target.classList.add('flex'); }
 
             document.querySelectorAll('.perfil-tab').forEach(btn => {
                 btn.classList.remove('bg-cream-dark', 'text-white', 'shadow-sm');
@@ -796,10 +818,7 @@
                 el.classList.remove('flex');
             });
             const target = document.getElementById(`vista-${vistaId}`);
-            if(target) {
-                target.classList.remove('hidden');
-                target.classList.add('flex');
-            }
+            if(target) { target.classList.remove('hidden'); target.classList.add('flex'); }
         };
 
         window.abrirModal = function(id) {
@@ -816,7 +835,6 @@
             if(m) { m.classList.add('hidden'); m.classList.remove('flex'); }
         };
 
-        // --- REGISTRO 1: CULTOS MIÉRCOLES Y DOMINGOS ---
         window.registrarCultoGeneral = function() {
             const dia = document.getElementById('culto-dia').value;
             const concepto = document.getElementById('culto-concepto').value;
@@ -827,22 +845,12 @@
             if(!monto || !fecha) return;
             const fechaStr = fecha.split('-').reverse().join('/');
 
-            aportaciones.unshift({
-                tipo: 'culto',
-                ministerio: dia,
-                servidor: persona,
-                fondoDestino: concepto,
-                monto: monto,
-                fechaISO: fecha,
-                fechaStr: fechaStr
-            });
-
-            enviarADrive(fechaStr, dia, persona, concepto, monto);
+            aportaciones.unshift({ tipo: 'culto', ministerio: dia, servidor: persona, fondoDestino: concepto, monto, fechaISO: fecha, fechaStr });
             actualizarUI();
+            enviarADrive(fechaStr, dia, persona, concepto, monto);
             document.getElementById('culto-monto').value = '';
         };
 
-        // --- REGISTRO 2: JÓVENES SÁBADOS ---
         window.registrarOfrendaJovenes = function() {
             const nombre = document.getElementById('joven-nombre').value.trim() || 'Ofrenda General Jóvenes';
             const concepto = document.getElementById('joven-concepto').value;
@@ -852,31 +860,19 @@
             if(!monto || !fecha) return;
             const fechaStr = fecha.split('-').reverse().join('/');
 
-            aportaciones.unshift({
-                tipo: 'jovenes',
-                ministerio: 'Jóvenes Sábado',
-                servidor: nombre,
-                fondoDestino: concepto,
-                monto: monto,
-                fechaISO: fecha,
-                fechaStr: fechaStr
-            });
-
-            enviarADrive(fechaStr, 'Jóvenes Sábado', nombre, concepto, monto);
+            aportaciones.unshift({ tipo: 'jovenes', ministerio: 'Jóvenes Sábado', servidor: nombre, fondoDestino: concepto, monto, fechaISO: fecha, fechaStr });
             actualizarUI();
+            enviarADrive(fechaStr, 'Jóvenes Sábado', nombre, concepto, monto);
             document.getElementById('joven-nombre').value = '';
             document.getElementById('joven-monto').value = '';
         };
 
-        // --- REGISTRO 3: TESORERÍA MINISTERIOS ---
         window.actualizarServidores = function() {
             const min = document.getElementById('ministerio').value;
             const selectServ = document.getElementById('servidor');
             selectServ.innerHTML = '<option value="" disabled selected>Servidor</option>';
             if(window.servidores[min]) {
-                window.servidores[min].forEach(s => {
-                    selectServ.innerHTML += `<option value="${s}">${s}</option>`;
-                });
+                window.servidores[min].forEach(s => { selectServ.innerHTML += `<option value="${s}">${s}</option>`; });
             }
         };
 
@@ -890,18 +886,9 @@
             if(!min || !serv || !fondo || !monto || !fecha) return;
             const fechaStr = fecha.split('-').reverse().join('/');
 
-            aportaciones.unshift({
-                tipo: 'ministerio',
-                ministerio: min,
-                servidor: serv,
-                fondoDestino: fondo,
-                monto: monto,
-                fechaISO: fecha,
-                fechaStr: fechaStr
-            });
-
-            enviarADrive(fechaStr, min, serv, fondo, monto);
+            aportaciones.unshift({ tipo: 'ministerio', ministerio: min, servidor: serv, fondoDestino: fondo, monto, fechaISO: fecha, fechaStr });
             actualizarUI();
+            enviarADrive(fechaStr, min, serv, fondo, monto);
 
             document.getElementById('monto').value = '';
             document.getElementById('ministerio').selectedIndex = 0;
@@ -909,7 +896,6 @@
             document.getElementById('fondo-destino').selectedIndex = 0;
         };
 
-        // --- GESTIÓN DE EVENTOS (WHATSAPP AUTOMÁTICO SOLO AL CREAR EVENTO NUEVO) ---
         function construirMensajeEvento(ev, destinatario) {
             return `Hola *${destinatario}*, te notificamos de un *NUEVO EVENTO* registrado en Misión Central:%0A%0A` +
                    `📌 *Evento:* ${ev.nombre}%0A` +
@@ -932,38 +918,19 @@
             if(!nombre || !fecha) return;
             const fechaStr = fecha.split('-').reverse().join('/');
 
-            const nuevoEvento = {
-                id: Date.now(),
-                nombre,
-                fechaStr,
-                hora,
-                lugar,
-                presupuesto,
-                gastado: 0,
-                metaAsistentes,
-                confirmados: 1,
-                decoracion
-            };
-
+            const nuevoEvento = { id: Date.now(), nombre, fechaStr, hora, lugar, presupuesto, gastado: 0, metaAsistentes, confirmados: 1, decoracion };
             eventos.unshift(nuevoEvento);
             renderizarEventos();
 
-            // 1. Guardar en Google Sheets
             enviarADrive(fechaStr, 'Evento Nuevo', lugar, nombre, presupuesto);
-
-            // 2. Notificación interna en campana
             agregarNotificacion(`Nuevo Evento: ${nombre}`, `Notificación enviada a Isis (3345667476) y Pastor (3314795318).`);
 
-            // 3. Disparar notificación por WhatsApp ÚNICAMENTE a Isis y al Pastor
             CONTACTOS_EVENTOS.forEach((contacto, index) => {
                 const texto = construirMensajeEvento(nuevoEvento, contacto.nombre);
                 const url = `https://api.whatsapp.com/send?phone=${contacto.telefono}&text=${texto}`;
-                setTimeout(() => {
-                    window.open(url, `_blank_${contacto.nombre}`);
-                }, index * 600);
+                setTimeout(() => { window.open(url, `_blank_${contacto.nombre}`); }, index * 600);
             });
 
-            // Limpiar formulario
             document.getElementById('ev-nombre').value = '';
             document.getElementById('ev-lugar').value = '';
             document.getElementById('ev-presupuesto').value = '';
@@ -973,10 +940,7 @@
 
         window.confirmarAsistenciaEvento = function(id) {
             const ev = eventos.find(e => e.id === id);
-            if(ev) {
-                ev.confirmados++;
-                renderizarEventos();
-            }
+            if(ev) { ev.confirmados++; renderizarEventos(); }
         };
 
         window.reenviarWhatsAppContacto = function(id, nombreContacto, telefono) {
@@ -1011,12 +975,10 @@
                             </button>
                         </div>
                     </div>
-                    
                     <div class="bg-cream-bg/80 rounded-[16px] p-3.5 text-xs text-cream-dark border border-cream-border">
                         <span class="font-bold block text-[11px] uppercase text-cream-gray mb-0.5">Decoración y Logística:</span>
                         ${ev.decoracion}
                     </div>
-
                     <div class="grid grid-cols-2 gap-4 pt-1">
                         <div>
                             <div class="flex justify-between text-[11px] font-bold mb-1">
@@ -1033,17 +995,14 @@
                             <span class="text-xl font-bold text-cream-dark">$${ev.presupuesto.toLocaleString('es-MX')}</span>
                         </div>
                     </div>
-                </div>
-                `;
+                </div>`;
             }).join('');
         }
 
-        // --- PENDIENTES DE LA IGLESIA ---
         window.agregarPendiente = function() {
             const titulo = document.getElementById('tarea-titulo').value.trim();
             const area = document.getElementById('tarea-area').value;
             const prioridad = document.getElementById('tarea-prioridad').value;
-
             if(!titulo) return;
             pendientes.unshift({ id: Date.now(), titulo, area, prioridad, completada: false });
             document.getElementById('tarea-titulo').value = '';
@@ -1064,12 +1023,10 @@
             const cont = document.getElementById('lista-pendientes');
             const activos = pendientes.filter(p => !p.completada).length;
             document.getElementById('contador-pendientes').innerText = `${activos} Pendientes`;
-
             if(!pendientes.length) {
                 cont.innerHTML = `<div class="col-span-2 text-center text-cream-gray text-xs py-10 font-semibold">No hay tareas pendientes registradas.</div>`;
                 return;
             }
-
             cont.innerHTML = pendientes.map(p => {
                 const badgeColor = p.prioridad === 'Alta' ? 'bg-red-100 text-red-700' : (p.prioridad === 'Media' ? 'bg-amber-100 text-amber-800' : 'bg-stone-200 text-stone-700');
                 return `
@@ -1086,21 +1043,13 @@
                             </div>
                         </div>
                     </div>
-                    <button onclick="eliminarPendiente(${p.id})" class="text-cream-gray hover:text-red-500 text-xs px-2">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                </div>
-                `;
+                    <button onclick="eliminarPendiente(${p.id})" class="text-cream-gray hover:text-red-500 text-xs px-2"><i class="fa-solid fa-trash"></i></button>
+                </div>`;
             }).join('');
         }
 
-        // --- ACTUALIZACIÓN GLOBAL DE UI Y GRÁFICAS ---
         function actualizarUI() {
-            let totalMiercoles = 0;
-            let totalDomingos = 0;
-            let totalSabados = 0;
-            let totalMinisterios = 0;
-
+            let totalMiercoles = 0, totalDomingos = 0, totalSabados = 0, totalMinisterios = 0;
             const totalesMin = { "Alabanza": 0, "Panderos": 0, "Multimedia": 0, "Jóvenes": 0, "Maestros": 0, "Pastor": 0 };
             const totalesFondo = { "General": 0, "Alabanza": 0, "Panderos": 0, "Multimedia": 0, "Jóvenes": 0, "Maestros": 0, "Eventos": 0 };
 
@@ -1132,7 +1081,6 @@
             document.getElementById('porcentajeMeta').innerText = `${pct.toFixed(0)}%`;
             document.getElementById('barra-meta').style.width = `${pct}%`;
 
-            // Renderizar historial Cultos y Jóvenes
             const cultosList = aportaciones.filter(a => a.tipo === 'culto' || a.tipo === 'jovenes');
             const contGeneral = document.getElementById('listaGeneralCultos');
             if(cultosList.length) {
@@ -1146,11 +1094,9 @@
                             <span class="text-sm font-bold text-cream-dark block">$${reg.monto.toLocaleString('es-MX')}</span>
                             <span class="text-[10px] text-cream-gray">${reg.fechaStr}</span>
                         </div>
-                    </div>
-                `).join('');
+                    </div>`).join('');
             }
 
-            // Renderizar historial Ministerios
             const minList = aportaciones.filter(a => a.tipo === 'ministerio');
             const msgVacio = document.getElementById('mensajeVacio');
             if(msgVacio) msgVacio.style.display = minList.length ? 'none' : 'flex';
@@ -1164,10 +1110,8 @@
                         <span class="text-sm font-bold text-cream-dark block">$${reg.monto.toLocaleString('es-MX')}</span>
                         <span class="text-[10px] text-cream-gray">${reg.fechaStr}</span>
                     </div>
-                </div>
-            `).join('');
+                </div>`).join('');
 
-            // Actualizar Cuentas Ministeriales
             document.getElementById('grid-fondos').innerHTML = Object.keys(window.fondosInfo).map(fondo => {
                 const f = window.fondosInfo[fondo];
                 const monto = totalesFondo[fondo] || 0;
@@ -1187,11 +1131,9 @@
                         <p class="text-xs text-cream-gray mb-3">${f.desc}</p>
                         <div class="text-2xl font-bold text-cream-dark">$${monto.toLocaleString('es-MX')}</div>
                     </div>
-                </div>
-                `;
+                </div>`;
             }).join('');
 
-            // Actualizar Tabla Reportes
             const totalReportes = Object.values(totalesFondo).reduce((a, b) => a + b, 0);
             document.getElementById('tabla-reportes').innerHTML = Object.keys(window.fondosInfo).map(fondo => {
                 const monto = totalesFondo[fondo] || 0;
@@ -1200,9 +1142,7 @@
                 return `
                 <div class="bg-white/65 rounded-[20px] p-4 flex justify-between items-center border border-white">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-cream-bg text-cream-accent flex items-center justify-center">
-                            <i class="fa-solid ${info.icon}"></i>
-                        </div>
+                        <div class="w-10 h-10 rounded-full bg-cream-bg text-cream-accent flex items-center justify-center"><i class="fa-solid ${info.icon}"></i></div>
                         <div>
                             <p class="font-bold text-cream-dark text-sm">${fondo}</p>
                             <p class="text-[11px] text-cream-gray font-semibold">Encargado/a: ${info.encargada}</p>
@@ -1212,23 +1152,12 @@
                         <p class="font-bold text-cream-dark text-sm">$${monto.toLocaleString('es-MX')}</p>
                         <p class="text-[11px] font-bold text-cream-accent">${pctRep}%</p>
                     </div>
-                </div>
-                `;
+                </div>`;
             }).join('');
 
-            // Actualizar Gráficas
-            if(cultosChartInstance) {
-                cultosChartInstance.data.datasets[0].data = [totalMiercoles, totalDomingos, totalSabados];
-                cultosChartInstance.update();
-            }
-            if(barChartInstance) {
-                barChartInstance.data.datasets[0].data = [totalesMin['Alabanza'], totalesMin['Panderos'], totalesMin['Multimedia'], totalesMin['Jóvenes'], totalesMin['Maestros']];
-                barChartInstance.update();
-            }
-            if(pieChartInstance) {
-                pieChartInstance.data.datasets[0].data = Object.values(totalesFondo);
-                pieChartInstance.update();
-            }
+            if(cultosChartInstance) { cultosChartInstance.data.datasets[0].data = [totalMiercoles, totalDomingos, totalSabados]; cultosChartInstance.update(); }
+            if(barChartInstance) { barChartInstance.data.datasets[0].data = [totalesMin['Alabanza'], totalesMin['Panderos'], totalesMin['Multimedia'], totalesMin['Jóvenes'], totalesMin['Maestros']]; barChartInstance.update(); }
+            if(pieChartInstance) { pieChartInstance.data.datasets[0].data = Object.values(totalesFondo); pieChartInstance.update(); }
         }
 
         function renderizarDirectorio() {
@@ -1240,11 +1169,9 @@
                             <div class="flex items-center justify-between text-xs font-bold text-cream-dark bg-cream-bg px-4 py-2.5 rounded-[14px]">
                                 <span>${p}</span>
                                 <i class="fa-solid fa-circle-check text-cream-accent"></i>
-                            </div>
-                        `).join('')}
+                            </div>`).join('')}
                     </div>
-                </div>
-            `).join('');
+                </div>`).join('');
         }
 
         window.guardarConfiguracion = function() {
@@ -1285,55 +1212,25 @@
                 type: 'bar',
                 data: {
                     labels: ['Miércoles', 'Domingos', 'Sáb. Jóvenes'],
-                    datasets: [{
-                        data: [0, 0, 0],
-                        backgroundColor: ['#C4A47C', '#3A312A', '#A88B68'],
-                        borderRadius: 8,
-                        maxBarThickness: 40
-                    }]
+                    datasets: [{ data: [0, 0, 0], backgroundColor: ['#C4A47C', '#3A312A', '#A88B68'], borderRadius: 8, maxBarThickness: 40 }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { beginAtZero: true, border: { display: false }, grid: { color: 'rgba(58,49,42,0.05)' } },
-                        x: { border: { display: false }, grid: { display: false } }
-                    }
-                }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, border: { display: false }, grid: { color: 'rgba(58,49,42,0.05)' } }, x: { border: { display: false }, grid: { display: false } } } }
             });
 
             barChartInstance = new Chart(document.getElementById('barChart').getContext('2d'), {
                 type: 'bar',
                 data: {
                     labels: ['Alabanza', 'Panderos', 'Multimedia', 'Jóvenes', 'Maestros'],
-                    datasets: [{
-                        data: [0, 0, 0, 0, 0],
-                        backgroundColor: ['#C4A47C', '#A88B68', '#3A312A', '#D6BFA2', '#8C8177'],
-                        borderRadius: 8,
-                        maxBarThickness: 32
-                    }]
+                    datasets: [{ data: [0, 0, 0, 0, 0], backgroundColor: ['#C4A47C', '#A88B68', '#3A312A', '#D6BFA2', '#8C8177'], borderRadius: 8, maxBarThickness: 32 }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { beginAtZero: true, border: { display: false }, grid: { color: 'rgba(58,49,42,0.05)' } },
-                        x: { border: { display: false }, grid: { display: false } }
-                    }
-                }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, border: { display: false }, grid: { color: 'rgba(58,49,42,0.05)' } }, x: { border: { display: false }, grid: { display: false } } } }
             });
 
             pieChartInstance = new Chart(document.getElementById('pieChart').getContext('2d'), {
                 type: 'doughnut',
                 data: {
                     labels: Object.keys(window.fondosInfo),
-                    datasets: [{
-                        data: [0, 0, 0, 0, 0, 0, 0],
-                        backgroundColor: ['#3A312A', '#C4A47C', '#A88B68', '#E6D7C3', '#8C8177', '#D6BFA2', '#B39268'],
-                        borderWidth: 0
-                    }]
+                    datasets: [{ data: [0, 0, 0, 0, 0, 0, 0], backgroundColor: ['#3A312A', '#C4A47C', '#A88B68', '#E6D7C3', '#8C8177', '#D6BFA2', '#B39268'], borderWidth: 0 }]
                 },
                 options: { responsive: true, maintainAspectRatio: false, cutout: '70%' }
             });
@@ -1351,6 +1248,7 @@
             renderizarEventos();
             renderizarPendientes();
             actualizarUI();
+            cargarDatosDesdeDrive();
         });
     </script>
 </body>
