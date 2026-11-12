@@ -676,7 +676,7 @@
 
     <!-- LÓGICA DE DATOS -->
     <script type="module">
-        // URL fija de Google Apps Script
+        // URL de Google Apps Script
         const driveWebhookUrl = "https://script.google.com/a/macros/my.unitec.edu.mx/s/AKfycbx2pxwhiMt7e6NckApNUkQUcvi-oVmQ-LH8y2onUkQzyxJG27AjlGwOmRX8xeP7Axol/exec";
 
         // Contactos exclusivos para notificación automática al crear un evento nuevo
@@ -717,12 +717,28 @@
             fetch(driveWebhookUrl, {
                 method: 'POST',
                 mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ fechaStr, ministerio, servidor, fondoDestino, monto })
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({
+                    fechaStr: fechaStr,
+                    ministerio: ministerio,
+                    servidor: servidor,
+                    fondoDestino: fondoDestino,
+                    monto: Number(monto) || 0
+                })
             }).then(() => {
                 const dot = document.getElementById('drive-dot');
-                if(dot) { dot.classList.remove('bg-orange-400'); dot.classList.add('bg-green-500'); }
-            }).catch(err => console.error("Error Drive:", err));
+                if(dot) {
+                    dot.classList.remove('bg-orange-400', 'bg-red-500');
+                    dot.classList.add('bg-green-500');
+                }
+            }).catch(err => {
+                console.error("Error Drive:", err);
+                const dot = document.getElementById('drive-dot');
+                if(dot) {
+                    dot.classList.remove('bg-green-500');
+                    dot.classList.add('bg-red-500');
+                }
+            });
         }
 
         function agregarNotificacion(titulo, mensaje) {
