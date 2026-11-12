@@ -3,587 +3,754 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finanzas Iglesia</title>
+    <title>Finanzas Misión — Beige Glass</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
                     },
                     colors: {
-                        'app-bg': '#e4e2dd',
-                        'app-green': '#c4d872',
-                        'app-blue': '#d5e2f7',
-                        'app-text': '#2d3032'
+                        'cream-bg': '#FDFBF7',      /* Fondo crema muy suave */
+                        'cream-dark': '#3A312A',    /* Texto principal: Espresso oscuro */
+                        'cream-gray': '#8C8177',    /* Texto secundario: Taupe cálido */
+                        'cream-accent': '#C4A47C',  /* Acento: Bronce/Oro suave */
+                        'cream-accent-hover': '#B39268',
+                        'cream-border': 'rgba(255, 255, 255, 0.6)'
                     },
-                    borderRadius: {
-                        '4xl': '2.5rem',
+                    animation: {
+                        'fade-in': 'fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'scale-up': 'scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'blob': 'blob 10s infinite'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(15px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        scaleUp: {
+                            '0%': { opacity: '0', transform: 'scale(0.96)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        },
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
                     }
                 }
             }
         }
     </script>
     <style>
-        body { background-color: #e4e2dd; }
+        body {
+            background-color: #FDFBF7;
+            color: #3A312A;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Glassmorphism Classes */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 32px -4px rgba(58, 49, 42, 0.06);
+        }
+
+        .glass-hero {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(30px) saturate(200%);
+            -webkit-backdrop-filter: blur(30px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 12px 48px -8px rgba(58, 49, 42, 0.1);
+        }
+
+        .glass-dock {
+            background: rgba(253, 251, 247, 0.75);
+            backdrop-filter: blur(30px) saturate(200%);
+            -webkit-backdrop-filter: blur(30px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 10px 40px -10px rgba(58, 49, 42, 0.15);
+        }
+
+        .dock-item {
+            transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .dock-item:hover {
+            transform: translateY(-4px) scale(1.1);
+        }
+
+        .glass-input {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            color: #3A312A;
+            transition: all 0.2s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .glass-input:focus {
+            background: rgba(255, 255, 255, 0.95);
+            border-color: #C4A47C;
+            box-shadow: 0 0 0 4px rgba(196, 164, 124, 0.2), inset 0 2px 4px rgba(0,0,0,0.01);
+            outline: none;
+        }
+
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        .soft-shadow { box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05); }
-        .banner-gradient { background: linear-gradient(135deg, #7c8352 0%, #b5c179 100%); }
-        
-        /* Modal Transition */
-        .modal-overlay {
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .modal-content {
-            transform: scale(0.95);
-            transition: transform 0.3s ease;
-        }
-        .modal-overlay.active .modal-content {
-            transform: scale(1);
-        }
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
     </style>
 </head>
-<body class="h-screen w-full flex items-center justify-center p-4 sm:p-8 text-app-text overflow-hidden">
+<body class="min-h-screen w-screen overflow-x-hidden flex flex-col justify-between font-sans selection:bg-cream-accent selection:text-white relative pb-28">
 
-    <!-- Contenedor Principal -->
-    <div class="max-w-7xl w-full h-full flex flex-col sm:flex-row gap-6">
+    <!-- Orbes de fondo (Efecto de cristal 3D) -->
+    <div class="fixed top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-[#E8D8C8]/60 rounded-full mix-blend-multiply filter blur-[100px] animate-blob z-0 pointer-events-none"></div>
+    <div class="fixed top-[20%] right-[-10%] w-[45vw] h-[45vw] bg-[#F3E8DD]/50 rounded-full mix-blend-multiply filter blur-[90px] animate-blob animation-delay-2000 z-0 pointer-events-none"></div>
+    <div class="fixed bottom-[-20%] left-[20%] w-[60vw] h-[60vw] bg-[#E2D4C3]/50 rounded-full mix-blend-multiply filter blur-[100px] animate-blob animation-delay-4000 z-0 pointer-events-none"></div>
 
-        <!-- Menú Lateral (Sidebar) -->
-        <nav class="sm:w-20 bg-white rounded-full sm:rounded-[3rem] flex sm:flex-col items-center justify-between sm:justify-start py-4 sm:py-8 px-6 sm:px-0 gap-8 soft-shadow shrink-0 z-10">
-            <div onclick="cambiarVista('home')" class="w-12 h-12 bg-app-green rounded-full flex items-center justify-center text-xl font-bold shadow-sm cursor-pointer hover:scale-105 transition-transform text-gray-800">
-                <i class="fa-solid fa-church"></i>
-            </div>
-            
-            <div class="flex sm:flex-col gap-6 sm:gap-8 text-xl w-full sm:w-auto justify-around sm:justify-start">
-                <button id="btn-nav-home" onclick="cambiarVista('home')" class="nav-btn text-black transition-colors" title="Inicio"><i class="fa-solid fa-house"></i></button>
-                <button id="btn-nav-charts" onclick="cambiarVista('charts')" class="nav-btn text-gray-400 hover:text-black transition-colors" title="Reportes"><i class="fa-solid fa-chart-pie"></i></button>
-                <button id="btn-nav-calendar" onclick="cambiarVista('calendar')" class="nav-btn text-gray-400 hover:text-black transition-colors" title="Calendario"><i class="fa-solid fa-calendar-check"></i></button>
-                <button id="btn-nav-users" onclick="cambiarVista('users')" class="nav-btn text-gray-400 hover:text-black transition-colors" title="Servidores"><i class="fa-solid fa-users"></i></button>
-            </div>
-
-            <div class="hidden sm:flex flex-col gap-8 mt-auto text-xl">
-                <button onclick="abrirModal('modal-notificaciones')" class="text-gray-400 hover:text-black transition-colors relative" title="Notificaciones">
-                    <i class="fa-solid fa-bell"></i>
-                    <span id="badge-notif" class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white hidden"></span>
-                </button>
-                <button onclick="abrirModal('modal-configuracion')" class="text-gray-400 hover:text-black transition-colors" title="Configuración"><i class="fa-solid fa-gear"></i></button>
-                <div onclick="abrirModal('modal-perfil')" class="w-10 h-10 rounded-full bg-gray-200 overflow-hidden border-2 border-white shadow-sm mt-4 cursor-pointer hover:scale-105 transition-transform" title="Perfil Admin">
-                    <img src="https://ui-avatars.com/api/?name=Admin&background=random" alt="Admin" class="w-full h-full object-cover">
+    <!-- HEADER -->
+    <header class="w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 pt-8 pb-4 flex items-center justify-between z-20">
+        <div class="flex items-center gap-4">
+            <label for="upload-logo" class="group relative w-12 h-12 rounded-[16px] glass-card flex items-center justify-center cursor-pointer overflow-hidden hover:shadow-md transition-all">
+                <img id="church-logo-img" src="" alt="Logo" class="hidden w-full h-full object-cover">
+                <div id="church-logo-placeholder" class="flex flex-col items-center justify-center text-cream-accent group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-building-columns text-xl"></i>
                 </div>
+                <input type="file" id="upload-logo" accept="image/*" class="hidden" onchange="cargarLogoIglesia(event)">
+            </label>
+            <div>
+                <h1 class="text-2xl font-bold tracking-tight text-cream-dark leading-none">Finanzas Misión</h1>
+                <span class="text-[11px] font-bold tracking-widest text-cream-gray uppercase mt-1.5 block" id="header-mes-label">CORTE MENSUAL</span>
             </div>
-        </nav>
+        </div>
 
-        <!-- Área Central de Contenido -->
-        <main class="flex-1 overflow-y-auto hide-scrollbar pb-4 relative">
+        <div class="flex items-center gap-3">
+            <button onclick="abrirModal('modal-drive')" id="btn-drive-status" class="glass-card hover:bg-white/80 px-4 py-2.5 rounded-full flex items-center gap-2 text-xs font-semibold text-cream-dark transition-all">
+                <span id="drive-dot" class="w-2 h-2 rounded-full bg-orange-400"></span>
+                <i class="fa-brands fa-google-drive text-cream-gray"></i>
+                <span class="hidden sm:inline" id="drive-label">Conectar Drive</span>
+            </button>
+
+            <button onclick="abrirModal('modal-notificaciones')" class="w-10 h-10 rounded-full glass-card hover:bg-white/80 flex items-center justify-center text-cream-dark transition-all relative">
+                <i class="fa-solid fa-bell text-sm"></i>
+                <span id="badge-notif" class="hidden absolute top-0 right-0 w-3 h-3 border-2 border-cream-bg rounded-full bg-red-500"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 flex-1 flex flex-col justify-center z-10 relative">
+
+        <!-- VISTA 1: DASHBOARD -->
+        <div id="vista-home" class="view-section flex flex-col gap-6 animate-fade-in">
             
-            <!-- VISTA 1: INICIO (Dashboard Principal) -->
-            <div id="vista-home" class="flex flex-col lg:flex-row gap-6 min-h-full">
-                <!-- Columna Izquierda: Registro y Actividad -->
-                <div class="w-full lg:w-[400px] bg-white rounded-4xl p-8 soft-shadow flex flex-col shrink-0">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-semibold" id="mesTitulo">Finanzas Iglesia</h2>
-                        <button onclick="cambiarVista('charts')" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors" title="Ver Reportes">
-                            <i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
+            <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- Hero Card (Glassmorphism) -->
+                <div class="lg:col-span-7 glass-hero rounded-[32px] p-8 sm:p-10 text-cream-dark relative overflow-hidden flex flex-col justify-between min-h-[260px] animate-scale-up">
+                    <div class="flex items-start justify-between relative z-10">
+                        <div>
+                            <span class="text-[11px] tracking-[0.15em] text-cream-gray font-bold block mb-1.5 uppercase">Balance Recaudado</span>
+                            <h2 id="mesTitulo" class="text-2xl font-bold tracking-tight text-cream-dark">NOVIEMBRE</h2>
+                        </div>
+                        <span id="status-sync" class="text-[10px] tracking-wide uppercase px-3 py-1.5 rounded-full bg-white/50 text-cream-dark border border-white/60 font-bold shadow-sm">
+                            <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Nube Activa
+                        </span>
+                    </div>
+
+                    <div class="my-6 relative z-10">
+                        <div id="granTotal" class="text-6xl sm:text-7xl lg:text-8xl font-bold tracking-tighter text-cream-dark tabular-nums drop-shadow-sm">
+                            $0
+                        </div>
+                    </div>
+
+                    <div class="relative z-10">
+                        <div class="flex items-center justify-between text-[13px] text-cream-gray mb-2 font-semibold">
+                            <span>Progreso hacia <span id="texto-meta-objetivo" class="text-cream-dark">$20,000</span></span>
+                            <span id="porcentajeMeta" class="text-cream-dark font-bold text-sm">0%</span>
+                        </div>
+                        <div class="w-full h-2.5 bg-black/5 rounded-full overflow-hidden shadow-inner">
+                            <div id="barra-meta" class="h-full bg-cream-accent rounded-full transition-all duration-1000 ease-out relative overflow-hidden" style="width: 0%">
+                                <div class="absolute inset-0 bg-white/20 w-full h-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KPI Resumen -->
+                <div class="lg:col-span-5 glass-card rounded-[32px] p-8 flex flex-col justify-between animate-scale-up" style="animation-delay: 0.1s;">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <span class="text-[11px] tracking-[0.15em] text-cream-gray font-bold block uppercase">Resumen</span>
+                            <h3 class="text-2xl font-bold tracking-tight text-cream-dark">Estado Operativo</h3>
+                        </div>
+                        <button onclick="cambiarVista('fondos')" class="w-10 h-10 rounded-full bg-white/60 border border-white/80 shadow-sm flex items-center justify-center text-cream-dark hover:bg-white transition-colors">
+                            <i class="fa-solid fa-arrow-right text-sm"></i>
                         </button>
                     </div>
 
-                    <!-- Formulario de Ingreso -->
-                    <div class="bg-gray-50 rounded-3xl p-5 mb-6 border border-gray-100">
-                        <h3 class="font-medium text-gray-700 mb-4 text-sm uppercase tracking-wide">Nueva Aportación</h3>
-                        
-                        <div class="space-y-3">
+                    <div class="grid grid-cols-2 gap-4 my-auto">
+                        <div class="bg-white/50 backdrop-blur-md rounded-[24px] p-5 border border-white/60 shadow-sm">
+                            <i class="fa-solid fa-chart-line text-cream-accent mb-3 text-xl"></i>
+                            <span id="totalOperaciones" class="text-3xl font-bold text-cream-dark block tracking-tight mb-1">0</span>
+                            <span class="text-[12px] font-semibold text-cream-gray">Movimientos</span>
+                        </div>
+                        <div class="bg-white/50 backdrop-blur-md rounded-[24px] p-5 border border-white/60 shadow-sm">
+                            <i class="fa-solid fa-wallet text-[#A88B68] mb-3 text-xl"></i>
+                            <span class="text-3xl font-bold text-cream-dark block tracking-tight mb-1">5</span>
+                            <span class="text-[12px] font-semibold text-cream-gray">Cuentas Activas</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 pt-5 border-t border-cream-dark/5 flex flex-wrap gap-2">
+                        <span class="text-[11px] px-3.5 py-1.5 rounded-full bg-white/80 text-cream-dark font-bold border border-white shadow-sm">Alondra</span>
+                        <span class="text-[11px] px-3.5 py-1.5 rounded-full bg-white/80 text-cream-dark font-bold border border-white shadow-sm">Isis</span>
+                        <span class="text-[11px] px-3.5 py-1.5 rounded-full bg-white/80 text-cream-dark font-bold border border-white shadow-sm">Sofia</span>
+                        <span class="text-[11px] px-3.5 py-1.5 rounded-full bg-white/80 text-cream-dark font-bold border border-white shadow-sm">Isabel</span>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- GRID WIDGETS -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pb-6">
+                
+                <!-- Registro (5 col) -->
+                <div class="lg:col-span-5 glass-card rounded-[32px] p-7 sm:p-8 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-6">
                             <div>
-                                <select id="ministerio" onchange="actualizarServidores()" class="w-full bg-white border border-gray-200 text-gray-700 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-app-green transition-shadow appearance-none cursor-pointer">
-                                    <option value="" disabled selected>Selecciona Ministerio</option>
-                                    <option value="Alabanza">Alabanza</option>
-                                    <option value="Panderos">Panderos</option>
-                                    <option value="Multimedia">Multimedia</option>
-                                    <option value="Pastor">Pastor</option>
-                                </select>
+                                <h2 class="text-xl font-bold tracking-tight text-cream-dark">Nuevo Ingreso</h2>
                             </div>
-                            <div>
-                                <select id="servidor" class="w-full bg-white border border-gray-200 text-gray-700 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-app-green transition-shadow appearance-none cursor-pointer">
-                                    <option value="" disabled selected>Selecciona Servidor</option>
-                                </select>
+                            <div class="w-10 h-10 rounded-full bg-white/60 shadow-sm flex items-center justify-center text-cream-accent border border-white/80">
+                                <i class="fa-solid fa-plus text-sm"></i>
                             </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="relative">
+                                    <select id="ministerio" onchange="actualizarServidores()" class="w-full glass-input rounded-[20px] px-4 py-4 text-[14px] font-semibold focus:outline-none appearance-none cursor-pointer">
+                                        <option value="" disabled selected>Ministerio</option>
+                                        <option value="Alabanza">Alabanza</option>
+                                        <option value="Panderos">Panderos</option>
+                                        <option value="Multimedia">Multimedia</option>
+                                        <option value="Pastor">Pastor</option>
+                                    </select>
+                                    <i class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-cream-gray text-[10px] pointer-events-none"></i>
+                                </div>
+                                <div class="relative">
+                                    <select id="servidor" class="w-full glass-input rounded-[20px] px-4 py-4 text-[14px] font-semibold focus:outline-none appearance-none cursor-pointer">
+                                        <option value="" disabled selected>Servidor</option>
+                                    </select>
+                                    <i class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-cream-gray text-[10px] pointer-events-none"></i>
+                                </div>
+                            </div>
+
                             <div class="relative">
-                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">$</span>
-                                <input type="number" id="monto" placeholder="Cantidad (Ej. 500)" class="w-full bg-white border border-gray-200 text-gray-700 rounded-xl pl-8 pr-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-app-green transition-shadow">
+                                <select id="fondo-destino" class="w-full glass-input rounded-[20px] px-4 py-4 text-[14px] font-semibold focus:outline-none appearance-none cursor-pointer">
+                                    <option value="" disabled selected>Cuenta Destino (Encargada)</option>
+                                    <option value="General">Iglesia General — Alondra</option>
+                                    <option value="Eventos">Eventos — Isis</option>
+                                    <option value="Multimedia">Multimedia — Isis</option>
+                                    <option value="Panderos">Panderos — Sofia</option>
+                                    <option value="Alabanza">Alabanza — Isabel</option>
+                                </select>
+                                <i class="fa-solid fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-cream-gray text-[10px] pointer-events-none"></i>
                             </div>
-                            <div class="relative">
-                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"><i class="fa-regular fa-calendar"></i></span>
-                                <input type="date" id="fecha-aporte" class="w-full bg-white border border-gray-200 text-gray-700 rounded-xl pl-10 pr-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-app-green transition-shadow cursor-pointer">
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="relative">
+                                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-cream-gray font-bold text-lg">$</span>
+                                    <input type="number" id="monto" placeholder="0.00" class="w-full glass-input rounded-[20px] pl-9 pr-4 py-4 text-[16px] font-bold focus:outline-none">
+                                </div>
+                                <div class="relative">
+                                    <input type="date" id="fecha-aporte" class="w-full glass-input rounded-[20px] px-4 py-4 text-[14px] font-semibold focus:outline-none cursor-pointer">
+                                </div>
                             </div>
-                            <button id="btn-registrar" onclick="registrarAportacion()" class="w-full bg-app-text text-white font-medium rounded-xl py-3 mt-2 hover:bg-black transition-colors shadow-md">
-                                Registrar Aporte
+
+                            <button id="btn-registrar" onclick="registrarAportacion()" class="w-full bg-cream-dark text-white font-bold text-[15px] rounded-[20px] py-4 mt-2 hover:bg-black transition-all active:scale-95 shadow-lg shadow-cream-dark/20">
+                                Guardar Registro
                             </button>
                         </div>
                     </div>
-
-                    <!-- Resumen de Actividad Reciente -->
-                    <div class="flex-1 flex flex-col">
-                        <div class="flex justify-between text-xs text-gray-400 font-medium mb-3 px-2">
-                            <span>Últimos registros</span>
-                            <span>Monto</span>
-                        </div>
-                        <div id="listaRegistros" class="space-y-3 overflow-y-auto flex-1 pr-2 hide-scrollbar h-[200px]">
-                            <div class="text-center text-sm text-gray-400 mt-10" id="mensajeVacio">
-                                No hay registros aún en este mes.
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
-                <!-- Columna Derecha: Gráficas y Resumen -->
-                <div class="flex-1 flex flex-col gap-6">
-                    <div class="flex flex-col xl:flex-row gap-6 h-auto xl:h-64">
-                        <!-- Tarjeta: Gráfica de Barras -->
-                        <div class="flex-1 bg-white rounded-4xl p-6 soft-shadow flex flex-col">
-                            <div class="flex justify-between items-center mb-4">
-                                <h3 class="font-medium text-lg cursor-pointer hover:text-gray-500" onclick="cambiarVista('charts')">Aportes por Ministerio</h3>
-                                <div class="flex items-center gap-2 text-xs text-gray-400">
-                                    <span class="w-2 h-2 rounded-full bg-app-green"></span> Registrado
-                                </div>
-                            </div>
-                            <div class="flex-1 relative w-full h-full">
-                                <canvas id="barChart"></canvas>
-                            </div>
+                <!-- Gráfica (4 col) -->
+                <div class="lg:col-span-4 glass-card rounded-[32px] p-7 sm:p-8 flex flex-col justify-between">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold tracking-tight text-cream-dark">Por Ministerio</h3>
                         </div>
-
-                        <!-- Tarjetas Pequeñas de Estadísticas -->
-                        <div class="xl:w-[320px] bg-white rounded-4xl p-4 soft-shadow flex gap-4">
-                            <div class="flex-1 bg-orange-50 rounded-3xl p-4 flex flex-col justify-between items-center text-center cursor-pointer hover:bg-orange-100 transition-colors" onclick="cambiarVista('calendar')">
-                                <div class="w-10 h-10 rounded-full bg-orange-200/50 text-orange-500 flex items-center justify-center text-lg mb-2">
-                                    <i class="fa-solid fa-chart-line"></i>
-                                </div>
-                                <div>
-                                    <h4 class="text-2xl font-semibold text-gray-800" id="totalOperaciones">0</h4>
-                                    <p class="text-xs text-gray-500 mt-1">Registros<br>este mes</p>
-                                </div>
-                                <span class="text-[10px] font-bold mt-2 text-orange-400 uppercase tracking-wide">Actividad</span>
-                            </div>
-
-                            <div class="flex-1 bg-app-blue rounded-3xl p-4 flex flex-col justify-between items-center text-center relative overflow-hidden cursor-pointer hover:opacity-90 transition-opacity" onclick="abrirModal('modal-configuracion')">
-                                <div class="absolute bottom-0 left-0 w-full h-1/2 bg-blue-200/50 rounded-b-3xl" style="border-radius: 40% 40% 1.5rem 1.5rem;"></div>
-                                <div class="w-10 h-10 rounded-full bg-white/50 text-blue-500 flex items-center justify-center text-lg mb-2 relative z-10">
-                                    <i class="fa-solid fa-bullseye"></i>
-                                </div>
-                                <div class="relative z-10">
-                                    <h4 class="text-xl font-semibold text-gray-800" id="porcentajeMeta">0%</h4>
-                                    <p class="text-[10px] text-gray-600 mt-1">Meta<br><span id="display-meta">$20,000</span></p>
-                                </div>
-                                <span class="text-[10px] font-bold mt-2 text-blue-500 uppercase tracking-wide relative z-10">Progreso</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tarjeta Inferior Grande -->
-                    <div class="flex-1 banner-gradient rounded-4xl p-8 soft-shadow text-white relative overflow-hidden flex flex-col justify-between">
-                        <div class="absolute -right-20 -top-20 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
-                        <div class="absolute right-10 bottom-0 text-white/20 opacity-20 pointer-events-none">
-                            <i class="fa-solid fa-church text-[250px]"></i>
-                        </div>
-                        <div class="relative z-10 max-w-sm">
-                            <h1 class="text-4xl sm:text-5xl font-bold leading-tight mb-4 text-white drop-shadow-md">
-                                Corte Mensual,<br>Bendición Total.
-                            </h1>
-                            <p class="text-white/90 text-sm sm:text-base leading-relaxed mb-6 font-medium">
-                                Control detallado de las aportaciones de los ministerios y servidores de la iglesia para una administración transparente y bendecida.
-                            </p>
-                            <div class="inline-flex items-center gap-3 bg-white/20 backdrop-blur-md border border-white/30 rounded-2xl py-2 px-4 cursor-pointer hover:bg-white/30 transition-colors" onclick="abrirModal('modal-notificaciones')">
-                                <i class="fa-solid fa-sparkles text-yellow-300"></i>
-                                <div class="text-xs">
-                                    <span class="block font-bold text-white shadow-sm">Sistema Automático</span>
-                                    <span class="block text-white/80">Todo funcionando al 100%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="relative z-10 self-end sm:self-auto sm:absolute sm:bottom-8 sm:right-8 bg-white text-app-text rounded-3xl p-6 shadow-xl min-w-[200px]">
-                            <p class="text-sm text-gray-500 font-medium mb-1">Total Recaudado</p>
-                            <h2 class="text-4xl font-bold text-gray-800" id="granTotal">$0</h2>
-                            <div class="mt-3 flex items-center gap-2 text-xs font-semibold text-green-500 bg-green-50 px-2 py-1 rounded-lg w-fit">
-                                <i class="fa-solid fa-arrow-trend-up"></i>
-                                <span>Mes actual</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- VISTA 2: REPORTES DETALLADOS -->
-            <div id="vista-charts" class="hidden flex-col gap-6 min-h-full">
-                <div class="bg-white rounded-4xl p-8 soft-shadow flex flex-col w-full h-full">
-                    <div class="flex items-center gap-4 mb-6">
-                        <button onclick="cambiarVista('home')" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
-                            <i class="fa-solid fa-arrow-left"></i>
+                        <button onclick="cambiarVista('charts')" class="text-cream-accent bg-white/60 border border-white/80 w-10 h-10 rounded-full flex items-center justify-center transition-colors shadow-sm hover:bg-white">
+                            <i class="fa-solid fa-chart-pie text-sm"></i>
                         </button>
-                        <h2 class="text-3xl font-bold">Reportes Detallados</h2>
                     </div>
-                    <div class="flex flex-col lg:flex-row gap-8 flex-1">
-                        <!-- Gráfica de Pastel -->
-                        <div class="flex-1 flex flex-col items-center justify-center bg-gray-50 rounded-3xl p-6 border border-gray-100">
-                            <h3 class="font-medium text-gray-600 mb-4 w-full text-center">Distribución por Ministerio</h3>
-                            <div class="w-full max-w-[300px] aspect-square relative">
-                                <canvas id="pieChart"></canvas>
-                            </div>
-                        </div>
-                        <!-- Resumen Tabular -->
-                        <div class="flex-1 flex flex-col gap-4">
-                            <h3 class="font-medium text-gray-600 mb-2">Desglose de Ministerios</h3>
-                            <div id="tabla-reportes" class="space-y-3">
-                                <!-- Llenado por JS -->
-                            </div>
-                        </div>
+                    <div class="flex-1 min-h-[220px] w-full relative mt-2">
+                        <canvas id="barChart"></canvas>
                     </div>
                 </div>
-            </div>
 
-            <!-- VISTA 3: CALENDARIO -->
-            <div id="vista-calendar" class="hidden flex-col gap-6 min-h-full">
-                <div class="bg-white rounded-4xl p-8 soft-shadow flex flex-col w-full h-full">
-                    <div class="flex items-center gap-4 mb-6">
-                        <button onclick="cambiarVista('home')" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
-                            <i class="fa-solid fa-arrow-left"></i>
+                <!-- Bitácora (3 col) -->
+                <div class="lg:col-span-3 glass-card rounded-[32px] p-7 sm:p-8 flex flex-col max-h-[420px]">
+                    <div class="flex items-center justify-between mb-5">
+                        <h3 class="text-xl font-bold tracking-tight text-cream-dark">Bitácora</h3>
+                        <button onclick="exportarCSV()" class="text-cream-accent bg-white/60 border border-white/80 shadow-sm w-10 h-10 rounded-full flex items-center justify-center transition-colors hover:bg-white" title="Descargar Excel">
+                            <i class="fa-solid fa-download text-sm"></i>
                         </button>
-                        <h2 class="text-3xl font-bold">Calendario de Aportaciones</h2>
                     </div>
-                    <div class="flex-1 flex items-center justify-center">
-                        <div class="w-full max-w-2xl">
-                            <div class="grid grid-cols-7 gap-2 text-center text-sm font-semibold text-gray-400 mb-4">
-                                <div>Dom</div><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div>
-                            </div>
-                            <div id="grid-calendario" class="grid grid-cols-7 gap-2 sm:gap-4">
-                                <!-- Llenado por JS -->
-                            </div>
-                        </div>
+                    
+                    <div id="mensajeVacio" class="flex-1 flex flex-col items-center justify-center text-center text-cream-gray text-[14px] py-8 font-semibold">
+                        <i class="fa-regular fa-folder-open text-4xl mb-3 opacity-30"></i>
+                        <span>No hay movimientos hoy</span>
+                    </div>
+
+                    <div id="listaRegistros" class="space-y-3 overflow-y-auto flex-1 pr-1 hide-scrollbar">
+                        <!-- Items -->
                     </div>
                 </div>
-            </div>
 
-            <!-- VISTA 4: DIRECTORIO DE SERVIDORES -->
-            <div id="vista-users" class="hidden flex-col gap-6 min-h-full">
-                <div class="bg-white rounded-4xl p-8 soft-shadow flex flex-col w-full min-h-full">
-                    <div class="flex items-center gap-4 mb-6">
-                        <button onclick="cambiarVista('home')" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors">
-                            <i class="fa-solid fa-arrow-left"></i>
-                        </button>
-                        <h2 class="text-3xl font-bold">Directorio de Servidores</h2>
-                    </div>
-                    <div id="grid-directorios" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-                        <!-- Llenado por JS -->
-                    </div>
+            </div>
+        </div>
+
+        <!-- OTRAS VISTAS -->
+        <div id="vista-charts" class="view-section hidden flex-col gap-6 animate-fade-in pb-10">
+            <div class="glass-hero rounded-[32px] p-8 lg:p-12">
+                <div class="flex items-center justify-between mb-10">
+                    <h2 class="text-3xl font-bold tracking-tight text-cream-dark">Distribución de Fondos</h2>
+                    <button onclick="cambiarVista('home')" class="bg-white/60 hover:bg-white border border-white/80 text-cream-dark px-6 py-3 rounded-full text-[14px] font-bold flex items-center gap-2 transition-colors shadow-sm">
+                        <i class="fa-solid fa-arrow-left"></i> Volver
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="max-w-sm mx-auto w-full aspect-square relative"><canvas id="pieChart"></canvas></div>
+                    <div id="tabla-reportes" class="space-y-4"></div>
                 </div>
             </div>
+        </div>
 
-        </main>
+        <div id="vista-calendar" class="view-section hidden flex-col gap-6 animate-fade-in pb-10">
+            <div class="glass-hero rounded-[32px] p-8 lg:p-12">
+                <div class="flex items-center justify-between mb-10">
+                    <h2 class="text-3xl font-bold tracking-tight text-cream-dark">Calendario</h2>
+                    <button onclick="cambiarVista('home')" class="bg-white/60 hover:bg-white border border-white/80 text-cream-dark px-6 py-3 rounded-full text-[14px] font-bold flex items-center gap-2 transition-colors shadow-sm">
+                        Volver
+                    </button>
+                </div>
+                <div class="max-w-2xl mx-auto bg-white/70 backdrop-blur-md rounded-[32px] p-8 shadow-sm border border-white">
+                    <div class="grid grid-cols-7 gap-2 text-center text-[13px] font-bold text-cream-gray mb-4 uppercase tracking-wider">
+                        <div>D</div><div>L</div><div>M</div><div>M</div><div>J</div><div>V</div><div>S</div>
+                    </div>
+                    <div id="grid-calendario" class="grid grid-cols-7 gap-3"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="vista-users" class="view-section hidden flex-col gap-6 animate-fade-in pb-10">
+            <div class="glass-hero rounded-[32px] p-8 lg:p-12">
+                <div class="flex items-center justify-between mb-10">
+                    <h2 class="text-3xl font-bold tracking-tight text-cream-dark">Servidores</h2>
+                    <button onclick="cambiarVista('home')" class="bg-white/60 hover:bg-white border border-white/80 text-cream-dark px-6 py-3 rounded-full text-[14px] font-bold flex items-center gap-2 transition-colors shadow-sm">Volver</button>
+                </div>
+                <div id="grid-directorios" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+            </div>
+        </div>
+
+        <div id="vista-fondos" class="view-section hidden flex-col gap-6 animate-fade-in pb-10">
+            <div class="glass-hero rounded-[32px] p-8 lg:p-12">
+                <div class="flex items-center justify-between mb-10">
+                    <h2 class="text-3xl font-bold tracking-tight text-cream-dark">Cuentas y Encargadas</h2>
+                    <button onclick="cambiarVista('home')" class="bg-white/60 hover:bg-white border border-white/80 text-cream-dark px-6 py-3 rounded-full text-[14px] font-bold flex items-center gap-2 transition-colors shadow-sm">Volver</button>
+                </div>
+                <div id="grid-fondos" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- DOCK FLOTANTE (Glassmorphism) -->
+    <div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40">
+        <nav class="glass-dock px-3 py-3 rounded-full flex items-center gap-1 sm:gap-2">
+            <button id="btn-nav-home" onclick="cambiarVista('home')" class="nav-btn dock-item w-12 h-12 rounded-full flex items-center justify-center text-white bg-cream-dark shadow-lg" title="Inicio">
+                <i class="fa-solid fa-house text-lg"></i>
+            </button>
+            <button id="btn-nav-fondos" onclick="cambiarVista('fondos')" class="nav-btn dock-item w-12 h-12 rounded-full flex items-center justify-center text-cream-gray hover:bg-white/60 hover:text-cream-dark" title="Cuentas">
+                <i class="fa-solid fa-wallet text-lg"></i>
+            </button>
+            <button id="btn-nav-charts" onclick="cambiarVista('charts')" class="nav-btn dock-item w-12 h-12 rounded-full flex items-center justify-center text-cream-gray hover:bg-white/60 hover:text-cream-dark" title="Reportes">
+                <i class="fa-solid fa-chart-pie text-lg"></i>
+            </button>
+            <button id="btn-nav-calendar" onclick="cambiarVista('calendar')" class="nav-btn dock-item w-12 h-12 rounded-full flex items-center justify-center text-cream-gray hover:bg-white/60 hover:text-cream-dark" title="Calendario">
+                <i class="fa-regular fa-calendar text-lg"></i>
+            </button>
+            <button id="btn-nav-users" onclick="cambiarVista('users')" class="nav-btn dock-item w-12 h-12 rounded-full flex items-center justify-center text-cream-gray hover:bg-white/60 hover:text-cream-dark" title="Servidores">
+                <i class="fa-solid fa-user-group text-lg"></i>
+            </button>
+            
+            <div class="w-[1.5px] h-8 bg-cream-dark/10 mx-2 rounded-full"></div>
+            
+            <button onclick="abrirModal('modal-configuracion')" class="dock-item w-12 h-12 rounded-full flex items-center justify-center text-cream-gray hover:bg-white/60 hover:text-cream-dark" title="Ajustes">
+                <i class="fa-solid fa-gear text-lg"></i>
+            </button>
+        </nav>
     </div>
 
-    <!-- MODAL: Configuración -->
-    <div id="modal-configuracion" class="modal-overlay fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center">
-        <div class="modal-content bg-white rounded-3xl p-8 w-full max-w-sm soft-shadow relative">
-            <button onclick="cerrarModal('modal-configuracion')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800"><i class="fa-solid fa-xmark text-xl"></i></button>
-            <div class="w-12 h-12 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center text-xl mb-4">
-                <i class="fa-solid fa-gear"></i>
+    <!-- MODAL DRIVE -->
+    <div id="modal-drive" class="modal-overlay hidden fixed inset-0 bg-black/20 backdrop-blur-md z-50 items-center justify-center p-4 transition-opacity">
+        <div class="bg-cream-bg/90 backdrop-blur-xl rounded-[32px] p-8 w-full max-w-lg relative animate-scale-up shadow-2xl border border-white">
+            <button onclick="cerrarModal('modal-drive')" class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/60 hover:bg-white shadow-sm flex items-center justify-center text-cream-dark transition-all">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="flex items-center gap-4 mb-4">
+                <div class="w-14 h-14 rounded-[20px] bg-white shadow-sm flex items-center justify-center text-cream-accent text-3xl">
+                    <i class="fa-brands fa-google-drive"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-cream-dark tracking-tight">Vincular Drive</h3>
+                </div>
             </div>
-            <h3 class="text-xl font-bold mb-2">Configuración</h3>
-            <p class="text-sm text-gray-500 mb-6">Ajusta los parámetros del mes actual.</p>
+            <p class="text-[14px] font-medium text-cream-gray leading-relaxed mb-6">
+                Ingresa la URL de tu Google Apps Script para sincronización en tiempo real, o descarga el respaldo directamente.
+            </p>
+            <div class="space-y-5">
+                <div>
+                    <input type="url" id="input-drive-webhook" placeholder="https://script.google.com/..." class="w-full glass-input rounded-[20px] px-5 py-4 text-[14px] font-semibold">
+                </div>
+                <div class="grid grid-cols-2 gap-3 pt-2">
+                    <button onclick="exportarCSV()" class="w-full bg-white hover:bg-gray-50 border border-cream-border text-cream-dark font-bold text-[14px] rounded-[20px] py-4 transition-colors shadow-sm">
+                        Descargar CSV
+                    </button>
+                    <button onclick="guardarConexionDrive()" class="w-full bg-cream-dark text-white font-bold text-[14px] rounded-[20px] py-4 hover:bg-black transition-colors shadow-md">
+                        Guardar Vínculo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CONFIG -->
+    <div id="modal-configuracion" class="modal-overlay hidden fixed inset-0 bg-black/20 backdrop-blur-md z-50 items-center justify-center p-4">
+        <div class="bg-cream-bg/90 backdrop-blur-xl rounded-[32px] p-8 w-full max-w-sm relative animate-scale-up shadow-2xl border border-white">
+            <button onclick="cerrarModal('modal-configuracion')" class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/60 hover:bg-white shadow-sm flex items-center justify-center text-cream-dark transition-all">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-2xl font-bold text-cream-dark mb-2 tracking-tight">Meta Mensual</h3>
+            <p class="text-[14px] font-medium text-cream-gray mb-6">Define el objetivo económico del mes.</p>
             
             <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Meta Mensual ($)</label>
-                    <input type="number" id="input-meta" class="w-full bg-gray-50 border border-gray-200 text-gray-700 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-app-green">
+                <div class="relative">
+                    <span class="absolute left-5 top-1/2 -translate-y-1/2 text-cream-gray font-bold text-lg">$</span>
+                    <input type="number" id="input-meta" class="w-full glass-input rounded-[20px] pl-10 pr-4 py-4 font-bold text-xl focus:outline-none">
                 </div>
-                <button onclick="guardarConfiguracion()" class="w-full bg-app-text text-white font-medium rounded-xl py-3 hover:bg-black transition-colors shadow-md">
-                    Guardar Cambios
+                <button onclick="guardarConfiguracion()" class="w-full bg-cream-dark text-white font-bold text-[15px] rounded-[20px] py-4 hover:bg-black transition-colors shadow-md">
+                    Actualizar
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL: Notificaciones -->
-    <div id="modal-notificaciones" class="modal-overlay fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center">
-        <div class="modal-content bg-white rounded-3xl p-8 w-full max-w-sm soft-shadow relative flex flex-col max-h-[80vh]">
-            <button onclick="cerrarModal('modal-notificaciones')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800"><i class="fa-solid fa-xmark text-xl"></i></button>
-            <div class="w-12 h-12 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center text-xl mb-4">
-                <i class="fa-solid fa-bell"></i>
-            </div>
-            <h3 class="text-xl font-bold mb-4">Notificaciones</h3>
+    <!-- MODAL NOTIF -->
+    <div id="modal-notificaciones" class="modal-overlay hidden fixed inset-0 bg-black/20 backdrop-blur-md z-50 items-center justify-center p-4">
+        <div class="bg-cream-bg/90 backdrop-blur-xl rounded-[32px] p-8 w-full max-w-md relative flex flex-col max-h-[80vh] animate-scale-up shadow-2xl border border-white">
+            <button onclick="cerrarModal('modal-notificaciones')" class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/60 hover:bg-white shadow-sm flex items-center justify-center text-cream-dark transition-all">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-2xl font-bold text-cream-dark mb-6 tracking-tight">Actividad</h3>
             
-            <div id="lista-notificaciones" class="flex-1 overflow-y-auto space-y-3 hide-scrollbar">
-                <div class="bg-gray-50 rounded-xl p-4 text-sm text-gray-600 text-center">
-                    Sistema inicializado correctamente.
+            <div id="lista-notificaciones" class="flex-1 overflow-y-auto space-y-3 hide-scrollbar pr-1">
+                <div class="bg-white/60 rounded-[24px] p-5 text-[14px] font-medium text-cream-dark flex gap-4 border border-white shadow-sm">
+                    <i class="fa-solid fa-circle-check text-cream-accent mt-0.5 text-xl"></i>
+                    <div>
+                        <span class="font-bold block mb-1">Sistema Iniciado</span>
+                        Listo para registrar operaciones y sincronizar en la nube.
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL: Perfil -->
-    <div id="modal-perfil" class="modal-overlay fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center">
-        <div class="modal-content bg-white rounded-3xl p-8 w-full max-w-sm soft-shadow relative text-center">
-            <button onclick="cerrarModal('modal-perfil')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800"><i class="fa-solid fa-xmark text-xl"></i></button>
-            <div class="w-24 h-24 rounded-full bg-gray-200 overflow-hidden mx-auto mb-4 border-4 border-white shadow-md">
-                <img src="https://ui-avatars.com/api/?name=Admin&background=random&size=128" alt="Admin" class="w-full h-full object-cover">
-            </div>
-            <h3 class="text-xl font-bold">Administrador</h3>
-            <p class="text-sm text-gray-500 mb-6">Iglesia Finanzas App</p>
-            
-            <button onclick="cerrarModal('modal-perfil')" class="w-full bg-red-50 text-red-500 font-medium rounded-xl py-3 hover:bg-red-100 transition-colors">
-                Cerrar Sesión (Simulado)
-            </button>
-        </div>
-    </div>
+    <!-- LÓGICA DE DATOS -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot, addDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    <!-- Lógica del Sistema -->
-    <script>
-        // --- BASE DE DATOS Y ESTADO ---
-        const servidores = {
-            "Alabanza": ["Kevin", "Sarita", "Marina", "Hernan", "Isabel", "Pablito", "Alondra"],
-            "Panderos": ["Hanna", "Kenda", "Sofy", "Ximena", "Gis"],
-            "Multimedia": ["Carlos", "Isis", "Cesar"],
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'finanzas-mision-app';
+        let firebaseConfig = null;
+        try { firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null; } catch(e) {}
+        const initialToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        
+        // Variables globales
+        let META_MENSUAL = 20000;
+        let aportaciones = [];
+        let barChartInstance = null;
+        let pieChartInstance = null;
+        let totalesMinisterio = {};
+        let totalesFondo = {};
+        
+        window.fondosInfo = {
+            "General": { icon: "fa-church", encargada: "Alondra", desc: "Fondo principal de la iglesia." },
+            "Eventos": { icon: "fa-calendar-check", encargada: "Isis", desc: "Fondos para eventos." },
+            "Multimedia": { icon: "fa-photo-film", encargada: "Isis", desc: "Fondos para multimedia." },
+            "Panderos": { icon: "fa-compact-disc", encargada: "Sofia", desc: "Fondo para el ministerio de Panderos." },
+            "Alabanza": { icon: "fa-music", encargada: "Isabel", desc: "Fondo para el ministerio de Alabanza." }
+        };
+        
+        window.servidores = {
+            "Alabanza": ["Juan", "Maria"],
+            "Panderos": ["Ana", "Sofia"],
+            "Multimedia": ["Pedro", "Luis"],
             "Pastor": ["Pastor Principal"]
         };
 
-        let aportaciones = [];
-        let totalesMinisterio = { "Alabanza": 0, "Panderos": 0, "Multimedia": 0, "Pastor": 0 };
-        let META_MENSUAL = 20000;
-        
-        // Instancias de Chart.js
-        let barChartInstance = null;
-        let pieChartInstance = null;
+        // Asignando funciones a window para ser accesibles desde el HTML
+        window.cambiarVista = function(vistaId) {
+            document.querySelectorAll('.view-section').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('flex');
+            });
+            
+            const selected = document.getElementById(`vista-${vistaId}`);
+            if(selected) {
+                selected.classList.remove('hidden');
+                selected.classList.add('flex');
+            }
 
-        // --- INICIALIZACIÓN ---
-        window.onload = () => {
-            const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-            const hoy = new Date();
-            const mesActual = meses[hoy.getMonth()];
-            document.getElementById('mesTitulo').innerText = `Finanzas ${mesActual}`;
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-cream-dark', 'text-white', 'shadow-lg');
+                btn.classList.add('text-cream-gray');
+            });
             
-            // Establecer la fecha de hoy por defecto en el input
-            document.getElementById('fecha-aporte').value = hoy.toISOString().split('T')[0];
-            
-            inicializarGraficas();
-            renderizarDirectorio();
-            renderizarCalendario();
+            const activeBtn = document.getElementById(`btn-nav-${vistaId}`);
+            if(activeBtn) {
+                activeBtn.classList.add('bg-cream-dark', 'text-white', 'shadow-lg');
+                activeBtn.classList.remove('text-cream-gray');
+            }
         };
 
-        // --- NAVEGACIÓN Y VISTAS ---
-        function cambiarVista(vistaId) {
-            // Ocultar todas las vistas
-            document.querySelectorAll('main > div').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('main > div').forEach(el => el.classList.remove('flex'));
-            
-            // Mostrar la seleccionada
-            const vista = document.getElementById(`vista-${vistaId}`);
-            vista.classList.remove('hidden');
-            vista.classList.add('flex');
+        window.abrirModal = function(id) {
+            const modal = document.getElementById(id);
+            if(modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        };
 
-            // Actualizar botones del menú
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('text-black');
-                btn.classList.add('text-gray-400');
-            });
-            const btnActivo = document.getElementById(`btn-nav-${vistaId}`);
-            if(btnActivo) {
-                btnActivo.classList.remove('text-gray-400');
-                btnActivo.classList.add('text-black');
+        window.cerrarModal = function(id) {
+            const modal = document.getElementById(id);
+            if(modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
             }
+        };
 
-            // Si entra a reportes, actualizar tabla
-            if(vistaId === 'charts') {
-                actualizarTablaReportes();
-            }
-        }
-
-        // --- MODALES ---
-        function abrirModal(modalId) {
-            document.getElementById(modalId).classList.add('active');
-            if(modalId === 'modal-configuracion') {
-                document.getElementById('input-meta').value = META_MENSUAL;
-            }
-            if(modalId === 'modal-notificaciones') {
-                document.getElementById('badge-notif').classList.add('hidden'); // Limpiar badge
-            }
-        }
-        function cerrarModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-        }
-        function guardarConfiguracion() {
-            const nuevaMeta = parseFloat(document.getElementById('input-meta').value);
-            if(!isNaN(nuevaMeta) && nuevaMeta > 0) {
-                META_MENSUAL = nuevaMeta;
-                document.getElementById('display-meta').innerText = `$${META_MENSUAL.toLocaleString('es-MX')}`;
-                agregarNotificacion(`Meta mensual actualizada a $${META_MENSUAL.toLocaleString('es-MX')}`);
-                actualizarUI();
-                cerrarModal('modal-configuracion');
-            }
-        }
-
-        // --- FUNCIONES PRINCIPALES ---
-        function actualizarServidores() {
-            const ministerioSelect = document.getElementById('ministerio').value;
-            const servidorSelect = document.getElementById('servidor');
-            
-            servidorSelect.innerHTML = '<option value="" disabled selected>Selecciona Servidor</option>';
-            if (ministerioSelect && servidores[ministerioSelect]) {
-                servidores[ministerioSelect].forEach(nombre => {
-                    const option = document.createElement('option');
-                    option.value = nombre;
-                    option.textContent = nombre;
-                    servidorSelect.appendChild(option);
+        window.actualizarServidores = function() {
+            const min = document.getElementById('ministerio').value;
+            const selectServ = document.getElementById('servidor');
+            selectServ.innerHTML = '<option value="" disabled selected>Servidor</option>';
+            if(window.servidores[min]) {
+                window.servidores[min].forEach(s => {
+                    selectServ.innerHTML += `<option value="${s}">${s}</option>`;
                 });
             }
-        }
+        };
 
-        function registrarAportacion() {
-            const ministerio = document.getElementById('ministerio').value;
-            const servidor = document.getElementById('servidor').value;
+        window.registrarAportacion = function() {
+            const min = document.getElementById('ministerio').value;
+            const serv = document.getElementById('servidor').value;
+            const fondo = document.getElementById('fondo-destino').value;
             const monto = parseFloat(document.getElementById('monto').value);
-            const fechaInput = document.getElementById('fecha-aporte').value;
+            const fecha = document.getElementById('fecha-aporte').value;
 
-            if (!ministerio) return mostrarErrorBoton("Selecciona ministerio");
-            if (!servidor) return mostrarErrorBoton("Selecciona servidor");
-            if (isNaN(monto) || monto <= 0) return mostrarErrorBoton("Monto inválido");
-            if (!fechaInput) return mostrarErrorBoton("Selecciona una fecha");
+            if(!min || !serv || !fondo || !monto || !fecha) {
+                return;
+            }
 
-            // Crear objeto de fecha y formatearla
-            const [year, month, day] = fechaInput.split('-');
-            const fechaObj = new Date(year, month - 1, day);
-            const fechaStr = fechaObj.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' });
+            aportaciones.unshift({
+                ministerio: min,
+                servidor: serv,
+                fondoDestino: fondo,
+                monto: monto,
+                fechaISO: fecha,
+                fechaStr: fecha.split('-').reverse().join('/')
+            });
 
-            const nuevoRegistro = {
-                id: Date.now(),
-                ministerio,
-                servidor,
-                monto,
-                fechaObj: fechaObj,
-                fechaStr: fechaStr
-            };
-            
-            aportaciones.unshift(nuevoRegistro);
-            totalesMinisterio[ministerio] += monto;
-
-            // Limpiar formulario parcialmente (mantenemos la fecha por si hay varios registros el mismo día)
-            document.getElementById('monto').value = '';
-            document.getElementById('servidor').selectedIndex = 0;
-            document.getElementById('ministerio').selectedIndex = 0;
-            actualizarServidores();
-            
-            agregarNotificacion(`Nuevo aporte de ${servidor} ($${monto.toLocaleString('es-MX')}) el ${fechaStr}`);
             actualizarUI();
-            renderizarCalendario(); // Actualizar puntitos en calendario
             
-            const btn = document.getElementById('btn-registrar');
-            const txtOriginal = "Registrar Aporte";
-            btn.innerText = "¡Guardado!";
-            btn.classList.replace('bg-app-text', 'bg-app-green');
-            btn.classList.replace('text-white', 'text-gray-800');
-            setTimeout(() => {
-                btn.innerText = txtOriginal;
-                btn.classList.replace('bg-app-green', 'bg-app-text');
-                btn.classList.replace('text-gray-800', 'text-white');
-            }, 1500);
-        }
+            document.getElementById('monto').value = '';
+            document.getElementById('ministerio').selectedIndex = 0;
+            document.getElementById('servidor').innerHTML = '<option value="" disabled selected>Servidor</option>';
+            document.getElementById('fondo-destino').selectedIndex = 0;
+            document.getElementById('fecha-aporte').value = '';
+        };
 
-        function mostrarErrorBoton(mensaje) {
-            const btn = document.getElementById('btn-registrar');
-            const txtOriginal = "Registrar Aporte";
-            btn.innerText = mensaje;
-            btn.classList.replace('bg-app-text', 'bg-red-500');
-            setTimeout(() => {
-                btn.innerText = txtOriginal;
-                btn.classList.replace('bg-red-500', 'bg-app-text');
-            }, 2000);
-        }
+        window.cargarLogoIglesia = function(event) {
+            const file = event.target.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById('church-logo-img');
+                    const placeholder = document.getElementById('church-logo-placeholder');
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+                    placeholder.classList.add('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        };
 
-        function agregarNotificacion(mensaje) {
-            const lista = document.getElementById('lista-notificaciones');
-            const item = document.createElement('div');
-            item.className = 'bg-blue-50 border border-blue-100 rounded-xl p-3 text-sm text-gray-700 flex items-start gap-3 shadow-sm';
-            item.innerHTML = `<i class="fa-solid fa-info-circle text-blue-400 mt-0.5"></i> <span>${mensaje}</span>`;
-            lista.prepend(item);
-            document.getElementById('badge-notif').classList.remove('hidden'); // Mostrar puntito rojo
-        }
+        window.guardarConfiguracion = function() {
+            const meta = parseFloat(document.getElementById('input-meta').value);
+            if(meta) {
+                META_MENSUAL = meta;
+                actualizarUI();
+                window.cerrarModal('modal-configuracion');
+            }
+        };
 
+        window.guardarConexionDrive = function() {
+            window.cerrarModal('modal-drive');
+        };
+
+        window.exportarCSV = function() {
+            let csvContent = "data:text/csv;charset=utf-8,Fecha,Ministerio,Servidor,Fondo Destino,Monto\n";
+            aportaciones.forEach(row => {
+                csvContent += `${row.fechaStr},${row.ministerio},${row.servidor},${row.fondoDestino},${row.monto}\n`;
+            });
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "finanzas_mision.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        };
+        
         function actualizarUI() {
-            // Historial
+            totalesMinisterio = { "Alabanza": 0, "Panderos": 0, "Multimedia": 0, "Pastor": 0 };
+            totalesFondo = { "General": 0, "Eventos": 0, "Multimedia": 0, "Panderos": 0, "Alabanza": 0 };
+
+            aportaciones.forEach(reg => {
+                if(totalesMinisterio[reg.ministerio] !== undefined) totalesMinisterio[reg.ministerio] += reg.monto;
+                if(totalesFondo[reg.fondoDestino] !== undefined) totalesFondo[reg.fondoDestino] += reg.monto;
+            });
+
             const listaHTML = document.getElementById('listaRegistros');
-            document.getElementById('mensajeVacio').style.display = aportaciones.length ? 'none' : 'block';
+            const mensajeVacio = document.getElementById('mensajeVacio');
+            if (mensajeVacio) {
+                mensajeVacio.style.display = aportaciones.length ? 'none' : 'flex';
+            }
             
             listaHTML.innerHTML = aportaciones.map(reg => `
-                <div class="bg-white border border-gray-100 rounded-2xl p-3 flex items-center justify-between shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5 duration-200 group">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full flex items-center justify-center text-white ${getColorMinisterio(reg.ministerio)} shadow-sm group-hover:scale-105 transition-transform">
+                <div class="bg-white/60 rounded-[20px] p-4 flex items-center justify-between shadow-sm border border-white transition-all hover:bg-white">
+                    <div class="flex items-center gap-4">
+                        <div class="w-11 h-11 rounded-full bg-cream-dark text-white flex items-center justify-center font-bold text-[15px] shrink-0">
                             ${reg.servidor.charAt(0)}
                         </div>
                         <div>
-                            <p class="text-sm font-semibold text-gray-800">${reg.servidor}</p>
-                            <div class="flex items-center gap-1.5 mt-0.5">
-                                <span class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">${reg.ministerio}</span>
-                                <span class="text-[10px] text-gray-300">•</span>
-                                <span class="text-[10px] text-gray-400 font-medium"><i class="fa-regular fa-calendar-days mr-1"></i>${reg.fechaStr}</span>
-                            </div>
+                            <p class="text-[14px] font-bold text-cream-dark leading-tight mb-1">${reg.servidor}</p>
+                            <p class="text-[11px] font-bold text-cream-gray uppercase tracking-wide">${reg.ministerio} → <span class="text-cream-accent">${reg.fondoDestino}</span></p>
                         </div>
                     </div>
-                    <div class="font-bold text-gray-700 bg-gray-50 px-3 py-1 rounded-lg border border-gray-100">
-                        $${reg.monto.toLocaleString('es-MX')}
+                    <div class="text-right">
+                        <span class="text-[16px] font-bold text-cream-dark block tracking-tight">$${reg.monto.toLocaleString('es-MX')}</span>
+                        <span class="text-[11px] font-semibold text-cream-gray">${reg.fechaStr}</span>
                     </div>
                 </div>
             `).join('');
 
-            // Totales
-            const total = Object.values(totalesMinisterio).reduce((acc, curr) => acc + curr, 0);
-            document.getElementById('granTotal').innerText = `$${total.toLocaleString('es-MX')}`;
-            document.getElementById('totalOperaciones').innerText = aportaciones.length;
+            const granTotal = Object.values(totalesFondo).reduce((acc, curr) => acc + curr, 0);
             
-            let porcentaje = (total / META_MENSUAL) * 100;
+            const elGranTotal = document.getElementById('granTotal');
+            if (elGranTotal) elGranTotal.innerText = `$${granTotal.toLocaleString('es-MX')}`;
+            
+            const elTotalOperaciones = document.getElementById('totalOperaciones');
+            if (elTotalOperaciones) elTotalOperaciones.innerText = aportaciones.length;
+
+            const elMetaObjetivo = document.getElementById('texto-meta-objetivo');
+            if (elMetaObjetivo) elMetaObjetivo.innerText = `$${META_MENSUAL.toLocaleString('es-MX')}`;
+            
+            let porcentaje = granTotal > 0 ? (granTotal / META_MENSUAL) * 100 : 0;
             if(porcentaje > 100) porcentaje = 100;
-            document.getElementById('porcentajeMeta').innerText = `${porcentaje.toFixed(0)}%`;
-
-            // Gráficas
-            const dataGraficas = [totalesMinisterio['Alabanza'], totalesMinisterio['Panderos'], totalesMinisterio['Multimedia'], totalesMinisterio['Pastor']];
             
-            barChartInstance.data.datasets[0].data = dataGraficas;
-            barChartInstance.update();
+            const elPorcentajeMeta = document.getElementById('porcentajeMeta');
+            if (elPorcentajeMeta) elPorcentajeMeta.innerText = `${porcentaje.toFixed(0)}%`;
+            
+            const barraMeta = document.getElementById('barra-meta');
+            if (barraMeta) barraMeta.style.width = `${porcentaje}%`;
 
-            pieChartInstance.data.datasets[0].data = dataGraficas;
-            pieChartInstance.update();
+            if (barChartInstance && pieChartInstance) {
+                barChartInstance.data.datasets[0].data = [totalesMinisterio['Alabanza'], totalesMinisterio['Panderos'], totalesMinisterio['Multimedia'], totalesMinisterio['Pastor']];
+                barChartInstance.update();
+
+                pieChartInstance.data.datasets[0].data = [totalesFondo['General'], totalesFondo['Eventos'], totalesFondo['Multimedia'], totalesFondo['Panderos'], totalesFondo['Alabanza']];
+                pieChartInstance.update();
+            }
 
             actualizarTablaReportes();
+            renderizarFondos();
+            renderizarCalendario();
         }
 
-        // --- RENDERIZADO DE VISTAS SECUNDARIAS ---
         function actualizarTablaReportes() {
             const container = document.getElementById('tabla-reportes');
-            const total = Object.values(totalesMinisterio).reduce((acc, curr) => acc + curr, 0);
+            const total = Object.values(totalesFondo).reduce((acc, curr) => acc + curr, 0);
             
-            container.innerHTML = Object.entries(totalesMinisterio).map(([min, monto]) => {
+            container.innerHTML = Object.keys(window.fondosInfo).map(fondo => {
+                const monto = totalesFondo[fondo] || 0;
+                const info = window.fondosInfo[fondo];
                 const pct = total === 0 ? 0 : ((monto/total)*100).toFixed(1);
                 return `
-                <div class="bg-white rounded-xl p-4 flex justify-between items-center shadow-sm border border-gray-50">
-                    <div class="flex items-center gap-3">
-                        <span class="w-3 h-3 rounded-full ${getColorMinisterio(min)}"></span>
-                        <span class="font-semibold text-gray-700">${min}</span>
+                <div class="bg-white/60 rounded-[24px] p-5 flex justify-between items-center border border-white shadow-sm hover:bg-white transition-colors">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-full bg-cream-bg text-cream-accent border border-cream-border flex items-center justify-center text-xl">
+                            <i class="fa-solid ${info.icon}"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold tracking-tight text-cream-dark text-[16px] mb-1">${fondo}</p>
+                            <p class="text-[12px] font-semibold text-cream-gray uppercase tracking-wider">Encargada: ${info.encargada}</p>
+                        </div>
                     </div>
                     <div class="text-right">
-                        <p class="font-bold text-gray-800">$${monto.toLocaleString('es-MX')}</p>
-                        <p class="text-xs text-gray-400">${pct}% del total</p>
+                        <p class="font-bold tracking-tight text-cream-dark text-[18px]">$${monto.toLocaleString('es-MX')}</p>
+                        <p class="text-[12px] font-bold text-cream-accent">${pct}%</p>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function renderizarFondos() {
+            const grid = document.getElementById('grid-fondos');
+            grid.innerHTML = Object.keys(window.fondosInfo).map(fondo => {
+                const f = window.fondosInfo[fondo];
+                const monto = totalesFondo[fondo] || 0;
+                return `
+                <div class="bg-white/60 backdrop-blur-md rounded-[32px] p-8 flex flex-col justify-between shadow-sm border border-white transition-all hover:shadow-md hover:bg-white">
+                    <div class="flex justify-between items-start mb-8">
+                        <div class="w-16 h-16 rounded-full bg-cream-bg text-cream-accent border border-cream-border flex items-center justify-center text-2xl shadow-inner">
+                            <i class="fa-solid ${f.icon}"></i>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-[10px] font-bold tracking-widest text-cream-gray uppercase block mb-1">Responsable</span>
+                            <span class="text-[16px] text-cream-dark font-bold">${f.encargada}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-bold tracking-tight text-[24px] text-cream-dark">${fondo}</h3>
+                        <p class="text-[14px] font-medium text-cream-gray mb-6 mt-2 leading-relaxed">${f.desc}</p>
+                        <div class="text-4xl font-bold text-cream-dark tracking-tighter drop-shadow-sm">$${monto.toLocaleString('es-MX')}</div>
                     </div>
                 </div>
                 `;
@@ -592,18 +759,19 @@
 
         function renderizarDirectorio() {
             const grid = document.getElementById('grid-directorios');
-            grid.innerHTML = Object.entries(servidores).map(([ministerio, personas]) => `
-                <div class="bg-gray-50 rounded-3xl p-6 border border-gray-100">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-8 h-8 rounded-full ${getColorMinisterio(ministerio)} flex items-center justify-center text-white shadow-sm">
-                            <i class="fa-solid fa-users text-xs"></i>
+            grid.innerHTML = Object.entries(window.servidores).map(([ministerio, personas]) => `
+                <div class="bg-white/60 backdrop-blur-md rounded-[32px] p-8 shadow-sm border border-white hover:bg-white transition-colors">
+                    <div class="flex items-center gap-4 mb-6 pb-5 border-b border-cream-dark/5">
+                        <div class="w-10 h-10 rounded-full bg-cream-dark text-white flex items-center justify-center shadow-md">
+                            <i class="fa-solid fa-users text-[13px]"></i>
                         </div>
-                        <h3 class="font-bold text-gray-800 text-lg">${ministerio}</h3>
+                        <h3 class="text-2xl font-bold tracking-tight text-cream-dark">${ministerio}</h3>
                     </div>
-                    <div class="space-y-2">
+                    <div class="space-y-3">
                         ${personas.map(p => `
-                            <div class="flex items-center gap-2 text-sm text-gray-600 bg-white p-2 rounded-lg border border-gray-100 shadow-sm">
-                                <i class="fa-regular fa-user text-gray-400"></i> ${p}
+                            <div class="flex items-center justify-between text-[14px] text-cream-dark font-bold bg-cream-bg border border-cream-border px-5 py-3.5 rounded-[16px] shadow-sm">
+                                <span>${p}</span>
+                                <i class="fa-solid fa-circle-check text-cream-accent text-[16px]"></i>
                             </div>
                         `).join('')}
                     </div>
@@ -615,110 +783,128 @@
             const grid = document.getElementById('grid-calendario');
             const hoy = new Date();
             const diasMes = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0).getDate();
-            const primerDia = new Date(hoy.getFullYear(), hoy.getMonth(), 1).getDay(); // 0 (Dom) a 6 (Sab)
+            const primerDia = new Date(hoy.getFullYear(), hoy.getMonth(), 1).getDay();
             
-            // Días con aportaciones
-            const diasConAporte = aportaciones.map(a => a.fechaObj.getDate());
+            const diasConAporte = aportaciones.map(a => {
+                if(!a.fechaISO) return null;
+                return parseInt(a.fechaISO.split('-')[2]);
+            }).filter(d => d !== null);
 
             let html = '';
-            // Espacios vacíos
             for(let i=0; i<primerDia; i++) html += `<div class="aspect-square"></div>`;
             
-            // Días del mes
             for(let i=1; i<=diasMes; i++) {
                 const esHoy = i === hoy.getDate();
                 const tieneAporte = diasConAporte.includes(i);
                 
-                let clases = "aspect-square rounded-2xl flex flex-col items-center justify-center text-sm relative transition-all ";
+                let clases = "aspect-square rounded-full flex flex-col items-center justify-center text-[15px] font-bold relative transition-all ";
                 if(esHoy) {
-                    clases += "bg-app-green text-gray-800 font-bold shadow-md scale-105";
+                    clases += "bg-cream-dark text-white shadow-lg scale-110 z-10";
+                } else if(tieneAporte) {
+                    clases += "bg-cream-bg text-cream-accent border border-cream-accent/20";
                 } else {
-                    clases += "bg-gray-50 text-gray-600 border border-gray-100 hover:bg-gray-100 cursor-pointer";
+                    clases += "text-cream-dark hover:bg-white hover:shadow-sm";
                 }
 
                 html += `
                 <div class="${clases}">
                     <span>${i}</span>
-                    ${tieneAporte ? `<span class="absolute bottom-2 w-1.5 h-1.5 rounded-full ${esHoy ? 'bg-gray-800' : 'bg-app-green'}"></span>` : ''}
+                    ${tieneAporte && !esHoy ? `<span class="absolute bottom-1.5 w-1.5 h-1.5 rounded-full bg-cream-accent"></span>` : ''}
                 </div>`;
             }
             grid.innerHTML = html;
         }
 
-        // --- UTILIDADES ---
-        function getColorMinisterio(ministerio) {
-            const colors = {
-                "Alabanza": "bg-blue-400",
-                "Panderos": "bg-pink-400",
-                "Multimedia": "bg-purple-400",
-                "Pastor": "bg-gray-800"
-            };
-            return colors[ministerio] || "bg-gray-400";
-        }
-        
-        function getColorHex(ministerio) {
-             const colors = {
-                "Alabanza": "#60a5fa",
-                "Panderos": "#f472b6",
-                "Multimedia": "#c084fc",
-                "Pastor": "#1f2937"
-            };
-            return colors[ministerio] || "#9ca3af";
-        }
-
         function inicializarGraficas() {
-            Chart.defaults.font.family = 'Inter';
-            Chart.defaults.color = '#9ca3af';
+            Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif';
+            Chart.defaults.color = '#8C8177';
+            Chart.defaults.font.weight = '600';
 
-            // Gráfica de Barras (Home)
             const ctxBar = document.getElementById('barChart').getContext('2d');
-            const gradient = ctxBar.createLinearGradient(0, 0, 0, 200);
-            gradient.addColorStop(0, '#c4d872'); 
-            gradient.addColorStop(1, '#a6bb52');
-
             barChartInstance = new Chart(ctxBar, {
                 type: 'bar',
                 data: {
                     labels: ['Alabanza', 'Panderos', 'Multimedia', 'Pastor'],
                     datasets: [{
                         data: [0, 0, 0, 0],
-                        backgroundColor: gradient,
+                        /* Paleta de tonos cremosos / arena / espresso */
+                        backgroundColor: ['#C4A47C', '#A88B68', '#3A312A', '#E6D7C3'],
                         borderRadius: 8,
-                        barThickness: 24
+                        maxBarThickness: 36,
+                        borderSkipped: false
                     }]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(58, 49, 42, 0.95)',
+                            titleColor: '#fff',
+                            bodyColor: '#C4A47C',
+                            padding: 16,
+                            displayColors: false,
+                            cornerRadius: 16,
+                            callbacks: { label: ctx => '$' + ctx.parsed.y.toLocaleString('es-MX') }
+                        }
+                    },
                     scales: {
-                        y: { beginAtZero: true, grid: { color: '#f3f4f6' }, ticks: { callback: v => v===0?'0':'$'+(v/1000)+'k' } },
-                        x: { grid: { display: false } }
+                        y: {
+                            beginAtZero: true,
+                            border: { display: false },
+                            grid: { color: 'rgba(58, 49, 42, 0.05)' },
+                            ticks: { font: { size: 12 }, callback: v => v === 0 ? '$0' : '$' + (v/1000) + 'k' }
+                        },
+                        x: {
+                            border: { display: false },
+                            grid: { display: false },
+                            ticks: { font: { size: 13 }, color: '#3A312A' }
+                        }
                     }
                 }
             });
 
-            // Gráfica de Pastel (Reportes)
             const ctxPie = document.getElementById('pieChart').getContext('2d');
             pieChartInstance = new Chart(ctxPie, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Alabanza', 'Panderos', 'Multimedia', 'Pastor'],
+                    labels: ['General', 'Eventos', 'Multimedia', 'Panderos', 'Alabanza'],
                     datasets: [{
-                        data: [0, 0, 0, 0],
-                        backgroundColor: [getColorHex('Alabanza'), getColorHex('Panderos'), getColorHex('Multimedia'), getColorHex('Pastor')],
+                        data: [0, 0, 0, 0, 0],
+                        /* Paleta Premium Crema */
+                        backgroundColor: ['#3A312A', '#C4A47C', '#A88B68', '#E6D7C3', '#8C8177'],
                         borderWidth: 0,
-                        hoverOffset: 10
+                        hoverOffset: 8
                     }]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
-                    cutout: '70%',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '72%',
                     plugins: {
-                        legend: { position: 'bottom', labels: { padding: 20, usePointStyle: true } }
+                        legend: {
+                            position: 'bottom',
+                            labels: { padding: 24, usePointStyle: true, pointStyle: 'circle', font: { size: 13, weight: 'bold' }, color: '#3A312A' }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(58, 49, 42, 0.95)',
+                            padding: 16,
+                            cornerRadius: 16,
+                            bodyColor: '#C4A47C',
+                            callbacks: { label: ctx => ' $' + ctx.parsed.toLocaleString('es-MX') }
+                        }
                     }
                 }
             });
         }
+
+        // Inicialización inicial
+        document.addEventListener('DOMContentLoaded', () => {
+            inicializarGraficas();
+            renderizarDirectorio();
+            actualizarUI();
+        });
     </script>
 </body>
 </html>
