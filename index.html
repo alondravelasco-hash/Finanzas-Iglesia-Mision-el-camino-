@@ -486,6 +486,9 @@
         import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, onSnapshot, addDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+        // URL fija de tu Google Apps Script
+        const driveWebhookUrl = "https://script.google.com/macros/s/AKfycbxMf_E0rnG7o9dUWSBQQavxW66isMWb0KXftPGpM5aJgyAMgh-AZPFRmv8vTgNcganC/exec";
+
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'finanzas-mision-app';
         let firebaseConfig = null;
         try { firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null; } catch(e) {}
@@ -508,9 +511,9 @@
         };
         
         window.servidores = {
-            "Alabanza": ["Juan", "Maria"],
-            "Panderos": ["Ana", "Sofia"],
-            "Multimedia": ["Pedro", "Luis"],
+            "Alabanza": ["Kevin", "Isabel", "Alondra", "Marina", "Pablo Urias", "Hernan"],
+            "Panderos": ["Hanna", "Sofia", "Kendra", "Ximena", "Giselle"],
+            "Multimedia": ["Carlos", "Isis", "Arturo", "Cesar"],
             "Pastor": ["Pastor Principal"]
         };
 
@@ -577,16 +580,44 @@
                 return;
             }
 
+            const fechaFormateada = fecha.split('-').reverse().join('/');
+
             aportaciones.unshift({
                 ministerio: min,
                 servidor: serv,
                 fondoDestino: fondo,
                 monto: monto,
                 fechaISO: fecha,
-                fechaStr: fecha.split('-').reverse().join('/')
+                fechaStr: fechaFormateada
             });
 
             actualizarUI();
+            
+            // --- CÓDIGO PARA ENVIAR AUTOMÁTICAMENTE A DRIVE ---
+            fetch(driveWebhookUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    fechaStr: fechaFormateada,
+                    ministerio: min,
+                    servidor: serv,
+                    fondoDestino: fondo,
+                    monto: monto
+                })
+            }).then(() => {
+                console.log("¡Registro sincronizado con Drive exitosamente!");
+                const driveDot = document.getElementById('drive-dot');
+                if(driveDot) {
+                    driveDot.classList.remove('bg-orange-400');
+                    driveDot.classList.add('bg-green-500');
+                }
+            }).catch(error => {
+                console.error("Error al sincronizar con Drive:", error);
+            });
+            // ---------------------------------------------------
             
             document.getElementById('monto').value = '';
             document.getElementById('ministerio').selectedIndex = 0;
