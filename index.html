@@ -712,14 +712,14 @@
             "Pastor": ["Pastor Principal"]
         };
 
-        // --- CARGAR DATOS DESDE GOOGLE SHEETS AL ABRIR LA PÁGINA ---
-        async function cargarDatosDesdeDrive() {
+        // --- CARGAR DATOS DESDE GOOGLE SHEETS AL ABRIR LA PÁGINA (INMUNE A CORS) ---
+        function cargarDatosDesdeDrive() {
             const dot = document.getElementById('drive-dot');
             const label = document.getElementById('drive-label');
-            try {
-                const res = await fetch(driveWebhookUrl);
-                const json = await res.json();
-                if (json.status === "success" && Array.isArray(json.data)) {
+            const callbackName = 'googleSheetsCallback_' + Date.now();
+
+            window[callbackName] = function(json) {
+                if (json && json.status === "success" && Array.isArray(json.data)) {
                     aportaciones = json.data.reverse().map(item => {
                         let tipo = 'ministerio';
                         if (item.ministerio === 'Culto Miércoles' || item.ministerio === 'Culto Domingo') tipo = 'culto';
@@ -730,11 +730,18 @@
                     if (dot) { dot.classList.remove('bg-orange-400', 'bg-red-500'); dot.classList.add('bg-green-500'); }
                     if (label) { label.innerText = "Drive Conectado"; }
                 }
-            } catch (err) {
-                console.error("Error leyendo Sheets:", err);
+                delete window[callbackName];
+                document.getElementById(callbackName)?.remove();
+            };
+
+            const script = document.createElement('script');
+            script.id = callbackName;
+            script.src = `${driveWebhookUrl}?callback=${callbackName}`;
+            script.onerror = function() {
                 if (dot) { dot.classList.remove('bg-green-500', 'bg-orange-400'); dot.classList.add('bg-red-500'); }
                 if (label) { label.innerText = "Error de Conexión"; }
-            }
+            };
+            document.body.appendChild(script);
         }
 
         // --- ENVIAR DATOS A GOOGLE SHEETS ---
