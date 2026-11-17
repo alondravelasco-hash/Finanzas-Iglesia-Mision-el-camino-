@@ -147,7 +147,7 @@
             </div>
         </div>
 
-        <!-- SELECTOR DE PERFILES (6 COLUMNAS COMPACTAS SIN CORTARSE) -->
+        <!-- SELECTOR DE PERFILES (7 COLUMNAS COMPACTAS) -->
         <div class="glass-card p-1 rounded-full flex items-center gap-0.5 overflow-x-auto max-w-full hide-scrollbar">
             <button onclick="cambiarPerfil('general')" id="tab-perfil-general" class="perfil-tab px-3 py-2 rounded-full text-[11px] font-bold bg-cream-dark text-white shadow-sm transition-all whitespace-nowrap">
                 <i class="fa-solid fa-hand-holding-heart mr-1"></i>Finanzas
@@ -156,7 +156,10 @@
                 <i class="fa-solid fa-vault mr-1"></i>Tesorería
             </button>
             <button onclick="cambiarPerfil('responsables')" id="tab-perfil-responsables" class="perfil-tab px-3 py-2 rounded-full text-[11px] font-bold text-cream-gray hover:text-cream-dark transition-all whitespace-nowrap">
-                <i class="fa-solid fa-user-check mr-1"></i>Responsables Tesorería
+                <i class="fa-solid fa-user-check mr-1"></i>Responsables
+            </button>
+            <button onclick="cambiarPerfil('jovenes')" id="tab-perfil-jovenes" class="perfil-tab px-3 py-2 rounded-full text-[11px] font-bold text-cream-gray hover:text-cream-dark transition-all whitespace-nowrap">
+                <i class="fa-solid fa-cake-candles mr-1"></i>Jóvenes Misión
             </button>
             <button onclick="cambiarPerfil('calendario')" id="tab-perfil-calendario" class="perfil-tab px-3 py-2 rounded-full text-[11px] font-bold text-cream-gray hover:text-cream-dark transition-all whitespace-nowrap">
                 <i class="fa-solid fa-calendar-days mr-1"></i>Calendario
@@ -470,11 +473,10 @@
         </div>
 
         <!-- ========================================================= -->
-        <!-- PERFIL 3 (NUEVO): RESPONSABLES DE TESORERÍA Y CORTE DOMINICAL -->
+        <!-- PERFIL 3: RESPONSABLES DE TESORERÍA Y CORTE DOMINICAL     -->
         <!-- ========================================================= -->
         <div id="vista-responsables" class="view-section hidden flex-col gap-6 animate-fade-in">
             
-            <!-- Encabezado y Tarjetas de Responsables -->
             <div class="glass-hero rounded-[32px] p-8">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                     <div>
@@ -489,14 +491,11 @@
                     </div>
                 </div>
 
-                <!-- Grid de 5 Responsables -->
                 <div id="grid-responsables-tesoreria" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4"></div>
             </div>
 
-            <!-- Formulario de Actualización Dominical + Bitácora Semanal -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 
-                <!-- Registrar Actualización del Domingo -->
                 <div class="lg:col-span-5 glass-card rounded-[32px] p-7">
                     <div class="flex items-center justify-between mb-5">
                         <div>
@@ -554,7 +553,6 @@
                     </div>
                 </div>
 
-                <!-- Historial de Reportes Dominicales -->
                 <div class="lg:col-span-7 glass-card rounded-[32px] p-7 flex flex-col max-h-[500px]">
                     <div class="flex items-center justify-between mb-5">
                         <div>
@@ -569,7 +567,167 @@
         </div>
 
         <!-- ========================================================= -->
-        <!-- PERFIL 4: CALENDARIO DE REUNIONES Y EVENTOS               -->
+        <!-- PERFIL 4 (NUEVO): JÓVENES MISIÓN (CUMPLEAÑOS Y PASTELES)  -->
+        <!-- ========================================================= -->
+        <div id="vista-jovenes" class="view-section hidden flex-col gap-6 animate-fade-in">
+            
+            <!-- Banner Superior: Próximo Cumpleaños + Resumen Fondo Pasteles -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- Próximo Cumpleaños Destacado -->
+                <div class="lg:col-span-7 glass-hero rounded-[32px] p-8 flex flex-col justify-between">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <span class="text-[11px] tracking-[0.15em] text-cream-gray font-bold uppercase block mb-1">Sociedad de Jóvenes Misión</span>
+                            <h2 class="text-2xl sm:text-3xl font-bold text-cream-dark">Cumpleaños y Festejos</h2>
+                        </div>
+                        <div class="w-12 h-12 rounded-[18px] bg-white/80 text-cream-accent flex items-center justify-center text-xl shadow-sm border border-white shrink-0">
+                            <i class="fa-solid fa-cake-candles"></i>
+                        </div>
+                    </div>
+
+                    <div id="proximo-cumple-banner" class="my-5 bg-white/75 rounded-[24px] p-5 border border-white shadow-sm">
+                        <!-- Dinámico -->
+                    </div>
+
+                    <!-- Formulario rápido para agregar / actualizar cumpleaños -->
+                    <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 pt-1">
+                        <input type="text" id="jm-nuevo-nombre" placeholder="Nombre del joven" class="sm:col-span-4 glass-input rounded-[16px] px-3.5 py-2.5 text-xs font-bold">
+                        <input type="date" id="jm-nueva-fecha" class="sm:col-span-3 glass-input rounded-[16px] px-3 py-2.5 text-xs font-bold" title="Fecha de nacimiento o cumpleaños">
+                        <input type="tel" id="jm-nuevo-tel" placeholder="WhatsApp (opcional)" class="sm:col-span-3 glass-input rounded-[16px] px-3.5 py-2.5 text-xs font-bold">
+                        <button onclick="guardarCumpleJoven()" class="sm:col-span-2 bg-cream-dark text-white font-bold text-xs rounded-[16px] py-2.5 hover:bg-black transition-all">
+                            + Guardar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- KPIs Fondo para Pasteles -->
+                <div class="lg:col-span-5 glass-card rounded-[32px] p-8 flex flex-col justify-between">
+                    <div>
+                        <span class="text-[11px] tracking-[0.15em] text-cream-gray font-bold uppercase block mb-1">Fondo de Celebraciones</span>
+                        <h3 class="text-xl font-bold text-cream-dark">Cooperación para Pasteles</h3>
+                    </div>
+
+                    <div class="my-4">
+                        <div class="flex items-baseline justify-between">
+                            <span id="jm-total-recaudado" class="text-5xl font-bold text-cream-dark tracking-tight">$0</span>
+                            <span class="text-xs font-bold text-cream-accent bg-white/80 px-3 py-1 rounded-full border border-white">
+                                <span id="jm-total-aportantes">0</span> aportaciones
+                            </span>
+                        </div>
+                        <p class="text-xs text-cream-gray font-medium mt-2">Total acumulado entre todos los jóvenes para pasteles y festejos.</p>
+                    </div>
+
+                    <!-- Meta pastel del festejo seleccionado -->
+                    <div class="bg-white/65 rounded-[20px] p-4 border border-white space-y-2">
+                        <div class="flex items-center justify-between text-xs font-bold">
+                            <span class="text-cream-dark truncate max-w-[65%]" id="jm-meta-label">Festejo activo</span>
+                            <span class="text-cream-accent" id="jm-meta-monto">$0 / $450</span>
+                        </div>
+                        <div class="w-full h-2.5 bg-black/5 rounded-full overflow-hidden">
+                            <div id="jm-barra-pastel" class="h-full bg-cream-accent rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                        <div class="flex items-center justify-between pt-1">
+                            <span class="text-[10px] font-semibold text-cream-gray">Costo estimado del pastel:</span>
+                            <button onclick="ajustarMetaPastel()" class="text-[10px] font-bold text-cream-dark hover:text-cream-accent underline">
+                                Cambiar meta ($<span id="jm-costo-pastel-val">450</span>)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Sección Inferior: Lista de Cumpleaños + Registrar Cooperación + Registro de Quién Aportó -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- Columna 1 (4 cols): Calendario de Cumpleaños de los Jóvenes -->
+                <div class="lg:col-span-4 glass-card rounded-[32px] p-7 flex flex-col max-h-[520px]">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-bold text-cream-dark">Días de Cumpleaños</h3>
+                            <p class="text-xs text-cream-gray font-medium">Ordenados del más próximo al más lejano</p>
+                        </div>
+                        <span id="jm-count-jovenes" class="text-[11px] font-bold px-3 py-1 rounded-full bg-white/80 text-cream-dark border border-white">0</span>
+                    </div>
+                    <div id="jm-lista-cumples" class="space-y-2.5 overflow-y-auto flex-1 pr-1 hide-scrollbar"></div>
+                </div>
+
+                <!-- Columna 2 (4 cols): Formulario Cooperación para Pastel -->
+                <div class="lg:col-span-4 glass-card rounded-[32px] p-7 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-5">
+                            <div>
+                                <h3 class="text-lg font-bold text-cream-dark">Aportar para Pastel</h3>
+                                <p class="text-xs text-cream-gray font-medium">Registra la cooperación de cada joven</p>
+                            </div>
+                            <div class="w-9 h-9 rounded-full bg-white/75 flex items-center justify-center text-cream-accent">
+                                <i class="fa-solid fa-hand-holding-dollar text-sm"></i>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3.5">
+                            <div>
+                                <label class="text-[10px] font-bold uppercase text-cream-gray block mb-1 ml-1">Pastel / Festejado</label>
+                                <select id="jm-festejado-select" onchange="actualizarBarraPastelSeleccionado()" class="w-full glass-input rounded-[18px] px-4 py-3 text-xs font-bold">
+                                    <!-- Dinámico con los jóvenes + Fondo General Pasteles -->
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="text-[10px] font-bold uppercase text-cream-gray block mb-1 ml-1">¿Quién aporta?</label>
+                                <input type="text" id="jm-aportante" list="lista-jovenes-pastel" placeholder="Escribe o elige el joven que coopera" class="w-full glass-input rounded-[18px] px-4 py-3 text-xs font-bold">
+                                <datalist id="lista-jovenes-pastel"></datalist>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="text-[10px] font-bold uppercase text-cream-gray block mb-1 ml-1">Cooperación</label>
+                                    <div class="relative">
+                                        <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-cream-gray font-bold text-xs">$</span>
+                                        <input type="number" id="jm-monto" placeholder="50" class="w-full glass-input rounded-[18px] pl-7 pr-3 py-3 text-sm font-bold">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold uppercase text-cream-gray block mb-1 ml-1">Fecha</label>
+                                    <input type="date" id="jm-fecha-aporte" class="w-full glass-input rounded-[18px] px-3 py-3 text-xs font-bold">
+                                </div>
+                            </div>
+
+                            <button onclick="registrarCooperacionPastel()" class="w-full bg-cream-accent hover:bg-cream-accent-hover text-white font-bold text-xs rounded-[18px] py-3.5 transition-all shadow-md flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-cake-candles"></i> Registrar Cooperación
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-cream-dark/10 flex items-center justify-between text-[11px] font-semibold text-cream-gray">
+                        <span>Responsable Jóvenes: <strong class="text-cream-dark">Pablo</strong></span>
+                        <button onclick="compartirColectaWhatsApp()" class="text-[#25D366] font-bold hover:underline flex items-center gap-1">
+                            <i class="fa-brands fa-whatsapp"></i> Compartir lista
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Columna 3 (4 cols): Registro Transparente de Quién Aportó -->
+                <div class="lg:col-span-4 glass-card rounded-[32px] p-7 flex flex-col max-h-[520px]">
+                    <div class="flex items-center justify-between gap-2 mb-4">
+                        <div>
+                            <h3 class="text-lg font-bold text-cream-dark">Registro de Quién Aportó</h3>
+                            <p class="text-xs text-cream-gray font-medium">Historial detallado por festejo</p>
+                        </div>
+                        <select id="jm-filtro-festejado" onchange="renderizarCooperacionesPastel()" class="glass-input rounded-full px-3 py-1.5 text-[10px] font-bold max-w-[125px]">
+                            <option value="TODOS">Ver todos</option>
+                        </select>
+                    </div>
+
+                    <div id="jm-lista-aportaciones" class="space-y-2.5 overflow-y-auto flex-1 pr-1 hide-scrollbar"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- PERFIL 5: CALENDARIO DE REUNIONES Y EVENTOS               -->
         <!-- ========================================================= -->
         <div id="vista-calendario" class="view-section hidden flex-col gap-6 animate-fade-in">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -675,7 +833,7 @@
         </div>
 
         <!-- ========================================================= -->
-        <!-- PERFIL 5: CONTROL DE EVENTOS Y NOTIFICACIÓN WHATSAPP      -->
+        <!-- PERFIL 6: CONTROL DE EVENTOS Y NOTIFICACIÓN WHATSAPP      -->
         <!-- ========================================================= -->
         <div id="vista-eventos" class="view-section hidden flex-col gap-6 animate-fade-in">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -751,7 +909,7 @@
         </div>
 
         <!-- ========================================================= -->
-        <!-- PERFIL 6: COSAS PENDIENTES DE LA IGLESIA                  -->
+        <!-- PERFIL 7: COSAS PENDIENTES DE LA IGLESIA                  -->
         <!-- ========================================================= -->
         <div id="vista-pendientes" class="view-section hidden flex-col gap-6 animate-fade-in">
             <div class="glass-hero rounded-[32px] p-8 lg:p-10">
@@ -837,6 +995,9 @@
             <button onclick="cambiarPerfil('responsables')" class="dock-item w-11 h-11 rounded-full flex items-center justify-center text-cream-dark hover:bg-white/70" title="Responsables Tesorería">
                 <i class="fa-solid fa-user-check text-base"></i>
             </button>
+            <button onclick="cambiarPerfil('jovenes')" class="dock-item w-11 h-11 rounded-full flex items-center justify-center text-cream-dark hover:bg-white/70" title="Jóvenes Misión (Cumpleaños y Pasteles)">
+                <i class="fa-solid fa-cake-candles text-base"></i>
+            </button>
             <button onclick="cambiarPerfil('calendario')" class="dock-item w-11 h-11 rounded-full flex items-center justify-center text-cream-dark hover:bg-white/70" title="Calendario y Reuniones">
                 <i class="fa-solid fa-calendar-days text-base"></i>
             </button>
@@ -912,7 +1073,7 @@
                 </div>
             </div>
             <p class="text-xs font-medium text-cream-gray leading-relaxed mb-5">
-                Todos los movimientos de cultos, jóvenes, ministerios, reportes dominicales y eventos se guardan automáticamente en tu hoja de cálculo personal.
+                Todos los movimientos de cultos, jóvenes, cooperación de pasteles, ministerios, reportes dominicales y eventos se guardan automáticamente en tu hoja de cálculo personal.
             </p>
             <div class="grid grid-cols-2 gap-3">
                 <button onclick="exportarCSV()" class="w-full bg-white border border-cream-border text-cream-dark font-bold text-xs rounded-[18px] py-3.5 shadow-sm">
@@ -957,7 +1118,7 @@
                     <i class="fa-solid fa-circle-check text-cream-accent text-base mt-0.5"></i>
                     <div>
                         <span class="font-bold block">Sistema Integral Activo</span>
-                        Control dominical de responsables de tesorería, calendario y Google Sheets listos.
+                        Módulo Jóvenes Misión (cumpleaños y cooperación de pasteles), cortes dominicales y Google Sheets listos.
                     </div>
                 </div>
             </div>
@@ -984,6 +1145,22 @@
         ];
         let responsablesTesoreria = JSON.parse(localStorage.getItem('mision_responsables_tes')) || RESPONSABLES_DEFAULT;
         let reportesDominicales = JSON.parse(localStorage.getItem('mision_reportes_dominicales')) || [];
+
+        // Datos Módulo Jóvenes Misión (Cumpleaños y Cooperación Pasteles)
+        const JOVENES_CUMPLES_DEFAULT = [
+            { id: 101, nombre: "Pablo", fechaISO: "", telefono: "" },
+            { id: 102, nombre: "Kevin", fechaISO: "", telefono: "" },
+            { id: 103, nombre: "Hanna", fechaISO: "", telefono: "" },
+            { id: 104, nombre: "Sofía", fechaISO: "", telefono: "" },
+            { id: 105, nombre: "Kendra", fechaISO: "", telefono: "" },
+            { id: 106, nombre: "Ximena", fechaISO: "", telefono: "" },
+            { id: 107, nombre: "Giselle", fechaISO: "", telefono: "" },
+            { id: 108, nombre: "Carlos", fechaISO: "", telefono: "" },
+            { id: 109, nombre: "Arturo", fechaISO: "", telefono: "" }
+        ];
+        let jovenesCumples = JSON.parse(localStorage.getItem('mision_jovenes_cumples')) || JOVENES_CUMPLES_DEFAULT;
+        let cooperacionesPastel = JSON.parse(localStorage.getItem('mision_cooperaciones_pastel')) || [];
+        let metaCostoPastel = Number(localStorage.getItem('mision_meta_pastel')) || 450;
 
         let META_MENSUAL = 20000;
         let aportaciones = [];
@@ -1063,10 +1240,26 @@
                 let tipo = 'ministerio';
                 if (item.ministerio === 'Culto Miércoles' || item.ministerio === 'Culto Domingo') tipo = 'culto';
                 else if (item.ministerio === 'Jóvenes Sábado') tipo = 'jovenes';
+                else if (item.ministerio === 'Cooperación Pastel Jóvenes') tipo = 'pastel_jovenes';
                 return { ...item, tipo };
             });
+
+            // Sincronizar también aportaciones de pastel guardadas en Drive si no están en local
+            const pastelesDrive = aportaciones.filter(a => a.tipo === 'pastel_jovenes');
+            if (pastelesDrive.length > 0 && cooperacionesPastel.length === 0) {
+                cooperacionesPastel = pastelesDrive.map((p, idx) => ({
+                    id: Date.now() + idx,
+                    festejado: p.fondoDestino || 'Fondo General Pasteles',
+                    aportante: p.servidor || 'Joven',
+                    monto: Number(p.monto) || 0,
+                    fechaStr: p.fechaStr || ''
+                }));
+                localStorage.setItem('mision_cooperaciones_pastel', JSON.stringify(cooperacionesPastel));
+            }
+
             actualizarUI();
             renderizarResponsablesTesoreria();
+            renderizarModuloJovenes();
         }
 
         async function enviarADrive(fechaStr, ministerio, servidor, fondoDestino, monto) {
@@ -1095,6 +1288,339 @@
                 if (dot) { dot.classList.remove('bg-green-500', 'bg-orange-400'); dot.classList.add('bg-red-500'); }
                 if (label) { label.innerText = "Error al Guardar"; }
             }
+        }
+
+        // --- MÓDULO JÓVENES MISIÓN (CUMPLEAÑOS Y COOPERACIÓN PASTELES) ---
+        function calcularInfoCumple(fechaISO) {
+            if (!fechaISO) return { tieneFecha: false, diasFaltan: 9999, textoFecha: 'Sin fecha registrada', esHoy: false };
+            const partes = fechaISO.split('-');
+            if (partes.length !== 3) return { tieneFecha: false, diasFaltan: 9999, textoFecha: 'Sin fecha', esHoy: false };
+
+            const mes = parseInt(partes[1], 10) - 1;
+            const dia = parseInt(partes[2], 10);
+
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0);
+
+            let proximo = new Date(hoy.getFullYear(), mes, dia);
+            proximo.setHours(0, 0, 0, 0);
+
+            if (proximo < hoy) {
+                proximo = new Date(hoy.getFullYear() + 1, mes, dia);
+            }
+
+            const diffTime = proximo.getTime() - hoy.getTime();
+            const diasFaltan = Math.round(diffTime / (1000 * 60 * 60 * 24));
+            const mesesCortos = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+
+            return {
+                tieneFecha: true,
+                diasFaltan,
+                esHoy: diasFaltan === 0,
+                textoFecha: `${dia} de ${mesesCortos[mes]}`
+            };
+        }
+
+        window.guardarCumpleJoven = function() {
+            const nombreInput = document.getElementById('jm-nuevo-nombre');
+            const fechaInput = document.getElementById('jm-nueva-fecha');
+            const telInput = document.getElementById('jm-nuevo-tel');
+
+            const nombre = nombreInput.value.trim();
+            const fechaISO = fechaInput.value;
+            const telefono = telInput.value.trim();
+
+            if (!nombre) return;
+
+            const existente = jovenesCumples.find(j => j.nombre.toLowerCase() === nombre.toLowerCase());
+            if (existente) {
+                if (fechaISO) existente.fechaISO = fechaISO;
+                if (telefono) existente.telefono = formatearTelefonoMX(telefono);
+            } else {
+                jovenesCumples.push({
+                    id: Date.now(),
+                    nombre,
+                    fechaISO: fechaISO || '',
+                    telefono: telefono ? formatearTelefonoMX(telefono) : ''
+                });
+            }
+
+            localStorage.setItem('mision_jovenes_cumples', JSON.stringify(jovenesCumples));
+            nombreInput.value = '';
+            fechaInput.value = '';
+            telInput.value = '';
+
+            renderizarModuloJovenes();
+            agregarNotificacion('Jóvenes Misión', `Cumpleaños de ${nombre} actualizado en la lista.`);
+        };
+
+        window.editarFechaCumple = function(id) {
+            const joven = jovenesCumples.find(j => j.id === id);
+            if (!joven) return;
+            const nuevaFecha = prompt(`Escribe la fecha de cumpleaños de ${joven.nombre} (Formato AAAA-MM-DD, ej. 2004-08-25):`, joven.fechaISO || '2005-01-15');
+            if (nuevaFecha && /^\d{4}-\d{2}-\d{2}$/.test(nuevaFecha.trim())) {
+                joven.fechaISO = nuevaFecha.trim();
+                localStorage.setItem('mision_jovenes_cumples', JSON.stringify(jovenesCumples));
+                renderizarModuloJovenes();
+            }
+        };
+
+        window.eliminarJovenCumple = function(id) {
+            jovenesCumples = jovenesCumples.filter(j => j.id !== id);
+            localStorage.setItem('mision_jovenes_cumples', JSON.stringify(jovenesCumples));
+            renderizarModuloJovenes();
+        };
+
+        window.seleccionarParaPastel = function(nombreJoven) {
+            const select = document.getElementById('jm-festejado-select');
+            if (select) {
+                select.value = nombreJoven;
+                actualizarBarraPastelSeleccionado();
+            }
+            const filtro = document.getElementById('jm-filtro-festejado');
+            if (filtro) {
+                filtro.value = nombreJoven;
+                renderizarCooperacionesPastel();
+            }
+        };
+
+        window.ajustarMetaPastel = function() {
+            const nuevoCosto = prompt("¿Cuál es la meta/costo estimado para el pastel?", metaCostoPastel);
+            const val = parseFloat(nuevoCosto);
+            if (val > 0) {
+                metaCostoPastel = val;
+                localStorage.setItem('mision_meta_pastel', metaCostoPastel);
+                actualizarBarraPastelSeleccionado();
+            }
+        };
+
+        window.registrarCooperacionPastel = function() {
+            const festejado = document.getElementById('jm-festejado-select').value;
+            const aportante = document.getElementById('jm-aportante').value.trim();
+            const monto = parseFloat(document.getElementById('jm-monto').value);
+            const fecha = document.getElementById('jm-fecha-aporte').value;
+
+            if (!aportante || !monto || monto <= 0 || !fecha) return;
+            const fechaStr = fecha.split('-').reverse().join('/');
+
+            const nuevaCoop = {
+                id: Date.now(),
+                festejado,
+                aportante,
+                monto,
+                fechaISO: fecha,
+                fechaStr
+            };
+
+            cooperacionesPastel.unshift(nuevaCoop);
+            localStorage.setItem('mision_cooperaciones_pastel', JSON.stringify(cooperacionesPastel));
+
+            // Guardar en Drive también
+            enviarADrive(fechaStr, 'Cooperación Pastel Jóvenes', aportante, festejado, monto);
+            agregarNotificacion(`Cooperación Pastel (${festejado})`, `${aportante} aportó $${monto.toLocaleString('es-MX')}.`);
+
+            document.getElementById('jm-aportante').value = '';
+            document.getElementById('jm-monto').value = '';
+
+            renderizarModuloJovenes();
+        };
+
+        window.eliminarCooperacionPastel = function(id) {
+            cooperacionesPastel = cooperacionesPastel.filter(c => c.id !== id);
+            localStorage.setItem('mision_cooperaciones_pastel', JSON.stringify(cooperacionesPastel));
+            renderizarModuloJovenes();
+        };
+
+        window.compartirColectaWhatsApp = function() {
+            const festejado = document.getElementById('jm-festejado-select').value;
+            const aportesFestejo = cooperacionesPastel.filter(c => c.festejado === festejado);
+            const total = aportesFestejo.reduce((acc, c) => acc + c.monto, 0);
+
+            const listaNombres = aportesFestejo.length
+                ? aportesFestejo.map(a => `• ${a.aportante}: $${a.monto}`).join('%0A')
+                : 'Aún sin aportaciones registradas.';
+
+            const texto = `🎂 *JÓVENES MISIÓN — COOPERACIÓN PASTEL*%0A` +
+                          `🎉 *Festejado:* ${festejado}%0A` +
+                          `💰 *Recaudado:* $${total.toLocaleString('es-MX')} / $${metaCostoPastel.toLocaleString('es-MX')}%0A%0A` +
+                          `📋 *Quiénes han aportado:*%0A${listaNombres}`;
+
+            window.open(`https://api.whatsapp.com/send?text=${texto}`, '_blank');
+        };
+
+        window.actualizarBarraPastelSeleccionado = function() {
+            const select = document.getElementById('jm-festejado-select');
+            if (!select) return;
+            const festejado = select.value;
+            const recaudadoFestejo = cooperacionesPastel
+                .filter(c => c.festejado === festejado)
+                .reduce((acc, c) => acc + (Number(c.monto) || 0), 0);
+
+            const pct = Math.min(100, metaCostoPastel > 0 ? Math.round((recaudadoFestejo / metaCostoPastel) * 100) : 0);
+
+            document.getElementById('jm-meta-label').innerText = `Pastel: ${festejado}`;
+            document.getElementById('jm-meta-monto').innerText = `$${recaudadoFestejo.toLocaleString('es-MX')} / $${metaCostoPastel.toLocaleString('es-MX')} (${pct}%)`;
+            document.getElementById('jm-barra-pastel').style.width = `${pct}%`;
+            document.getElementById('jm-costo-pastel-val').innerText = metaCostoPastel.toLocaleString('es-MX');
+        };
+
+        window.renderizarCooperacionesPastel = function() {
+            const listaEl = document.getElementById('jm-lista-aportaciones');
+            const filtroEl = document.getElementById('jm-filtro-festejado');
+            if (!listaEl) return;
+
+            const filtro = filtroEl ? filtroEl.value : 'TODOS';
+            const filtrados = filtro === 'TODOS'
+                ? cooperacionesPastel
+                : cooperacionesPastel.filter(c => c.festejado === filtro);
+
+            if (!filtrados.length) {
+                listaEl.innerHTML = `<div class="text-center text-cream-gray text-xs py-12 font-semibold">Aún no hay aportaciones registradas${filtro !== 'TODOS' ? ' para ' + filtro : ''}.</div>`;
+                return;
+            }
+
+            listaEl.innerHTML = filtrados.map(item => `
+                <div class="bg-white/75 rounded-[18px] p-3.5 border border-white flex items-center justify-between gap-2 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-cream-accent/20 text-cream-dark font-bold text-xs flex items-center justify-center shrink-0">
+                            ${item.aportante.charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-cream-dark">${item.aportante}</p>
+                            <p class="text-[10px] font-bold text-cream-gray">Para: <span class="text-cream-accent">${item.festejado}</span> • ${item.fechaStr}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2.5 shrink-0">
+                        <span class="text-sm font-bold text-green-700">+$${Number(item.monto).toLocaleString('es-MX')}</span>
+                        <button onclick="eliminarCooperacionPastel(${item.id})" class="text-cream-gray hover:text-red-500 text-xs" title="Eliminar registro">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        };
+
+        function renderizarModuloJovenes() {
+            const listaCumplesEl = document.getElementById('jm-lista-cumples');
+            const bannerProximo = document.getElementById('proximo-cumple-banner');
+            const countEl = document.getElementById('jm-count-jovenes');
+            const selectFestejado = document.getElementById('jm-festejado-select');
+            const filtroFestejado = document.getElementById('jm-filtro-festejado');
+            const datalistJovenes = document.getElementById('lista-jovenes-pastel');
+
+            if (!listaCumplesEl) return;
+
+            const ordenados = [...jovenesCumples].map(j => ({
+                ...j,
+                info: calcularInfoCumple(j.fechaISO)
+            })).sort((a, b) => a.info.diasFaltan - b.info.diasFaltan);
+
+            if (countEl) countEl.innerText = `${ordenados.length} Jóvenes`;
+
+            // Banner del cumpleaños más cercano
+            const siguiente = ordenados.find(j => j.info.tieneFecha);
+            if (bannerProximo) {
+                if (siguiente) {
+                    const etiquetaDias = siguiente.info.esHoy
+                        ? `<span class="px-3 py-1 rounded-full bg-[#25D366] text-white text-[10px] font-bold uppercase animate-pulse">¡Hoy es su cumpleaños!</span>`
+                        : `<span class="px-3 py-1 rounded-full bg-cream-accent/20 text-cream-dark text-[10px] font-bold uppercase">Faltan ${siguiente.info.diasFaltan} ${siguiente.info.diasFaltan === 1 ? 'día' : 'días'}</span>`;
+
+                    const msgFelicitacion = encodeURIComponent(`¡Feliz cumpleaños ${siguiente.nombre}! 🎉🎂 Dios te bendiga mucho. Un abrazo de parte de Jóvenes Misión.`);
+                    const waLink = siguiente.telefono
+                        ? `https://api.whatsapp.com/send?phone=${siguiente.telefono}&text=${msgFelicitacion}`
+                        : `https://api.whatsapp.com/send?text=${msgFelicitacion}`;
+
+                    bannerProximo.innerHTML = `
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                ${etiquetaDias}
+                                <h3 class="text-xl font-bold text-cream-dark mt-2">${siguiente.nombre}</h3>
+                                <p class="text-xs font-semibold text-cream-gray"><i class="fa-regular fa-calendar mr-1 text-cream-accent"></i>Fecha: ${siguiente.info.textoFecha}</p>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="seleccionarParaPastel('${siguiente.nombre}')" class="bg-cream-dark text-white text-[11px] font-bold px-3.5 py-2 rounded-full hover:bg-black transition-all">
+                                    <i class="fa-solid fa-cake-candles mr-1 text-cream-accent"></i> Ver pastel
+                                </button>
+                                <a href="${waLink}" target="_blank" class="bg-[#25D366] hover:bg-[#1ebe5d] text-white text-[11px] font-bold px-3.5 py-2 rounded-full flex items-center gap-1 transition-all">
+                                    <i class="fa-brands fa-whatsapp"></i> Felicitar
+                                </a>
+                            </div>
+                        </div>`;
+                } else {
+                    bannerProximo.innerHTML = `
+                        <div class="flex items-center justify-between gap-3">
+                            <div>
+                                <span class="text-[10px] font-bold uppercase text-cream-accent block">Configuración Inicial</span>
+                                <p class="text-xs font-bold text-cream-dark mt-0.5">Agrega las fechas de cumpleaños de los jóvenes abajo o haz clic en el ícono de calendario de cada joven.</p>
+                            </div>
+                        </div>`;
+                }
+            }
+
+            // Renderizar tarjetas de cumpleaños
+            listaCumplesEl.innerHTML = ordenados.map(j => {
+                const badgeDias = !j.info.tieneFecha
+                    ? `<button onclick="editarFechaCumple(${j.id})" class="text-[10px] font-bold text-cream-accent hover:underline">+ Poner fecha</button>`
+                    : (j.info.esHoy
+                        ? `<span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-green-100 text-green-700">¡Hoy! 🎂</span>`
+                        : `<span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-cream-bg text-cream-dark border border-cream-border">En ${j.info.diasFaltan}d</span>`);
+
+                const totalPastelJoven = cooperacionesPastel
+                    .filter(c => c.festejado === j.nombre)
+                    .reduce((acc, c) => acc + Number(c.monto), 0);
+
+                return `
+                <div class="bg-white/75 rounded-[18px] p-3.5 border border-white flex items-center justify-between gap-2">
+                    <div class="cursor-pointer" onclick="seleccionarParaPastel('${j.nombre}')">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-cream-dark">${j.nombre}</span>
+                            ${totalPastelJoven > 0 ? `<span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Pastel: $${totalPastelJoven}</span>` : ''}
+                        </div>
+                        <p class="text-[11px] font-semibold text-cream-gray mt-0.5">
+                            <i class="fa-solid fa-cake-candles text-cream-accent mr-1"></i>${j.info.textoFecha}
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        ${badgeDias}
+                        <button onclick="editarFechaCumple(${j.id})" class="text-cream-gray hover:text-cream-dark text-xs p-1" title="Editar fecha">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button onclick="eliminarJovenCumple(${j.id})" class="text-cream-gray hover:text-red-500 text-xs p-1" title="Quitar">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </div>`;
+            }).join('');
+
+            // Actualizar selectores de festejado y datalist de aportantes
+            if (selectFestejado) {
+                const prevVal = selectFestejado.value;
+                selectFestejado.innerHTML = `<option value="Fondo General Pasteles">Fondo General Pasteles</option>` +
+                    ordenados.map(j => `<option value="${j.nombre}">Cumpleaños: ${j.nombre}</option>`).join('');
+                if (prevVal) selectFestejado.value = prevVal;
+                else if (siguiente) selectFestejado.value = siguiente.nombre;
+            }
+
+            if (filtroFestejado) {
+                const prevFiltro = filtroFestejado.value;
+                filtroFestejado.innerHTML = `<option value="TODOS">Todos los festejos</option><option value="Fondo General Pasteles">Fondo General</option>` +
+                    ordenados.map(j => `<option value="${j.nombre}">${j.nombre}</option>`).join('');
+                if (prevFiltro) filtroFestejado.value = prevFiltro;
+            }
+
+            if (datalistJovenes) {
+                datalistJovenes.innerHTML = ordenados.map(j => `<option value="${j.nombre}">`).join('');
+            }
+
+            // Actualizar KPIs totales de pasteles
+            const totalRecaudado = cooperacionesPastel.reduce((acc, c) => acc + (Number(c.monto) || 0), 0);
+            const totalEl = document.getElementById('jm-total-recaudado');
+            const countAportantesEl = document.getElementById('jm-total-aportantes');
+            if (totalEl) totalEl.innerText = `$${totalRecaudado.toLocaleString('es-MX')}`;
+            if (countAportantesEl) countAportantesEl.innerText = cooperacionesPastel.length;
+
+            actualizarBarraPastelSeleccionado();
+            renderizarCooperacionesPastel();
         }
 
         // --- RESPONSABLES DE TESORERÍA (CONTROL DOMINICAL) ---
@@ -1526,6 +2052,7 @@
                 'general': 'PERFIL: FINANZAS GENERALES',
                 'ministerios': 'PERFIL: TESORERÍA MINISTERIOS',
                 'responsables': 'PERFIL: RESPONSABLES TESORERÍA',
+                'jovenes': 'PERFIL: JÓVENES MISIÓN (CUMPLEAÑOS Y PASTELES)',
                 'calendario': 'PERFIL: CALENDARIO Y REUNIONES',
                 'eventos': 'PERFIL: CONTROL DE EVENTOS',
                 'pendientes': 'PERFIL: PENDIENTES IGLESIA'
@@ -1533,6 +2060,7 @@
             document.getElementById('perfil-actual-label').innerText = labels[perfil] || 'GESTIÓN MISIÓN';
             if (perfil === 'calendario') renderizarCalendario();
             if (perfil === 'responsables') renderizarResponsablesTesoreria();
+            if (perfil === 'jovenes') renderizarModuloJovenes();
         };
 
         window.cambiarVista = function(vistaId) {
@@ -1800,7 +2328,9 @@
                 if(reg.ministerio === 'Culto Miércoles') totalMiercoles += reg.monto;
                 else if(reg.ministerio === 'Culto Domingo') totalDomingos += reg.monto;
                 else if(reg.ministerio === 'Jóvenes Sábado') totalSabados += reg.monto;
-                else {
+                else if(reg.ministerio === 'Cooperación Pastel Jóvenes') {
+                    // Se contabiliza en el módulo de pasteles de Jóvenes Misión
+                } else {
                     totalMinisterios += reg.monto;
                     if(totalesMin[reg.ministerio] !== undefined) totalesMin[reg.ministerio] += reg.monto;
                     if(totalesFondo[reg.fondoDestino] !== undefined) totalesFondo[reg.fondoDestino] += reg.monto;
@@ -1987,11 +2517,13 @@
             document.getElementById('ev-fecha').value = hoy;
             document.getElementById('reu-fecha').value = hoy;
             document.getElementById('resp-fecha').value = hoy;
+            document.getElementById('jm-fecha-aporte').value = hoy;
 
             inicializarGraficas();
             renderizarContactos();
             renderizarDirectorio();
             renderizarResponsablesTesoreria();
+            renderizarModuloJovenes();
             renderizarCalendario();
             renderizarEventos();
             renderizarPendientes();
