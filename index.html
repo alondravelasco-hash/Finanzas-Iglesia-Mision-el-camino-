@@ -118,6 +118,28 @@
     <div class="fixed top-[20%] right-[-10%] w-[45vw] h-[45vw] bg-[#F3E8DD]/50 rounded-full mix-blend-multiply filter blur-[90px] animate-blob animation-delay-2000 z-0 pointer-events-none"></div>
     <div class="fixed bottom-[-20%] left-[20%] w-[60vw] h-[60vw] bg-[#E2D4C3]/50 rounded-full mix-blend-multiply filter blur-[100px] animate-blob animation-delay-4000 z-0 pointer-events-none"></div>
 
+    <!-- PANTALLA DE LOGIN -->
+    <div id="pantalla-login" class="fixed inset-0 bg-cream-bg z-[100] flex flex-col items-center justify-center p-5 animate-fade-in">
+        <div class="glass-hero p-8 sm:p-10 rounded-[32px] w-full max-w-sm text-center shadow-2xl border border-white">
+            <div class="w-16 h-16 mx-auto rounded-[20px] glass-card flex items-center justify-center text-cream-accent text-3xl mb-4">
+                <i class="fa-solid fa-church"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-cream-dark mb-1">Misión Central</h2>
+            <p class="text-xs text-cream-gray font-medium mb-6">Portal de Tesorería</p>
+            <div class="space-y-4">
+                <input type="text" id="login-user" placeholder="Usuario (ej. admin, pablo)" class="w-full glass-input rounded-[18px] px-4 py-3.5 text-sm font-bold">
+                <input type="password" id="login-pass" placeholder="Contraseña" class="w-full glass-input rounded-[18px] px-4 py-3.5 text-sm font-bold">
+                <button onclick="iniciarSesion()" class="w-full bg-cream-dark text-white font-bold text-sm rounded-[18px] py-4 hover:bg-black transition-all shadow-md">
+                    Iniciar Sesión
+                </button>
+            </div>
+            <p class="mt-4 text-[10px] text-cream-gray font-medium">Cuentas: admin/admin, pablo/jovenes, isabell/alabanza</p>
+        </div>
+    </div>
+    
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div id="app-container" class="hidden flex-col w-full min-h-screen">
+
     <!-- HEADER CON SELECTOR DE PERFIL -->
     <header class="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-3 flex flex-col xl:flex-row items-center justify-between gap-3 z-20">
         <div class="flex items-center gap-3 w-full xl:w-auto justify-between xl:justify-start shrink-0">
@@ -144,11 +166,14 @@
                     <i class="fa-solid fa-bell text-xs"></i>
                     <span id="badge-notif-mob" class="hidden absolute top-0 right-0 w-2.5 h-2.5 rounded-full bg-red-500"></span>
                 </button>
+                <button onclick="cerrarSesion()" class="w-9 h-9 rounded-full glass-card flex items-center justify-center text-red-500" title="Cerrar Sesión">
+                    <i class="fa-solid fa-right-from-bracket text-xs"></i>
+                </button>
             </div>
         </div>
 
         <!-- SELECTOR DE PERFILES (7 COLUMNAS COMPACTAS) -->
-        <div class="glass-card p-1 rounded-full flex items-center gap-0.5 overflow-x-auto max-w-full hide-scrollbar">
+        <div id="selector-perfiles-header" class="glass-card p-1 rounded-full flex items-center gap-0.5 overflow-x-auto max-w-full hide-scrollbar">
             <button onclick="cambiarPerfil('general')" id="tab-perfil-general" class="perfil-tab px-3 py-2 rounded-full text-[11px] font-bold bg-cream-dark text-white shadow-sm transition-all whitespace-nowrap">
                 <i class="fa-solid fa-hand-holding-heart mr-1"></i>Finanzas
             </button>
@@ -174,7 +199,7 @@
 
         <!-- Acciones Escritorio -->
         <div class="hidden xl:flex items-center gap-2 shrink-0">
-            <button onclick="abrirModal('modal-contactos')" class="glass-card hover:bg-white/80 px-3 py-2 rounded-full flex items-center gap-1.5 text-[11px] font-bold text-cream-dark transition-all" title="Administrar Números WhatsApp">
+            <button onclick="abrirModal('modal-contactos')" class="glass-card hover:bg-white/80 px-3.5 py-2 rounded-full flex items-center gap-1.5 text-[11px] font-bold text-cream-dark transition-all" title="Administrar Números WhatsApp">
                 <i class="fa-brands fa-whatsapp text-[#25D366] text-sm"></i>
                 <span>(<span id="count-contactos-header">2</span>)</span>
             </button>
@@ -188,6 +213,9 @@
             <button onclick="abrirModal('modal-notificaciones')" class="w-9 h-9 rounded-full glass-card hover:bg-white/80 flex items-center justify-center text-cream-dark transition-all relative">
                 <i class="fa-solid fa-bell text-xs"></i>
                 <span id="badge-notif" class="hidden absolute top-0 right-0 w-2.5 h-2.5 border-2 border-cream-bg rounded-full bg-red-500"></span>
+            </button>
+            <button onclick="cerrarSesion()" class="glass-card hover:bg-white/80 px-3.5 py-2 rounded-full flex items-center gap-1.5 text-[11px] font-bold text-red-500 transition-all" title="Cerrar Sesión">
+                <i class="fa-solid fa-right-from-bracket"></i> Salir
             </button>
         </div>
     </header>
@@ -984,7 +1012,7 @@
     </main>
 
     <!-- DOCK FLOTANTE INFERIOR -->
-    <div class="fixed bottom-5 left-1/2 -translate-x-1/2 z-40">
+    <div id="dock-inferior" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-40">
         <nav class="glass-dock px-3 py-2.5 rounded-full flex items-center gap-1.5">
             <button onclick="cambiarPerfil('general')" class="dock-item w-11 h-11 rounded-full flex items-center justify-center text-cream-dark hover:bg-white/70" title="Finanzas Generales">
                 <i class="fa-solid fa-hand-holding-heart text-base"></i>
@@ -1125,9 +1153,65 @@
         </div>
     </div>
 
+    </div><!-- CIERRE DE APP-CONTAINER -->
+
     <!-- LÓGICA DE DATOS -->
     <script type="module">
         const driveWebhookUrl = "https://script.google.com/macros/s/AKfycbwGpp36DkGOlgaiEZ95TbbK1BccMemQnhkH8O7X2G4roByl_9TbvyEUlNpbKIm2j5LC/exec";
+
+        // --- SISTEMA DE LOGIN Y ROLES (RLS) ---
+const USUARIOS = {
+    'admin': { pass: 'admin', role: 'admin', min: 'ALL', nombre: 'Administrador' },
+    'pablo': { pass: 'pablo123', role: 'tesorero', min: 'Jóvenes', nombre: 'Pablo' },
+    'isabell': { pass: 'isa123', role: 'tesorero', min: 'Alabanza', nombre: 'Isabell' },
+    'isis': { pass: 'isis123', role: 'tesorero', min: 'Multimedia', nombre: 'Isis' },
+    'sofia': { pass: 'sofi123', role: 'tesorero', min: 'Panderos', nombre: 'Sofía' },
+    'maestros': { pass: 'maestros', role: 'tesorero', min: 'Maestros', nombre: 'Tesorero Maestros' }
+};
+        let currentUser = JSON.parse(localStorage.getItem('mision_current_user')) || null;
+
+        window.iniciarSesion = function() {
+            const u = document.getElementById('login-user').value.toLowerCase().trim();
+            const p = document.getElementById('login-pass').value.trim();
+            if(USUARIOS[u] && USUARIOS[u].pass === p) {
+                currentUser = USUARIOS[u];
+                localStorage.setItem('mision_current_user', JSON.stringify(currentUser));
+                aplicarRolesYPermisos();
+            } else {
+                alert("Usuario o contraseña incorrectos.");
+            }
+        };
+
+        window.cerrarSesion = function() {
+            currentUser = null;
+            localStorage.removeItem('mision_current_user');
+            location.reload();
+        };
+
+        function aplicarRolesYPermisos() {
+            document.getElementById('pantalla-login').classList.add('hidden');
+            document.getElementById('app-container').classList.remove('hidden');
+            document.getElementById('app-container').classList.add('flex');
+
+            if(currentUser.role === 'admin') {
+                document.getElementById('dock-inferior').classList.remove('hidden');
+                document.getElementById('selector-perfiles-header').classList.remove('hidden');
+                cambiarPerfil('general');
+            } else if (currentUser.role === 'tesorero') {
+                document.getElementById('dock-inferior').classList.add('hidden');
+                document.getElementById('selector-perfiles-header').classList.add('hidden');
+                document.getElementById('perfil-actual-label').innerText = `TESORERÍA: ${currentUser.min.toUpperCase()}`;
+                
+                const selectMin = document.getElementById('resp-ministerio');
+                selectMin.value = currentUser.min;
+                selectMin.disabled = true;
+                selectMin.classList.add('opacity-70', 'cursor-not-allowed');
+
+                cambiarPerfil('responsables');
+                autocompletarSaldoResponsable();
+            }
+            renderizarResponsablesTesoreria();
+        }
 
         const CONTACTOS_DEFAULT = [
             { id: 1, nombre: "Isis", rol: "Líder", telefono: "523345667476" },
@@ -1700,7 +1784,15 @@
             const fechaSeleccionada = document.getElementById('resp-fecha')?.value || new Date().toISOString().split('T')[0];
             let actualizadosHoy = 0;
 
-            grid.innerHTML = responsablesTesoreria.map(item => {
+            let responsablesMostrar = responsablesTesoreria;
+            let reportesMostrar = reportesDominicales;
+
+            if(currentUser && currentUser.role === 'tesorero') {
+                responsablesMostrar = responsablesTesoreria.filter(r => r.ministerio === currentUser.min);
+                reportesMostrar = reportesDominicales.filter(r => r.ministerio === currentUser.min);
+            }
+
+            grid.innerHTML = responsablesMostrar.map(item => {
                 const ultimoReporte = reportesDominicales.find(r => r.ministerio === item.ministerio);
                 const saldoSistema = calcularSaldoFondo(item.ministerio);
                 const saldoMostrar = ultimoReporte ? ultimoReporte.saldo : saldoSistema;
@@ -1736,15 +1828,15 @@
             }).join('');
 
             if (badge) {
-                badge.innerText = `${actualizadosHoy} / ${responsablesTesoreria.length} Actualizados en fecha`;
+                badge.innerText = `${actualizadosHoy} / ${responsablesMostrar.length} Actualizados en fecha`;
             }
 
-            if (!reportesDominicales.length) {
-                lista.innerHTML = `<div class="text-center text-cream-gray text-xs py-12 font-semibold">Aún no hay actualizaciones dominicales registradas. Usa el formulario de la izquierda cada domingo.</div>`;
+            if (!reportesMostrar.length) {
+                lista.innerHTML = `<div class="text-center text-cream-gray text-xs py-12 font-semibold">Aún no hay actualizaciones dominicales registradas para esta vista. Usa el formulario de la izquierda cada domingo.</div>`;
                 return;
             }
 
-            lista.innerHTML = reportesDominicales.map(rep => `
+            lista.innerHTML = reportesMostrar.map(rep => `
                 <div class="bg-white/80 rounded-[20px] p-4 border border-white flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
                         <div class="flex items-center gap-2 flex-wrap">
@@ -2510,6 +2602,13 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            if(currentUser) {
+                aplicarRolesYPermisos();
+            } else {
+                document.getElementById('pantalla-login').classList.remove('hidden');
+                document.getElementById('app-container').classList.add('hidden');
+            }
+
             const hoy = new Date().toISOString().split('T')[0];
             document.getElementById('culto-fecha').value = hoy;
             document.getElementById('joven-fecha').value = hoy;
