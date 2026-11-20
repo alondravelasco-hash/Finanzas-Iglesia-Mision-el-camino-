@@ -836,6 +836,7 @@
                                 </select>
                                 <input type="text" id="reu-lugar" placeholder="Lugar (ej. Salón Anexo)" value="Templo Principal" class="w-full glass-input rounded-[16px] px-3.5 py-3 text-xs font-bold">
                             </div>
+                            <input type="url" id="reu-mapa" placeholder="Enlace de Google Maps (opcional)" class="w-full glass-input rounded-[16px] px-4 py-3 text-xs font-bold">
 
                             <div class="grid grid-cols-2 gap-3">
                                 <input type="date" id="reu-fecha" class="w-full glass-input rounded-[16px] px-3.5 py-3 text-xs font-bold">
@@ -904,6 +905,7 @@
                                 <option value="Pastor">Reunión: Pastor</option>
                             </select>
                         </div>
+                        <input type="url" id="ev-mapa" placeholder="Enlace de Google Maps (opcional)" class="w-full glass-input rounded-[18px] px-4 py-3.5 text-xs font-bold">
                         
                         <div class="grid grid-cols-2 gap-3">
                             <div class="relative">
@@ -2013,6 +2015,8 @@
             const hora = document.getElementById('reu-hora')?.value;
             const lugar = document.getElementById('reu-lugar')?.value.trim();
             const audiencia = document.getElementById('reu-audiencia')?.value;
+            let mapaUrl = document.getElementById('reu-mapa')?.value.trim() || '';
+            if (mapaUrl && !/^https?:\/\//i.test(mapaUrl)) mapaUrl = `https://${mapaUrl}`;
             if (!titulo || !fecha || !hora) return;
             eventos.push({
                 id: Date.now(),
@@ -2020,6 +2024,7 @@
                 fecha,
                 hora,
                 lugar,
+                mapaUrl,
                 audiencia,
                 tipo: 'reunion',
                 presupuesto: 0,
@@ -2028,10 +2033,11 @@
             });
             localStorage.setItem('mision_eventos_cal', JSON.stringify(eventos));
             document.getElementById('reu-titulo').value = '';
+            document.getElementById('reu-mapa').value = '';
             renderizarCalendario();
             renderizarEventos();
             agregarNotificacion('Reunión agendada', `${titulo}: ${fecha} a las ${hora}, ${lugar}.`);
-            notificarContactosSeleccionados(`Reunión: ${titulo}\nFecha: ${fecha}\nHora: ${hora}\nLugar: ${lugar || 'Por confirmar'}\nAudiencia: ${audiencia || 'General'}`);
+            notificarContactosSeleccionados(`Reunión: ${titulo}\nFecha: ${fecha}\nHora: ${hora}\nLugar: ${lugar || 'Por confirmar'}${mapaUrl ? '\nCómo llegar: ' + mapaUrl : ''}\nAudiencia: ${audiencia || 'General'}`);
         };
 
         window.crearEvento = function() {
@@ -2039,6 +2045,8 @@
             const fecha = document.getElementById('ev-fecha')?.value;
             const hora = document.getElementById('ev-hora')?.value;
             const lugar = document.getElementById('ev-lugar')?.value.trim();
+            let mapaUrl = document.getElementById('ev-mapa')?.value.trim() || '';
+            if (mapaUrl && !/^https?:\/\//i.test(mapaUrl)) mapaUrl = `https://${mapaUrl}`;
             if (!nombre || !fecha) return;
             eventos.push({
                 id: Date.now(),
@@ -2046,6 +2054,7 @@
                 fecha,
                 hora,
                 lugar,
+                mapaUrl,
                 audiencia: document.getElementById('ev-audiencia')?.value,
                 tipo: 'evento',
                 presupuesto: parseFloat(document.getElementById('ev-presupuesto')?.value) || 0,
@@ -2054,10 +2063,11 @@
             });
             localStorage.setItem('mision_eventos_cal', JSON.stringify(eventos));
             document.getElementById('ev-nombre').value = '';
+            document.getElementById('ev-mapa').value = '';
             renderizarEventos();
             renderizarCalendario();
             agregarNotificacion('Evento creado', `${nombre}: ${fecha}${hora ? ' a las ' + hora : ''}.`);
-            notificarContactosSeleccionados(`Evento: ${nombre}\nFecha: ${fecha}\nHora: ${hora || 'Por confirmar'}\nLugar: ${lugar || 'Por confirmar'}`);
+            notificarContactosSeleccionados(`Evento: ${nombre}\nFecha: ${fecha}\nHora: ${hora || 'Por confirmar'}\nLugar: ${lugar || 'Por confirmar'}${mapaUrl ? '\nCómo llegar: ' + mapaUrl : ''}`);
         };
 
         window.agregarPendiente = function() {
@@ -2126,6 +2136,7 @@
                             <div>
                                 <p class="text-sm font-bold text-cream-dark">${ev.nombre}</p>
                                 <p class="text-[11px] text-cream-gray mt-1">${ev.fecha}${ev.hora ? ' • ' + ev.hora : ''}${ev.lugar ? ' • ' + ev.lugar : ''}</p>
+                                ${ev.mapaUrl ? `<a href="${ev.mapaUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 mt-2 text-[11px] font-bold text-[#25D366]"><i class="fa-solid fa-location-dot"></i> Ver ubicación en Google Maps</a>` : ''}
                                 ${ev.decoracion ? `<p class="text-[11px] text-cream-gray mt-2">${ev.decoracion}</p>` : ''}
                             </div>
                             <span class="text-[9px] px-2 py-1 rounded-full bg-cream-accent/20 text-cream-dark font-bold">${ev.tipo === 'reunion' ? 'REUNIÓN' : 'EVENTO'}</span>
@@ -2188,6 +2199,7 @@
                         <div class="bg-white/70 rounded-[16px] p-3 border border-white">
                             <p class="text-xs font-bold text-cream-dark">${ev.nombre}</p>
                             <p class="text-[10px] text-cream-gray">${ev.hora || ''}${ev.lugar ? ' • ' + ev.lugar : ''}</p>
+                            ${ev.mapaUrl ? `<a href="${ev.mapaUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 mt-1.5 text-[10px] font-bold text-[#25D366]"><i class="fa-solid fa-location-dot"></i> Cómo llegar</a>` : ''}
                         </div>
                     `).join('')
                     : '<div class="text-center text-cream-gray text-xs py-8">Sin compromisos este día</div>';
