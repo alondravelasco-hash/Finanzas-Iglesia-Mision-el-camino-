@@ -159,6 +159,9 @@
 
             <!-- Botones móviles -->
             <div class="flex xl:hidden items-center gap-2">
+                <button onclick="abrirModal('modal-avisos')" class="w-9 h-9 rounded-full glass-card flex items-center justify-center text-cream-accent" title="Enviar Aviso">
+                    <i class="fa-solid fa-bullhorn text-sm"></i>
+                </button>
                 <button onclick="abrirModal('modal-contactos')" class="w-9 h-9 rounded-full glass-card flex items-center justify-center text-[#25D366]" title="Contactos WhatsApp">
                     <i class="fa-brands fa-whatsapp text-sm"></i>
                 </button>
@@ -199,6 +202,11 @@
 
         <!-- Acciones Escritorio -->
         <div class="hidden xl:flex items-center gap-2 shrink-0">
+            <button onclick="abrirModal('modal-avisos')" class="glass-card hover:bg-white/80 px-3.5 py-2 rounded-full flex items-center gap-1.5 text-[11px] font-bold text-cream-dark transition-all" title="Enviar Aviso a la Iglesia">
+                <i class="fa-solid fa-bullhorn text-cream-accent text-sm"></i>
+                <span>Avisos</span>
+            </button>
+            
             <button onclick="abrirModal('modal-contactos')" class="glass-card hover:bg-white/80 px-3.5 py-2 rounded-full flex items-center gap-1.5 text-[11px] font-bold text-cream-dark transition-all" title="Administrar Números WhatsApp">
                 <i class="fa-brands fa-whatsapp text-[#25D366] text-sm"></i>
                 <span>(<span id="count-contactos-header">2</span>)</span>
@@ -837,7 +845,9 @@
                             <div class="bg-white/65 rounded-[16px] p-3 border border-white">
                                 <div class="flex items-center justify-between mb-2">
                                     <span class="text-[10px] font-bold uppercase text-cream-gray">Enviar notificación WhatsApp a:</span>
-                                    <button type="button" onclick="seleccionarTodosContactos('reu-contactos-list', true)" class="text-[10px] font-bold text-cream-accent hover:underline">Seleccionar todos</button>
+                                    <button type="button" onclick="iniciarSesion()" class="text-[10px] font-bold text-cream-accent hover:underline">
+                                        Iniciar Sesión
+                                    </button>
                                 </div>
                                 <div id="reu-contactos-list" class="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto hide-scrollbar"></div>
                             </div>
@@ -1039,6 +1049,9 @@
                 <i class="fa-solid fa-users text-base"></i>
             </button>
             <div class="w-[1px] h-6 bg-cream-dark/15 mx-1"></div>
+            <button onclick="abrirModal('modal-avisos')" class="dock-item w-11 h-11 rounded-full flex items-center justify-center text-cream-dark hover:bg-white/70" title="Avisos Generales">
+                <i class="fa-solid fa-bullhorn text-base"></i>
+            </button>
             <button onclick="abrirModal('modal-contactos')" class="dock-item w-11 h-11 rounded-full flex items-center justify-center text-[#25D366] hover:bg-white/70" title="Números WhatsApp">
                 <i class="fa-brands fa-whatsapp text-lg"></i>
             </button>
@@ -1153,6 +1166,50 @@
         </div>
     </div>
 
+    <!-- MODAL AVISOS GENERALES -->
+    <div id="modal-avisos" class="modal-overlay hidden fixed inset-0 bg-black/25 backdrop-blur-md z-50 items-center justify-center p-4">
+        <div class="bg-cream-bg/95 backdrop-blur-xl rounded-[32px] p-8 w-full max-w-md relative animate-scale-up shadow-2xl border border-white">
+            <button onclick="cerrarModal('modal-avisos')" class="absolute top-6 right-6 w-9 h-9 rounded-full bg-white/70 flex items-center justify-center text-cream-dark">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="flex items-center gap-3.5 mb-5">
+                <div class="w-12 h-12 rounded-[18px] bg-white shadow-sm flex items-center justify-center text-cream-accent text-2xl">
+                    <i class="fa-solid fa-bullhorn"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-cream-dark">Avisos Generales</h3>
+                    <p class="text-xs text-cream-gray font-medium">Crea un mensaje para enviar por WhatsApp</p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="text-[10px] font-bold uppercase text-cream-gray block mb-1 ml-1">Título del Aviso</label>
+                    <input type="text" id="aviso-titulo" placeholder="Ej. Cambio de horario, Ensayo..." class="w-full glass-input rounded-[16px] px-4 py-3 text-xs font-bold">
+                </div>
+                
+                <div>
+                    <label class="text-[10px] font-bold uppercase text-cream-gray block mb-1 ml-1">Mensaje</label>
+                    <textarea id="aviso-mensaje" rows="4" placeholder="Escribe el detalle del aviso aquí..." class="w-full glass-input rounded-[16px] px-4 py-3 text-xs font-semibold"></textarea>
+                </div>
+
+                <div>
+                    <label class="text-[10px] font-bold uppercase text-cream-gray block mb-1 ml-1">Dirigido a</label>
+                    <select id="aviso-audiencia" class="w-full glass-input rounded-[16px] px-4 py-3 text-xs font-bold">
+                        <option value="Toda la Iglesia">Toda la Iglesia</option>
+                        <option value="Servidores">Solo Servidores</option>
+                        <option value="Líderes de Ministerio">Líderes de Ministerio</option>
+                        <option value="Jóvenes Misión">Jóvenes</option>
+                    </select>
+                </div>
+
+                <button onclick="enviarAvisoGeneral()" class="w-full bg-cream-dark text-white font-bold text-sm rounded-[18px] py-4 hover:bg-black transition-all shadow-md flex items-center justify-center gap-2 mt-2">
+                    <i class="fa-brands fa-whatsapp text-[#25D366] text-base"></i> Redactar en WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
     </div><!-- CIERRE DE APP-CONTAINER -->
 
     <!-- LÓGICA DE DATOS -->
@@ -1160,14 +1217,14 @@
         const driveWebhookUrl = "https://script.google.com/macros/s/AKfycbwGpp36DkGOlgaiEZ95TbbK1BccMemQnhkH8O7X2G4roByl_9TbvyEUlNpbKIm2j5LC/exec";
 
         // --- SISTEMA DE LOGIN Y ROLES (RLS) ---
-const USUARIOS = {
-    'admin': { pass: 'admin', role: 'admin', min: 'ALL', nombre: 'Administrador' },
-    'pablo': { pass: 'pablo123', role: 'tesorero', min: 'Jóvenes', nombre: 'Pablo' },
-    'isabell': { pass: 'isa123', role: 'tesorero', min: 'Alabanza', nombre: 'Isabell' },
-    'isis': { pass: 'isis123', role: 'tesorero', min: 'Multimedia', nombre: 'Isis' },
-    'sofia': { pass: 'sofi123', role: 'tesorero', min: 'Panderos', nombre: 'Sofía' },
-    'maestros': { pass: 'maestros', role: 'tesorero', min: 'Maestros', nombre: 'Tesorero Maestros' }
-};
+        const USUARIOS = {
+            'admin': { pass: 'admin', role: 'admin', min: 'ALL', nombre: 'Administrador' },
+            'pablo': { pass: 'pablo123', role: 'tesorero', min: 'Jóvenes', nombre: 'Pablo' },
+            'isabell': { pass: 'isa123', role: 'tesorero', min: 'Alabanza', nombre: 'Isabell' },
+            'isis': { pass: 'isis123', role: 'tesorero', min: 'Multimedia', nombre: 'Isis' },
+            'sofia': { pass: 'sofi123', role: 'tesorero', min: 'Panderos', nombre: 'Sofía' },
+            'maestros': { pass: 'maestros', role: 'tesorero', min: 'Maestros', nombre: 'Tesorero Maestros' }
+        };
         let currentUser = JSON.parse(localStorage.getItem('mision_current_user')) || null;
 
         window.iniciarSesion = function() {
@@ -1186,6 +1243,37 @@ const USUARIOS = {
             currentUser = null;
             localStorage.removeItem('mision_current_user');
             location.reload();
+        };
+
+        window.enviarAvisoGeneral = function() {
+            const titulo = document.getElementById('aviso-titulo').value.trim();
+            const mensaje = document.getElementById('aviso-mensaje').value.trim();
+            const audiencia = document.getElementById('aviso-audiencia').value;
+
+            if (!titulo || !mensaje) {
+                alert('Por favor, completa el título y el mensaje del aviso.');
+                return;
+            }
+
+            // Construir el mensaje con formato amigable para WhatsApp
+            let textoAviso = `*📢 AVISO: ${titulo.toUpperCase()}*\n`;
+            textoAviso += `👤 *Para:* ${audiencia}\n\n`;
+            textoAviso += `${mensaje}\n\n`;
+            textoAviso += `_Misión Central_ ⛪`;
+
+            // Codificar texto para URL
+            const textoCodificado = encodeURIComponent(textoAviso);
+
+            // Abrir WhatsApp Web o la App Móvil con el texto precargado
+            window.open(`https://api.whatsapp.com/send?text=${textoCodificado}`, '_blank');
+            
+            // Limpiar formulario y cerrar modal
+            document.getElementById('aviso-titulo').value = '';
+            document.getElementById('aviso-mensaje').value = '';
+            
+            if(typeof cerrarModal === 'function') {
+                cerrarModal('modal-avisos');
+            }
         };
 
         function aplicarRolesYPermisos() {
@@ -1533,21 +1621,43 @@ const USUARIOS = {
         };
 
         window.actualizarBarraPastelSeleccionado = function() {
-            const select = document.getElementById('jm-festejado-select');
-            if (!select) return;
-            const festejado = select.value;
-            const recaudadoFestejo = cooperacionesPastel
-                .filter(c => c.festejado === festejado)
-                .reduce((acc, c) => acc + (Number(c.monto) || 0), 0);
+            const selectFestejado = document.getElementById('jm-festejado-select');
+            const festejado = selectFestejado ? selectFestejado.value : 'Fondo General Pasteles';
+            const aportesFestejo = cooperacionesPastel.filter(c => c.festejado === festejado);
+            const recaudado = aportesFestejo.reduce((acc, c) => acc + Number(c.monto || 0), 0);
+            const meta = Number(metaCostoPastel) > 0 ? Number(metaCostoPastel) : 1;
+            const pct = Math.min(100, Math.max(0, (recaudado / meta) * 100));
 
-            const pct = Math.min(100, metaCostoPastel > 0 ? Math.round((recaudadoFestejo / metaCostoPastel) * 100) : 0);
+            const barraPastel = document.getElementById('jm-barra-pastel');
+            if (barraPastel) barraPastel.style.width = pct + '%';
 
-            document.getElementById('jm-meta-label').innerText = `Pastel: ${festejado}`;
-            document.getElementById('jm-meta-monto').innerText = `$${recaudadoFestejo.toLocaleString('es-MX')} / $${metaCostoPastel.toLocaleString('es-MX')} (${pct}%)`;
-            document.getElementById('jm-barra-pastel').style.width = `${pct}%`;
-            document.getElementById('jm-costo-pastel-val').innerText = metaCostoPastel.toLocaleString('es-MX');
+            const metaMonto = document.getElementById('jm-meta-monto');
+            if (metaMonto) {
+                metaMonto.textContent = `$${recaudado.toLocaleString('es-MX')} / $${meta.toLocaleString('es-MX')}`;
+            }
+
+            const metaLabel = document.getElementById('jm-meta-label');
+            if (metaLabel) metaLabel.textContent = festejado;
+
+            const costoPastel = document.getElementById('jm-costo-pastel-val');
+            if (costoPastel) costoPastel.textContent = meta.toLocaleString('es-MX');
+
+            const totalRecaudado = document.getElementById('jm-total-recaudado');
+            if (totalRecaudado) {
+                const totalGeneral = cooperacionesPastel.reduce((acc, c) => acc + Number(c.monto || 0), 0);
+                totalRecaudado.textContent = `$${totalGeneral.toLocaleString('es-MX')}`;
+            }
+
+            const totalAportantes = document.getElementById('jm-total-aportantes');
+            if (totalAportantes) totalAportantes.textContent = cooperacionesPastel.length;
         };
 
+        // Inicialización del panel de Misión Central al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Misión Central: Sistemas en línea.');
+            renderizarModuloJovenes();
+            actualizarBarraPastelSeleccionado();
+        });
         window.renderizarCooperacionesPastel = function() {
             const listaEl = document.getElementById('jm-lista-aportaciones');
             const filtroEl = document.getElementById('jm-filtro-festejado');
@@ -1696,939 +1806,9 @@ const USUARIOS = {
                 datalistJovenes.innerHTML = ordenados.map(j => `<option value="${j.nombre}">`).join('');
             }
 
-            // Actualizar KPIs totales de pasteles
-            const totalRecaudado = cooperacionesPastel.reduce((acc, c) => acc + (Number(c.monto) || 0), 0);
-            const totalEl = document.getElementById('jm-total-recaudado');
-            const countAportantesEl = document.getElementById('jm-total-aportantes');
-            if (totalEl) totalEl.innerText = `$${totalRecaudado.toLocaleString('es-MX')}`;
-            if (countAportantesEl) countAportantesEl.innerText = cooperacionesPastel.length;
-
+            // Actualizar KPIs y barra del festejo seleccionado
             actualizarBarraPastelSeleccionado();
-            renderizarCooperacionesPastel();
         }
-
-        // --- RESPONSABLES DE TESORERÍA (CONTROL DOMINICAL) ---
-        function calcularSaldoFondo(fondoNombre) {
-            return aportaciones
-                .filter(a => a.tipo === 'ministerio' && a.fondoDestino === fondoNombre)
-                .reduce((acc, cur) => acc + (Number(cur.monto) || 0), 0);
-        }
-
-        window.asignarResponsableMaestros = function() {
-            const nuevoNombre = prompt("Escribe el nombre del responsable de Tesorería de Maestros:");
-            if (nuevoNombre && nuevoNombre.trim()) {
-                const idx = responsablesTesoreria.findIndex(r => r.ministerio === "Maestros");
-                if (idx !== -1) {
-                    responsablesTesoreria[idx].responsable = nuevoNombre.trim();
-                    responsablesTesoreria[idx].pendienteAsignar = false;
-                    localStorage.setItem('mision_responsables_tes', JSON.stringify(responsablesTesoreria));
-                    renderizarResponsablesTesoreria();
-                    actualizarUI();
-                    agregarNotificacion("Responsable Asignado", `${nuevoNombre.trim()} quedó a cargo de la tesorería de Maestros.`);
-                }
-            }
-        };
-
-        window.autocompletarSaldoResponsable = function() {
-            const min = document.getElementById('resp-ministerio').value;
-            const ultimoReporte = reportesDominicales.find(r => r.ministerio === min);
-            const saldoSistema = calcularSaldoFondo(min);
-            const sugerido = ultimoReporte ? ultimoReporte.saldo : saldoSistema;
-            document.getElementById('resp-saldo').value = sugerido > 0 ? sugerido : '';
-        };
-
-        window.registrarActualizacionDominical = function() {
-            const min = document.getElementById('resp-ministerio').value;
-            const fecha = document.getElementById('resp-fecha').value;
-            const saldo = parseFloat(document.getElementById('resp-saldo').value) || 0;
-            const estado = document.getElementById('resp-estado').value;
-            const notas = document.getElementById('resp-notas').value.trim() || "Corte dominical registrado en orden.";
-            const responsable = obtenerNombreResponsable(min);
-
-            if (!fecha) return;
-            const fechaStr = fecha.split('-').reverse().join('/');
-
-            const nuevoCorte = {
-                id: Date.now(),
-                ministerio: min,
-                responsable,
-                fechaISO: fecha,
-                fechaStr,
-                saldo,
-                estado,
-                notas
-            };
-
-            reportesDominicales.unshift(nuevoCorte);
-            localStorage.setItem('mision_reportes_dominicales', JSON.stringify(reportesDominicales));
-
-            renderizarResponsablesTesoreria();
-            enviarADrive(fechaStr, `Corte Dominical (${min})`, responsable, estado, saldo);
-            agregarNotificacion(`Corte Dominical: ${min}`, `${responsable} reportó $${saldo.toLocaleString('es-MX')} (${estado}).`);
-
-            document.getElementById('resp-notas').value = '';
-        };
-
-        window.eliminarReporteDominical = function(id) {
-            reportesDominicales = reportesDominicales.filter(r => r.id !== id);
-            localStorage.setItem('mision_reportes_dominicales', JSON.stringify(reportesDominicales));
-            renderizarResponsablesTesoreria();
-        };
-
-        function renderizarResponsablesTesoreria() {
-            const grid = document.getElementById('grid-responsables-tesoreria');
-            const lista = document.getElementById('lista-reportes-dominicales');
-            const badge = document.getElementById('badge-cortes-dominicales');
-            if (!grid || !lista) return;
-
-            const fechaSeleccionada = document.getElementById('resp-fecha')?.value || new Date().toISOString().split('T')[0];
-            let actualizadosHoy = 0;
-
-            let responsablesMostrar = responsablesTesoreria;
-            let reportesMostrar = reportesDominicales;
-
-            if(currentUser && currentUser.role === 'tesorero') {
-                responsablesMostrar = responsablesTesoreria.filter(r => r.ministerio === currentUser.min);
-                reportesMostrar = reportesDominicales.filter(r => r.ministerio === currentUser.min);
-            }
-
-            grid.innerHTML = responsablesMostrar.map(item => {
-                const ultimoReporte = reportesDominicales.find(r => r.ministerio === item.ministerio);
-                const saldoSistema = calcularSaldoFondo(item.ministerio);
-                const saldoMostrar = ultimoReporte ? ultimoReporte.saldo : saldoSistema;
-                const alDiaEnFecha = ultimoReporte && ultimoReporte.fechaISO === fechaSeleccionada;
-                if (alDiaEnFecha) actualizadosHoy++;
-
-                const statusBadge = alDiaEnFecha
-                    ? `<span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-green-100 text-green-700"><i class="fa-solid fa-check mr-0.5"></i>Al día</span>`
-                    : `<span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Pendiente Domingo</span>`;
-
-                const botonAsignar = item.pendienteAsignar
-                    ? `<button onclick="asignarResponsableMaestros()" class="mt-2 text-[10px] font-bold text-cream-accent hover:underline flex items-center gap-1"><i class="fa-solid fa-user-pen"></i> Asignar persona</button>`
-                    : `<span class="mt-2 text-[10px] font-semibold text-cream-gray block">${ultimoReporte ? 'Último corte: ' + ultimoReporte.fechaStr : 'Sin corte previo'}</span>`;
-
-                return `
-                <div class="bg-white/75 rounded-[24px] p-5 border border-white shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between gap-2 mb-3">
-                            <div class="w-9 h-9 rounded-full bg-cream-bg text-cream-accent flex items-center justify-center border border-cream-border">
-                                <i class="fa-solid ${item.icon} text-sm"></i>
-                            </div>
-                            ${statusBadge}
-                        </div>
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-cream-gray block">${item.ministerio}</span>
-                        <h4 class="text-base font-bold text-cream-dark leading-tight mt-0.5">${item.responsable}</h4>
-                        ${botonAsignar}
-                    </div>
-                    <div class="mt-4 pt-3 border-t border-cream-dark/10">
-                        <span class="text-[9px] font-bold uppercase text-cream-gray block">Saldo en Tesorería</span>
-                        <span class="text-xl font-bold text-cream-dark">$${saldoMostrar.toLocaleString('es-MX')}</span>
-                    </div>
-                </div>`;
-            }).join('');
-
-            if (badge) {
-                badge.innerText = `${actualizadosHoy} / ${responsablesMostrar.length} Actualizados en fecha`;
-            }
-
-            if (!reportesMostrar.length) {
-                lista.innerHTML = `<div class="text-center text-cream-gray text-xs py-12 font-semibold">Aún no hay actualizaciones dominicales registradas para esta vista. Usa el formulario de la izquierda cada domingo.</div>`;
-                return;
-            }
-
-            lista.innerHTML = reportesMostrar.map(rep => `
-                <div class="bg-white/80 rounded-[20px] p-4 border border-white flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div>
-                        <div class="flex items-center gap-2 flex-wrap">
-                            <span class="text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full bg-cream-dark text-white">${rep.ministerio}</span>
-                            <span class="text-xs font-bold text-cream-dark">Responsable: ${rep.responsable}</span>
-                            <span class="text-[10px] font-bold text-cream-accent">• ${rep.fechaStr}</span>
-                        </div>
-                        <p class="text-xs text-cream-gray font-medium mt-1.5">${rep.notas}</p>
-                        <span class="text-[10px] font-bold text-green-700 mt-1 inline-block"><i class="fa-solid fa-circle-check mr-1"></i>${rep.estado}</span>
-                    </div>
-                    <div class="flex sm:flex-col items-end justify-between gap-2 shrink-0">
-                        <span class="text-lg font-bold text-cream-dark">$${rep.saldo.toLocaleString('es-MX')}</span>
-                        <button onclick="eliminarReporteDominical(${rep.id})" class="text-cream-gray hover:text-red-500 text-xs" title="Eliminar registro">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // --- GESTIÓN DE CONTACTOS WHATSAPP ---
-        function guardarContactosStorage() {
-            localStorage.setItem('mision_contactos_wa', JSON.stringify(contactosWhatsApp));
-            renderizarContactos();
-        }
-
-        function formatearTelefonoMX(telRaw) {
-            const limpio = telRaw.replace(/\D/g, '');
-            if (limpio.length === 10) return '52' + limpio;
-            return limpio;
-        }
-
-        window.agregarContactoWhatsApp = function() {
-            const nombre = document.getElementById('nuevo-contacto-nombre').value.trim();
-            const rol = document.getElementById('nuevo-contacto-rol').value;
-            const telRaw = document.getElementById('nuevo-contacto-tel').value.trim();
-            const telefono = formatearTelefonoMX(telRaw);
-
-            if (!nombre || telefono.length < 10) return;
-
-            contactosWhatsApp.push({ id: Date.now(), nombre, rol, telefono });
-            guardarContactosStorage();
-
-            document.getElementById('nuevo-contacto-nombre').value = '';
-            document.getElementById('nuevo-contacto-tel').value = '';
-            agregarNotificacion(`Contacto Agregado`, `${nombre} (${rol}) añadido a la lista de WhatsApp.`);
-        };
-
-        window.eliminarContactoWhatsApp = function(id) {
-            contactosWhatsApp = contactosWhatsApp.filter(c => c.id !== id);
-            guardarContactosStorage();
-        };
-
-        window.seleccionarTodosContactos = function(containerId, checked) {
-            document.querySelectorAll(`#${containerId} input[type="checkbox"]`).forEach(cb => cb.checked = checked);
-        };
-
-        function renderizarContactos() {
-            const countHeader = document.getElementById('count-contactos-header');
-            if (countHeader) countHeader.innerText = contactosWhatsApp.length;
-
-            const modalList = document.getElementById('lista-contactos-modal');
-            if (modalList) {
-                modalList.innerHTML = contactosWhatsApp.map(c => `
-                    <div class="bg-white/80 rounded-[16px] p-3.5 flex items-center justify-between border border-white">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-full bg-[#25D366]/15 text-[#25D366] flex items-center justify-center font-bold text-xs">
-                                <i class="fa-brands fa-whatsapp text-base"></i>
-                            </div>
-                            <div>
-                                <p class="text-xs font-bold text-cream-dark">${c.nombre} <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cream-accent/20 text-cream-dark ml-1">${c.rol}</span></p>
-                                <p class="text-[11px] font-semibold text-cream-gray">+${c.telefono}</p>
-                            </div>
-                        </div>
-                        <button onclick="eliminarContactoWhatsApp(${c.id})" class="text-cream-gray hover:text-red-500 text-xs px-2" title="Eliminar número">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </div>
-                `).join('');
-            }
-
-            ['reu-contactos-list', 'ev-contactos-list'].forEach(containerId => {
-                const cont = document.getElementById(containerId);
-                if (!cont) return;
-                cont.innerHTML = contactosWhatsApp.map(c => `
-                    <label class="cursor-pointer inline-flex items-center gap-1.5 bg-white/90 hover:bg-white px-2.5 py-1.5 rounded-full border border-cream-border text-[11px] font-bold text-cream-dark shadow-sm select-none">
-                        <input type="checkbox" value="${c.id}" checked class="accent-[#3A312A] rounded">
-                        <span>${c.nombre}</span>
-                        <span class="text-[9px] text-cream-gray">(${c.rol})</span>
-                    </label>
-                `).join('');
-            });
-        }
-
-        function obtenerContactosSeleccionados(containerId) {
-            const ids = Array.from(document.querySelectorAll(`#${containerId} input[type="checkbox"]:checked`)).map(cb => Number(cb.value));
-            return contactosWhatsApp.filter(c => ids.includes(c.id));
-        }
-
-        // --- CALENDARIO INTERACTIVO ---
-        window.cambiarMesCalendario = function(delta) {
-            calFechaVista.setMonth(calFechaVista.getMonth() + delta);
-            renderizarCalendario();
-        };
-
-        window.irHoyCalendario = function() {
-            calFechaVista = new Date();
-            calDiaSeleccionado = new Date().toISOString().split('T')[0];
-            document.getElementById('reu-fecha').value = calDiaSeleccionado;
-            renderizarCalendario();
-        };
-
-        window.seleccionarDiaCalendario = function(fechaISO) {
-            calDiaSeleccionado = fechaISO;
-            document.getElementById('reu-fecha').value = fechaISO;
-            renderizarCalendario();
-        };
-
-        function renderizarCalendario() {
-            const grid = document.getElementById('grid-calendario');
-            const tituloMes = document.getElementById('cal-mes-titulo');
-            if (!grid || !tituloMes) return;
-
-            const year = calFechaVista.getFullYear();
-            const month = calFechaVista.getMonth();
-            const nombreMes = new Intl.DateTimeFormat('es-MX', { month: 'long', year: 'numeric' }).format(calFechaVista);
-            tituloMes.innerText = nombreMes;
-
-            const primerDiaSemana = new Date(year, month, 1).getDay();
-            const diasEnMes = new Date(year, month + 1, 0).getDate();
-            const hoyISO = new Date().toISOString().split('T')[0];
-
-            let html = '';
-            for (let i = 0; i < primerDiaSemana; i++) {
-                html += `<div class="rounded-[18px] bg-white/20 min-h-[68px]"></div>`;
-            }
-
-            for (let dia = 1; dia <= diasEnMes; dia++) {
-                const mesStr = String(month + 1).padStart(2, '0');
-                const diaStr = String(dia).padStart(2, '0');
-                const fechaISO = `${year}-${mesStr}-${diaStr}`;
-
-                const eventosDia = eventos.filter(e => e.fechaISO === fechaISO);
-                const esSeleccionado = fechaISO === calDiaSeleccionado;
-                const esHoy = fechaISO === hoyISO;
-
-                const borderClass = esSeleccionado ? 'ring-2 ring-cream-dark bg-white/95' : (esHoy ? 'border-cream-accent border-2 bg-white/80' : 'border-white bg-white/55');
-
-                const dotsHtml = eventosDia.slice(0, 3).map(ev => {
-                    let dotColor = 'bg-[#25D366]';
-                    if (ev.audiencia === 'Pastor' || ev.audiencia === 'Líderes') dotColor = 'bg-[#3A312A]';
-                    else if (ev.audiencia === 'Servidores') dotColor = 'bg-[#C4A47C]';
-                    return `<span class="w-2 h-2 rounded-full ${dotColor}" title="${ev.nombre}"></span>`;
-                }).join('');
-
-                html += `
-                <button onclick="seleccionarDiaCalendario('${fechaISO}')" class="cal-day min-h-[68px] rounded-[18px] p-2 border ${borderClass} flex flex-col justify-between items-start text-left shadow-sm">
-                    <span class="text-xs font-bold ${esHoy ? 'text-cream-accent' : 'text-cream-dark'}">${dia}</span>
-                    <div class="w-full">
-                        ${eventosDia.length ? `<span class="text-[9px] font-bold text-cream-dark truncate block w-full">${eventosDia[0].nombre}</span>` : ''}
-                        <div class="flex items-center gap-1 mt-1">${dotsHtml}</div>
-                    </div>
-                </button>`;
-            }
-
-            grid.innerHTML = html;
-            renderizarDetalleDiaCalendario();
-        }
-
-        function renderizarDetalleDiaCalendario() {
-            const tituloEl = document.getElementById('cal-detalle-fecha-titulo');
-            const countEl = document.getElementById('cal-detalle-count');
-            const listaEl = document.getElementById('cal-lista-dia');
-            if (!tituloEl || !listaEl) return;
-
-            const fechaLegible = calDiaSeleccionado.split('-').reverse().join('/');
-            tituloEl.innerText = `Agenda: ${fechaLegible}`;
-
-            const eventosDia = eventos.filter(e => e.fechaISO === calDiaSeleccionado);
-            countEl.innerText = `${eventosDia.length} ${eventosDia.length === 1 ? 'Actividad' : 'Actividades'}`;
-
-            if (!eventosDia.length) {
-                listaEl.innerHTML = `<div class="text-center text-cream-gray text-xs py-8 font-semibold">No hay reuniones o eventos agendados para este día.</div>`;
-                return;
-            }
-
-            listaEl.innerHTML = eventosDia.map(ev => `
-                <div class="bg-white/80 rounded-[18px] p-3.5 border border-white flex items-center justify-between gap-2">
-                    <div>
-                        <span class="text-[9px] font-bold uppercase px-2 py-0.5 rounded-full bg-cream-accent/20 text-cream-dark">${ev.audiencia || 'Evento'} • ${ev.hora} hrs</span>
-                        <p class="text-xs font-bold text-cream-dark mt-1">${ev.nombre}</p>
-                        <p class="text-[10px] font-semibold text-cream-gray"><i class="fa-solid fa-location-dot mr-1 text-cream-accent"></i>${ev.lugar}</p>
-                    </div>
-                    <button onclick="notificarEventoMasivo(${ev.id})" class="bg-[#25D366] hover:bg-[#1ebe5d] text-white text-[10px] font-bold px-3 py-2 rounded-full flex items-center gap-1 shadow-sm whitespace-nowrap">
-                        <i class="fa-brands fa-whatsapp"></i> Avisar
-                    </button>
-                </div>
-            `).join('');
-        }
-
-        window.agendarReunionCalendario = function() {
-            const nombre = document.getElementById('reu-titulo').value.trim();
-            const audiencia = document.getElementById('reu-audiencia').value;
-            const lugar = document.getElementById('reu-lugar').value.trim() || 'Templo Principal';
-            const fecha = document.getElementById('reu-fecha').value;
-            const hora = document.getElementById('reu-hora').value || '19:00';
-
-            if (!nombre || !fecha) return;
-            const fechaStr = fecha.split('-').reverse().join('/');
-            const destinatarios = obtenerContactosSeleccionados('reu-contactos-list');
-
-            const nuevoEvento = {
-                id: Date.now(),
-                nombre,
-                audiencia,
-                fechaISO: fecha,
-                fechaStr,
-                hora,
-                lugar,
-                presupuesto: 0,
-                metaAsistentes: 30,
-                confirmados: 1,
-                decoracion: `Convocatoria dirigida a: ${audiencia}`,
-                destinatariosIds: destinatarios.map(d => d.id)
-            };
-
-            eventos.unshift(nuevoEvento);
-            localStorage.setItem('mision_eventos_cal', JSON.stringify(eventos));
-
-            calDiaSeleccionado = fecha;
-            renderizarCalendario();
-            renderizarEventos();
-
-            enviarADrive(fechaStr, `Reunión (${audiencia})`, lugar, nombre, 0);
-            agregarNotificacion(`Reunión Agendada: ${nombre}`, `Fecha: ${fechaStr} (${hora} hrs) • Enviando aviso a ${destinatarios.length} contactos.`);
-
-            enviarWhatsAppADestinatarios(nuevoEvento, destinatarios);
-            document.getElementById('reu-titulo').value = '';
-        };
-
-        function construirMensajeEvento(ev, destinatario) {
-            return `Hola *${destinatario}*, te notificamos de una *CONVOCATORIA / EVENTO* en Misión Central:%0A%0A` +
-                   `📌 *Actividad:* ${ev.nombre}%0A` +
-                   `👥 *Dirigido a:* ${ev.audiencia || 'Toda la Iglesia'}%0A` +
-                   `📅 *Fecha:* ${ev.fechaStr} a las ${ev.hora} hrs%0A` +
-                   `📍 *Lugar:* ${ev.lugar}%0A` +
-                   (ev.presupuesto > 0 ? `💰 *Presupuesto:* $${ev.presupuesto.toLocaleString('es-MX')}%0A` : '') +
-                   `✨ *Detalles:* ${ev.decoracion}`;
-        }
-
-        function enviarWhatsAppADestinatarios(ev, listaContactos) {
-            listaContactos.forEach((contacto, index) => {
-                const texto = construirMensajeEvento(ev, contacto.nombre);
-                const url = `https://api.whatsapp.com/send?phone=${contacto.telefono}&text=${texto}`;
-                setTimeout(() => { window.open(url, `_blank_wa_${contacto.id}_${index}`); }, index * 650);
-            });
-        }
-
-        window.notificarEventoMasivo = function(eventoId) {
-            const ev = eventos.find(e => e.id === eventoId);
-            if (!ev) return;
-            const lista = (ev.destinatariosIds && ev.destinatariosIds.length)
-                ? contactosWhatsApp.filter(c => ev.destinatariosIds.includes(c.id))
-                : contactosWhatsApp;
-            enviarWhatsAppADestinatarios(ev, lista);
-        };
-
-        function agregarNotificacion(titulo, mensaje) {
-            const lista = document.getElementById('lista-notificaciones');
-            const badge = document.getElementById('badge-notif');
-            const badgeMob = document.getElementById('badge-notif-mob');
-            if(badge) badge.classList.remove('hidden');
-            if(badgeMob) badgeMob.classList.remove('hidden');
-
-            lista.insertAdjacentHTML('afterbegin', `
-                <div class="bg-white/90 rounded-[20px] p-4 text-xs font-medium text-cream-dark flex gap-3 border border-cream-accent/40 shadow-sm animate-fade-in">
-                    <i class="fa-solid fa-bell text-cream-accent text-base mt-0.5"></i>
-                    <div>
-                        <span class="font-bold block">${titulo}</span>
-                        ${mensaje}
-                    </div>
-                </div>
-            `);
-        }
-
-        window.cambiarPerfil = function(perfil) {
-            document.querySelectorAll('.view-section').forEach(el => {
-                el.classList.add('hidden');
-                el.classList.remove('flex');
-            });
-            const target = document.getElementById(`vista-${perfil}`);
-            if(target) { target.classList.remove('hidden'); target.classList.add('flex'); }
-
-            document.querySelectorAll('.perfil-tab').forEach(btn => {
-                btn.classList.remove('bg-cream-dark', 'text-white', 'shadow-sm');
-                btn.classList.add('text-cream-gray');
-            });
-            const activeTab = document.getElementById(`tab-perfil-${perfil}`);
-            if(activeTab) {
-                activeTab.classList.add('bg-cream-dark', 'text-white', 'shadow-sm');
-                activeTab.classList.remove('text-cream-gray');
-            }
-
-            const labels = {
-                'general': 'PERFIL: FINANZAS GENERALES',
-                'ministerios': 'PERFIL: TESORERÍA MINISTERIOS',
-                'responsables': 'PERFIL: RESPONSABLES TESORERÍA',
-                'jovenes': 'PERFIL: JÓVENES MISIÓN (CUMPLEAÑOS Y PASTELES)',
-                'calendario': 'PERFIL: CALENDARIO Y REUNIONES',
-                'eventos': 'PERFIL: CONTROL DE EVENTOS',
-                'pendientes': 'PERFIL: PENDIENTES IGLESIA'
-            };
-            document.getElementById('perfil-actual-label').innerText = labels[perfil] || 'GESTIÓN MISIÓN';
-            if (perfil === 'calendario') renderizarCalendario();
-            if (perfil === 'responsables') renderizarResponsablesTesoreria();
-            if (perfil === 'jovenes') renderizarModuloJovenes();
-        };
-
-        window.cambiarVista = function(vistaId) {
-            document.querySelectorAll('.view-section').forEach(el => {
-                el.classList.add('hidden');
-                el.classList.remove('flex');
-            });
-            const target = document.getElementById(`vista-${vistaId}`);
-            if(target) { target.classList.remove('hidden'); target.classList.add('flex'); }
-        };
-
-        window.abrirModal = function(id) {
-            const m = document.getElementById(id);
-            if(m) { m.classList.remove('hidden'); m.classList.add('flex'); }
-            if(id === 'modal-notificaciones') {
-                document.getElementById('badge-notif')?.classList.add('hidden');
-                document.getElementById('badge-notif-mob')?.classList.add('hidden');
-            }
-            if(id === 'modal-contactos') renderizarContactos();
-        };
-
-        window.cerrarModal = function(id) {
-            const m = document.getElementById(id);
-            if(m) { m.classList.add('hidden'); m.classList.remove('flex'); }
-        };
-
-        window.registrarCultoGeneral = function() {
-            const dia = document.getElementById('culto-dia').value;
-            const concepto = document.getElementById('culto-concepto').value;
-            const persona = document.getElementById('culto-persona').value;
-            const monto = parseFloat(document.getElementById('culto-monto').value);
-            const fecha = document.getElementById('culto-fecha').value;
-
-            if(!monto || !fecha) return;
-            const fechaStr = fecha.split('-').reverse().join('/');
-
-            aportaciones.unshift({ tipo: 'culto', ministerio: dia, servidor: persona, fondoDestino: concepto, monto, fechaISO: fecha, fechaStr });
-            actualizarUI();
-            enviarADrive(fechaStr, dia, persona, concepto, monto);
-            document.getElementById('culto-monto').value = '';
-        };
-
-        window.registrarOfrendaJovenes = function() {
-            const nombre = document.getElementById('joven-nombre').value.trim() || 'Ofrenda General Jóvenes';
-            const concepto = document.getElementById('joven-concepto').value;
-            const monto = parseFloat(document.getElementById('joven-monto').value);
-            const fecha = document.getElementById('joven-fecha').value;
-
-            if(!monto || !fecha) return;
-            const fechaStr = fecha.split('-').reverse().join('/');
-
-            aportaciones.unshift({ tipo: 'jovenes', ministerio: 'Jóvenes Sábado', servidor: nombre, fondoDestino: concepto, monto, fechaISO: fecha, fechaStr });
-            actualizarUI();
-            enviarADrive(fechaStr, 'Jóvenes Sábado', nombre, concepto, monto);
-            document.getElementById('joven-nombre').value = '';
-            document.getElementById('joven-monto').value = '';
-        };
-
-        window.actualizarServidores = function() {
-            const min = document.getElementById('ministerio').value;
-            const selectServ = document.getElementById('servidor');
-            selectServ.innerHTML = '<option value="" disabled selected>Servidor</option>';
-            if(window.servidores[min]) {
-                window.servidores[min].forEach(s => { selectServ.innerHTML += `<option value="${s}">${s}</option>`; });
-            }
-        };
-
-        window.registrarAportacion = function() {
-            const min = document.getElementById('ministerio').value;
-            const serv = document.getElementById('servidor').value;
-            const fondo = document.getElementById('fondo-destino').value;
-            const monto = parseFloat(document.getElementById('monto').value);
-            const fecha = document.getElementById('fecha-aporte').value;
-
-            if(!min || !serv || !fondo || !monto || !fecha) return;
-            const fechaStr = fecha.split('-').reverse().join('/');
-
-            aportaciones.unshift({ tipo: 'ministerio', ministerio: min, servidor: serv, fondoDestino: fondo, monto, fechaISO: fecha, fechaStr });
-            actualizarUI();
-            renderizarResponsablesTesoreria();
-            enviarADrive(fechaStr, min, serv, fondo, monto);
-
-            document.getElementById('monto').value = '';
-            document.getElementById('ministerio').selectedIndex = 0;
-            document.getElementById('servidor').innerHTML = '<option value="" disabled selected>Servidor</option>';
-            document.getElementById('fondo-destino').selectedIndex = 0;
-        };
-
-        window.crearEvento = function() {
-            const nombre = document.getElementById('ev-nombre').value.trim();
-            const fecha = document.getElementById('ev-fecha').value;
-            const hora = document.getElementById('ev-hora').value || '18:00';
-            const lugar = document.getElementById('ev-lugar').value.trim() || 'Templo Principal';
-            const audiencia = document.getElementById('ev-audiencia').value;
-            const presupuesto = parseFloat(document.getElementById('ev-presupuesto').value) || 0;
-            const metaAsistentes = parseInt(document.getElementById('ev-participantes').value) || 50;
-            const decoracion = document.getElementById('ev-decoracion').value.trim() || 'Estándar';
-
-            if(!nombre || !fecha) return;
-            const fechaStr = fecha.split('-').reverse().join('/');
-            const destinatarios = obtenerContactosSeleccionados('ev-contactos-list');
-
-            const nuevoEvento = {
-                id: Date.now(),
-                nombre,
-                audiencia,
-                fechaISO: fecha,
-                fechaStr,
-                hora,
-                lugar,
-                presupuesto,
-                gastado: 0,
-                metaAsistentes,
-                confirmados: 1,
-                decoracion,
-                destinatariosIds: destinatarios.map(d => d.id)
-            };
-            eventos.unshift(nuevoEvento);
-            localStorage.setItem('mision_eventos_cal', JSON.stringify(eventos));
-
-            renderizarEventos();
-            renderizarCalendario();
-
-            enviarADrive(fechaStr, `Evento (${audiencia})`, lugar, nombre, presupuesto);
-            agregarNotificacion(`Nuevo Evento: ${nombre}`, `Notificación enviada a ${destinatarios.length} contactos seleccionados.`);
-            enviarWhatsAppADestinatarios(nuevoEvento, destinatarios);
-
-            document.getElementById('ev-nombre').value = '';
-            document.getElementById('ev-lugar').value = '';
-            document.getElementById('ev-presupuesto').value = '';
-            document.getElementById('ev-participantes').value = '';
-            document.getElementById('ev-decoracion').value = '';
-        };
-
-        window.confirmarAsistenciaEvento = function(id) {
-            const ev = eventos.find(e => e.id === id);
-            if(ev) {
-                ev.confirmados++;
-                localStorage.setItem('mision_eventos_cal', JSON.stringify(eventos));
-                renderizarEventos();
-            }
-        };
-
-        window.reenviarWhatsAppContacto = function(id, nombreContacto, telefono) {
-            const ev = eventos.find(e => e.id === id);
-            if(!ev) return;
-            const texto = construirMensajeEvento(ev, nombreContacto);
-            window.open(`https://api.whatsapp.com/send?phone=${telefono}&text=${texto}`, '_blank');
-        };
-
-        function renderizarEventos() {
-            const cont = document.getElementById('lista-eventos');
-            if(!eventos.length) {
-                cont.innerHTML = `<div class="text-center text-cream-gray text-xs py-12 font-semibold">No hay eventos programados. Crea el primero a la izquierda o agéndalo desde el Calendario.</div>`;
-                return;
-            }
-            cont.innerHTML = eventos.map(ev => {
-                const pctAsistencia = Math.min(100, Math.round((ev.confirmados / ev.metaAsistentes) * 100));
-                const botonesContactos = contactosWhatsApp.slice(0, 4).map(c => `
-                    <button onclick="reenviarWhatsAppContacto(${ev.id}, '${c.nombre}', '${c.telefono}')" class="bg-[#25D366] hover:bg-[#1ebe5d] text-white font-bold text-[11px] px-3 py-1.5 rounded-full flex items-center gap-1 shadow-sm transition-all">
-                        <i class="fa-brands fa-whatsapp text-xs"></i> ${c.nombre}
-                    </button>
-                `).join('');
-
-                return `
-                <div class="bg-white/75 rounded-[24px] p-6 border border-white shadow-sm space-y-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                        <div>
-                            <div class="flex items-center gap-1.5 flex-wrap">
-                                <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-cream-accent/20 text-cream-dark">${ev.fechaStr} • ${ev.hora} hrs</span>
-                                <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-cream-dark text-white">${ev.audiencia || 'Evento'}</span>
-                            </div>
-                            <h4 class="text-lg font-bold text-cream-dark mt-2">${ev.nombre}</h4>
-                            <p class="text-xs font-semibold text-cream-gray"><i class="fa-solid fa-location-dot mr-1 text-cream-accent"></i>${ev.lugar}</p>
-                        </div>
-                        <div class="flex flex-wrap gap-1.5 self-start max-w-xs justify-end">
-                            ${botonesContactos}
-                        </div>
-                    </div>
-                    <div class="bg-cream-bg/80 rounded-[16px] p-3.5 text-xs text-cream-dark border border-cream-border">
-                        <span class="font-bold block text-[11px] uppercase text-cream-gray mb-0.5">Decoración y Logística:</span>
-                        ${ev.decoracion}
-                    </div>
-                    <div class="grid grid-cols-2 gap-4 pt-1">
-                        <div>
-                            <div class="flex justify-between text-[11px] font-bold mb-1">
-                                <span class="text-cream-gray">Participación</span>
-                                <span class="text-cream-dark">${ev.confirmados} / ${ev.metaAsistentes} (${pctAsistencia}%)</span>
-                            </div>
-                            <div class="w-full h-2 bg-black/5 rounded-full overflow-hidden mb-2">
-                                <div class="h-full bg-cream-accent rounded-full" style="width: ${pctAsistencia}%"></div>
-                            </div>
-                            <button onclick="confirmarAsistenciaEvento(${ev.id})" class="text-[11px] font-bold text-cream-accent hover:underline">+ Confirmar Asistente</button>
-                        </div>
-                        <div class="text-right flex flex-col justify-center">
-                            <span class="text-[11px] font-bold text-cream-gray uppercase">Presupuesto Asignado</span>
-                            <span class="text-xl font-bold text-cream-dark">$${ev.presupuesto.toLocaleString('es-MX')}</span>
-                        </div>
-                    </div>
-                </div>`;
-            }).join('');
-        }
-
-        window.agregarPendiente = function() {
-            const titulo = document.getElementById('tarea-titulo').value.trim();
-            const area = document.getElementById('tarea-area').value;
-            const prioridad = document.getElementById('tarea-prioridad').value;
-            if(!titulo) return;
-            pendientes.unshift({ id: Date.now(), titulo, area, prioridad, completada: false });
-            localStorage.setItem('mision_pendientes', JSON.stringify(pendientes));
-            document.getElementById('tarea-titulo').value = '';
-            renderizarPendientes();
-        };
-
-        window.togglePendiente = function(id) {
-            const t = pendientes.find(p => p.id === id);
-            if(t) {
-                t.completada = !t.completada;
-                localStorage.setItem('mision_pendientes', JSON.stringify(pendientes));
-                renderizarPendientes();
-            }
-        };
-
-        window.eliminarPendiente = function(id) {
-            pendientes = pendientes.filter(p => p.id !== id);
-            localStorage.setItem('mision_pendientes', JSON.stringify(pendientes));
-            renderizarPendientes();
-        };
-
-        function renderizarPendientes() {
-            const cont = document.getElementById('lista-pendientes');
-            const activos = pendientes.filter(p => !p.completada).length;
-            document.getElementById('contador-pendientes').innerText = `${activos} Pendientes`;
-            if(!pendientes.length) {
-                cont.innerHTML = `<div class="col-span-2 text-center text-cream-gray text-xs py-10 font-semibold">No hay tareas pendientes registradas.</div>`;
-                return;
-            }
-            cont.innerHTML = pendientes.map(p => {
-                const badgeColor = p.prioridad === 'Alta' ? 'bg-red-100 text-red-700' : (p.prioridad === 'Media' ? 'bg-amber-100 text-amber-800' : 'bg-stone-200 text-stone-700');
-                return `
-                <div class="bg-white/75 rounded-[20px] p-4 border border-white flex items-center justify-between gap-3 ${p.completada ? 'opacity-50' : ''}">
-                    <div class="flex items-center gap-3 cursor-pointer" onclick="togglePendiente(${p.id})">
-                        <div class="w-6 h-6 rounded-full border-2 border-cream-accent flex items-center justify-center ${p.completada ? 'bg-cream-accent text-white' : ''}">
-                            ${p.completada ? '<i class="fa-solid fa-check text-[10px]"></i>' : ''}
-                        </div>
-                        <div>
-                            <p class="text-xs font-bold text-cream-dark ${p.completada ? 'line-through' : ''}">${p.titulo}</p>
-                            <div class="flex items-center gap-2 mt-1">
-                                <span class="text-[10px] font-bold text-cream-gray">${p.area}</span>
-                                <span class="text-[9px] font-bold px-2 py-0.5 rounded-full ${badgeColor}">${p.prioridad}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <button onclick="eliminarPendiente(${p.id})" class="text-cream-gray hover:text-red-500 text-xs px-2"><i class="fa-solid fa-trash"></i></button>
-                </div>`;
-            }).join('');
-        }
-
-        function actualizarUI() {
-            let totalMiercoles = 0, totalDomingos = 0, totalSabados = 0, totalMinisterios = 0;
-            const totalesMin = { "Alabanza": 0, "Panderos": 0, "Multimedia": 0, "Jóvenes": 0, "Maestros": 0, "Pastor": 0 };
-            const totalesFondo = { "General": 0, "Jóvenes": 0, "Alabanza": 0, "Multimedia": 0, "Panderos": 0, "Maestros": 0, "Eventos": 0 };
-
-            aportaciones.forEach(reg => {
-                if(reg.ministerio === 'Culto Miércoles') totalMiercoles += reg.monto;
-                else if(reg.ministerio === 'Culto Domingo') totalDomingos += reg.monto;
-                else if(reg.ministerio === 'Jóvenes Sábado') totalSabados += reg.monto;
-                else if(reg.ministerio === 'Cooperación Pastel Jóvenes') {
-                    // Se contabiliza en el módulo de pasteles de Jóvenes Misión
-                } else {
-                    totalMinisterios += reg.monto;
-                    if(totalesMin[reg.ministerio] !== undefined) totalesMin[reg.ministerio] += reg.monto;
-                    if(totalesFondo[reg.fondoDestino] !== undefined) totalesFondo[reg.fondoDestino] += reg.monto;
-                }
-            });
-
-            const subtotalCultos = totalMiercoles + totalDomingos;
-            const granTotalGlobal = subtotalCultos + totalSabados + totalMinisterios;
-
-            document.getElementById('granTotalGlobal').innerText = `$${granTotalGlobal.toLocaleString('es-MX')}`;
-            document.getElementById('subtotalCultos').innerText = `$${subtotalCultos.toLocaleString('es-MX')}`;
-            document.getElementById('subtotalJovenes').innerText = `$${totalSabados.toLocaleString('es-MX')}`;
-            document.getElementById('subtotalMin').innerText = `$${totalMinisterios.toLocaleString('es-MX')}`;
-
-            document.getElementById('totalMiercoles').innerText = `$${totalMiercoles.toLocaleString('es-MX')}`;
-            document.getElementById('totalDomingos').innerText = `$${totalDomingos.toLocaleString('es-MX')}`;
-            document.getElementById('totalSabados').innerText = `$${totalSabados.toLocaleString('es-MX')}`;
-
-            document.getElementById('texto-meta-objetivo').innerText = `$${META_MENSUAL.toLocaleString('es-MX')}`;
-            const pct = Math.min(100, granTotalGlobal > 0 ? (granTotalGlobal / META_MENSUAL) * 100 : 0);
-            document.getElementById('porcentajeMeta').innerText = `${pct.toFixed(0)}%`;
-            document.getElementById('barra-meta').style.width = `${pct}%`;
-
-            const cultosList = aportaciones.filter(a => a.tipo === 'culto' || a.tipo === 'jovenes');
-            const contGeneral = document.getElementById('listaGeneralCultos');
-            if(cultosList.length) {
-                contGeneral.innerHTML = cultosList.map(reg => `
-                    <div class="bg-white/70 rounded-[18px] p-3.5 flex items-center justify-between border border-white">
-                        <div>
-                            <p class="text-xs font-bold text-cream-dark">${reg.servidor}</p>
-                            <p class="text-[10px] font-bold text-cream-gray uppercase">${reg.ministerio} • <span class="text-cream-accent">${reg.fondoDestino}</span></p>
-                        </div>
-                        <div class="text-right">
-                            <span class="text-sm font-bold text-cream-dark block">$${reg.monto.toLocaleString('es-MX')}</span>
-                            <span class="text-[10px] text-cream-gray">${reg.fechaStr}</span>
-                        </div>
-                    </div>`).join('');
-            }
-
-            const minList = aportaciones.filter(a => a.tipo === 'ministerio');
-            const msgVacio = document.getElementById('mensajeVacio');
-            if(msgVacio) msgVacio.style.display = minList.length ? 'none' : 'flex';
-            document.getElementById('listaRegistros').innerHTML = minList.map(reg => `
-                <div class="bg-white/70 rounded-[18px] p-3.5 flex items-center justify-between border border-white">
-                    <div>
-                        <p class="text-xs font-bold text-cream-dark">${reg.servidor}</p>
-                        <p class="text-[10px] font-bold text-cream-gray uppercase">${reg.ministerio} → <span class="text-cream-accent">${reg.fondoDestino}</span></p>
-                    </div>
-                    <div class="text-right">
-                        <span class="text-sm font-bold text-cream-dark block">$${reg.monto.toLocaleString('es-MX')}</span>
-                        <span class="text-[10px] text-cream-gray">${reg.fechaStr}</span>
-                    </div>
-                </div>`).join('');
-
-            document.getElementById('grid-fondos').innerHTML = Object.keys(window.fondosInfo).map(fondo => {
-                const f = window.fondosInfo[fondo];
-                const monto = totalesFondo[fondo] || 0;
-                return `
-                <div class="bg-white/65 rounded-[26px] p-6 border border-white shadow-sm flex flex-col justify-between">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-12 h-12 rounded-full bg-cream-bg text-cream-accent border border-cream-border flex items-center justify-center text-lg">
-                            <i class="fa-solid ${f.icon}"></i>
-                        </div>
-                        <div class="text-right">
-                            <span class="text-[9px] font-bold uppercase text-cream-gray block">Responsable</span>
-                            <span class="text-xs font-bold text-cream-dark">${f.encargada}</span>
-                        </div>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-lg text-cream-dark">${fondo}</h4>
-                        <p class="text-xs text-cream-gray mb-3">${f.desc}</p>
-                        <div class="text-2xl font-bold text-cream-dark">$${monto.toLocaleString('es-MX')}</div>
-                    </div>
-                </div>`;
-            }).join('');
-
-            const totalReportes = Object.values(totalesFondo).reduce((a, b) => a + b, 0);
-            document.getElementById('tabla-reportes').innerHTML = Object.keys(window.fondosInfo).map(fondo => {
-                const monto = totalesFondo[fondo] || 0;
-                const info = window.fondosInfo[fondo];
-                const pctRep = totalReportes === 0 ? 0 : ((monto / totalReportes) * 100).toFixed(1);
-                return `
-                <div class="bg-white/65 rounded-[20px] p-4 flex justify-between items-center border border-white">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-cream-bg text-cream-accent flex items-center justify-center"><i class="fa-solid ${info.icon}"></i></div>
-                        <div>
-                            <p class="font-bold text-cream-dark text-sm">${fondo}</p>
-                            <p class="text-[11px] text-cream-gray font-semibold">Responsable: ${info.encargada}</p>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <p class="font-bold text-cream-dark text-sm">$${monto.toLocaleString('es-MX')}</p>
-                        <p class="text-[11px] font-bold text-cream-accent">${pctRep}%</p>
-                    </div>
-                </div>`;
-            }).join('');
-
-            if(cultosChartInstance) { cultosChartInstance.data.datasets[0].data = [totalMiercoles, totalDomingos, totalSabados]; cultosChartInstance.update(); }
-            if(barChartInstance) { barChartInstance.data.datasets[0].data = [totalesMin['Alabanza'], totalesMin['Panderos'], totalesMin['Multimedia'], totalesMin['Jóvenes'], totalesMin['Maestros']]; barChartInstance.update(); }
-            if(pieChartInstance) { pieChartInstance.data.datasets[0].data = Object.values(totalesFondo); pieChartInstance.update(); }
-        }
-
-        function renderizarDirectorio() {
-            document.getElementById('grid-directorios').innerHTML = Object.entries(window.servidores).map(([min, personas]) => `
-                <div class="bg-white/65 rounded-[28px] p-6 border border-white">
-                    <h3 class="text-lg font-bold text-cream-dark mb-4 pb-3 border-b border-cream-dark/10">${min}</h3>
-                    <div class="space-y-2">
-                        ${personas.map(p => `
-                            <div class="flex items-center justify-between text-xs font-bold text-cream-dark bg-cream-bg px-4 py-2.5 rounded-[14px]">
-                                <span>${p}</span>
-                                <i class="fa-solid fa-circle-check text-cream-accent"></i>
-                            </div>`).join('')}
-                    </div>
-                </div>`).join('');
-        }
-
-        window.guardarConfiguracion = function() {
-            const meta = parseFloat(document.getElementById('input-meta').value);
-            if(meta > 0) { META_MENSUAL = meta; actualizarUI(); cerrarModal('modal-configuracion'); }
-        };
-
-        window.cargarLogoIglesia = function(event) {
-            const file = event.target.files[0];
-            if(file) {
-                const reader = new FileReader();
-                reader.onload = e => {
-                    const img = document.getElementById('church-logo-img');
-                    img.src = e.target.result;
-                    img.classList.remove('hidden');
-                    document.getElementById('church-logo-placeholder').classList.add('hidden');
-                };
-                reader.readAsDataURL(file);
-            }
-        };
-
-        window.exportarCSV = function() {
-            let csv = "data:text/csv;charset=utf-8,Fecha,Categoria/Ministerio,Persona/Servidor,Concepto/Fondo,Monto\n";
-            aportaciones.forEach(r => { csv += `${r.fechaStr},${r.ministerio},${r.servidor},${r.fondoDestino},${r.monto}\n`; });
-            const link = document.createElement("a");
-            link.setAttribute("href", encodeURI(csv));
-            link.setAttribute("download", "finanzas_iglesia_completo.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        };
-
-        function inicializarGraficas() {
-            Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif';
-            Chart.defaults.color = '#8C8177';
-
-            cultosChartInstance = new Chart(document.getElementById('cultosChart').getContext('2d'), {
-                type: 'bar',
-                data: {
-                    labels: ['Miércoles', 'Domingos', 'Sáb. Jóvenes'],
-                    datasets: [{ data: [0, 0, 0], backgroundColor: ['#C4A47C', '#3A312A', '#A88B68'], borderRadius: 8, maxBarThickness: 40 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, border: { display: false }, grid: { color: 'rgba(58,49,42,0.05)' } }, x: { border: { display: false }, grid: { display: false } } } }
-            });
-
-            barChartInstance = new Chart(document.getElementById('barChart').getContext('2d'), {
-                type: 'bar',
-                data: {
-                    labels: ['Alabanza', 'Panderos', 'Multimedia', 'Jóvenes', 'Maestros'],
-                    datasets: [{ data: [0, 0, 0, 0, 0], backgroundColor: ['#C4A47C', '#A88B68', '#3A312A', '#D6BFA2', '#8C8177'], borderRadius: 8, maxBarThickness: 32 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, border: { display: false }, grid: { color: 'rgba(58,49,42,0.05)' } }, x: { border: { display: false }, grid: { display: false } } } }
-            });
-
-            pieChartInstance = new Chart(document.getElementById('pieChart').getContext('2d'), {
-                type: 'doughnut',
-                data: {
-                    labels: Object.keys(window.fondosInfo),
-                    datasets: [{ data: [0, 0, 0, 0, 0, 0, 0], backgroundColor: ['#3A312A', '#C4A47C', '#A88B68', '#E6D7C3', '#8C8177', '#D6BFA2', '#B39268'], borderWidth: 0 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, cutout: '70%' }
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            if(currentUser) {
-                aplicarRolesYPermisos();
-            } else {
-                document.getElementById('pantalla-login').classList.remove('hidden');
-                document.getElementById('app-container').classList.add('hidden');
-            }
-
-            const hoy = new Date().toISOString().split('T')[0];
-            document.getElementById('culto-fecha').value = hoy;
-            document.getElementById('joven-fecha').value = hoy;
-            document.getElementById('fecha-aporte').value = hoy;
-            document.getElementById('ev-fecha').value = hoy;
-            document.getElementById('reu-fecha').value = hoy;
-            document.getElementById('resp-fecha').value = hoy;
-            document.getElementById('jm-fecha-aporte').value = hoy;
-
-            inicializarGraficas();
-            renderizarContactos();
-            renderizarDirectorio();
-            renderizarResponsablesTesoreria();
-            renderizarModuloJovenes();
-            renderizarCalendario();
-            renderizarEventos();
-            renderizarPendientes();
-            actualizarUI();
-            window.cargarDatosDesdeDrive();
-        });
-    </script>
+</script>
 </body>
 </html>
