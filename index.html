@@ -1073,7 +1073,7 @@
                 </div>
                 <div>
                     <h3 class="text-xl font-bold text-cream-dark">Números para Notificaciones</h3>
-                    <p class="text-xs text-cream-gray font-medium">Agrega servidores, líderes o pastores para enviarles avisos</p>
+                    <p class="text-xs text-cream-gray font-medium">Agrega servidores, líderes, pastores o invitados especiales para enviarles avisos</p>
                 </div>
             </div>
 
@@ -1084,6 +1084,8 @@
                         <option value="Servidor">Rol: Servidor</option>
                         <option value="Líder">Rol: Líder</option>
                         <option value="Pastor">Rol: Pastor</option>
+                        <option value="Invitado especial">Rol: Invitado especial</option>
+                        <option value="Invitada especial">Rol: Invitada especial</option>
                     </select>
                 </div>
                 <div class="flex gap-2">
@@ -1213,7 +1215,7 @@
     </div><!-- CIERRE DE APP-CONTAINER -->
 
     <!-- LÓGICA DE DATOS -->
-    <script type="module">
+    <script>
         const driveWebhookUrl = "https://script.google.com/macros/s/AKfycbwGpp36DkGOlgaiEZ95TbbK1BccMemQnhkH8O7X2G4roByl_9TbvyEUlNpbKIm2j5LC/exec";
 
         // --- SISTEMA DE LOGIN Y ROLES (RLS) ---
@@ -1620,6 +1622,555 @@
             window.open(`https://api.whatsapp.com/send?text=${texto}`, '_blank');
         };
 
+        function formatearTelefonoMX(telefono) {
+            let limpio = String(telefono || '').replace(/\D/g, '');
+            if (limpio.startsWith('52') && limpio.length > 10) return limpio;
+            if (limpio.length === 10) return '52' + limpio;
+            return limpio;
+        }
+
+        window.abrirModal = function(id) {
+            const modal = document.getElementById(id);
+            if (!modal) return;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            if (id === 'modal-contactos') renderizarContactos();
+        };
+
+        window.cerrarModal = function(id) {
+            const modal = document.getElementById(id);
+            if (!modal) return;
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        };
+
+        window.cambiarPerfil = function(perfil) {
+            document.querySelectorAll('.view-section').forEach(vista => {
+                vista.classList.add('hidden');
+                vista.classList.remove('flex');
+            });
+
+            const vista = document.getElementById(`vista-${perfil}`);
+            if (vista) {
+                vista.classList.remove('hidden');
+                vista.classList.add('flex');
+            }
+
+            document.querySelectorAll('.perfil-tab').forEach(tab => {
+                tab.classList.remove('bg-cream-dark', 'text-white', 'shadow-sm');
+                tab.classList.add('text-cream-gray');
+            });
+            const tab = document.getElementById(`tab-perfil-${perfil}`);
+            if (tab) {
+                tab.classList.add('bg-cream-dark', 'text-white', 'shadow-sm');
+                tab.classList.remove('text-cream-gray');
+            }
+
+            const label = document.getElementById('perfil-actual-label');
+            if (label) label.textContent = `PERFIL: ${perfil.toUpperCase()}`;
+
+            if (perfil === 'jovenes') renderizarModuloJovenes();
+            if (perfil === 'responsables') renderizarResponsablesTesoreria();
+            if (perfil === 'calendario') renderizarCalendario();
+            if (perfil === 'eventos') renderizarEventos();
+            if (perfil === 'pendientes') renderizarPendientes();
+            if (perfil === 'ministerios' || perfil === 'general') actualizarUI();
+        };
+
+        window.cambiarVista = function(perfil) {
+            cambiarPerfil(perfil);
+        };
+
+        window.actualizarServidores = function() {
+            const ministerio = document.getElementById('ministerio')?.value;
+            const select = document.getElementById('servidor');
+            if (!select) return;
+            const servidoresMinisterio = window.servidores[ministerio] || [];
+            select.innerHTML = servidoresMinisterio.map(nombre => `<option value="${nombre}">${nombre}</option>`).join('');
+        };
+
+        function agregarRegistro(fechaStr, ministerio, servidor, fondoDestino, monto, fechaISO) {
+            const registro = {
+                id: Date.now(),
+                fechaStr,
+                fechaISO: fechaISO || '',
+                ministerio,
+                servidor,
+                fondoDestino,
+                monto: Number(monto) || 0,
+                tipo: ministerio === 'Culto Miércoles' || ministerio === 'Culto Domingo'
+                    ? 'culto'
+                    : ministerio === 'Jóvenes Sábado'
+                        ? 'jovenes'
+                        : 'ministerio'
+            };
+            aportaciones.unshift(registro);
+            localStorage.setItem('mision_aportaciones', JSON.stringify(aportaciones));
+            enviarADrive(fechaStr, ministerio, servidor, fondoDestino, registro.monto);
+            actualizarUI();
+        }
+
+        window.registrarCultoGeneral = function() {
+            const dia = document.getElementById('culto-dia').value;
+            const concepto = document.getElementById('culto-concepto').value;
+            const persona = document.getElementById('culto-persona').value;
+            const monto = parseFloat(document.getElementById('culto-monto').value);
+            const fechaISO = document.getElementById('culto-fecha').value;
+            if (!monto || monto <= 0 || !fechaISO) return;
+            const fechaStr = fechaISO.split('-').reverse().join('/');
+            agregarRegistro(fechaStr, dia, persona, concepto, monto, fechaISO);
+            document.getElementById('culto-monto').value = '';
+            agregarNotificacion('Culto registrado', `${dia}: ${persona} aportó $${monto.toLocaleString('es-MX')}.`);
+        };
+
+        window.registrarOfrendaJovenes = function() {
+            const nombre = document.getElementById('joven-nombre').value.trim();
+            const concepto = document.getElementById('joven-concepto').value;
+            const monto = parseFloat(document.getElementById('joven-monto').value);
+            const fechaISO = document.getElementById('joven-fecha').value;
+            if (!nombre || !monto || monto <= 0 || !fechaISO) return;
+            const fechaStr = fechaISO.split('-').reverse().join('/');
+            agregarRegistro(fechaStr, 'Jóvenes Sábado', nombre, concepto, monto, fechaISO);
+            document.getElementById('joven-nombre').value = '';
+            document.getElementById('joven-monto').value = '';
+            agregarNotificacion('Aporte juvenil registrado', `${nombre} aportó $${monto.toLocaleString('es-MX')}.`);
+        };
+
+        window.registrarAportacion = function() {
+            const servidor = document.getElementById('servidor')?.value || 'Servidor';
+            const ministerio = document.getElementById('ministerio')?.value || 'General';
+            const fondo = document.getElementById('fondo-destino')?.value;
+            const monto = parseFloat(document.getElementById('monto')?.value);
+            const fechaISO = document.getElementById('fecha-aporte')?.value;
+            if (!fondo || !monto || monto <= 0 || !fechaISO) return;
+            const fechaStr = fechaISO.split('-').reverse().join('/');
+            agregarRegistro(fechaStr, ministerio, servidor, fondo, monto, fechaISO);
+            document.getElementById('monto').value = '';
+            agregarNotificacion('Aportación ministerial', `${servidor} registró $${monto.toLocaleString('es-MX')} para ${fondo}.`);
+        };
+
+        window.autocompletarSaldoResponsable = function() {
+            const ministerio = document.getElementById('resp-ministerio')?.value;
+            if (!ministerio) return;
+            const saldo = aportaciones
+                .filter(a => a.fondoDestino === ministerio)
+                .reduce((sum, a) => sum + Number(a.monto || 0), 0);
+            const campo = document.getElementById('resp-saldo');
+            if (campo) campo.value = saldo ? saldo : '';
+        };
+
+        window.registrarActualizacionDominical = function() {
+            const ministerio = document.getElementById('resp-ministerio')?.value;
+            const fechaISO = document.getElementById('resp-fecha')?.value;
+            const saldo = parseFloat(document.getElementById('resp-saldo')?.value);
+            const estado = document.getElementById('resp-estado')?.value || '';
+            const notas = document.getElementById('resp-notas')?.value.trim() || '';
+            if (!ministerio || !fechaISO) return;
+            reportesDominicales.unshift({
+                id: Date.now(),
+                ministerio,
+                fechaISO,
+                fechaStr: fechaISO.split('-').reverse().join('/'),
+                responsable: obtenerNombreResponsable(ministerio),
+                saldo: Number(saldo) || 0,
+                estado,
+                notas
+            });
+            localStorage.setItem('mision_reportes_dominicales', JSON.stringify(reportesDominicales));
+            document.getElementById('resp-notas').value = '';
+            renderizarResponsablesTesoreria();
+            agregarNotificacion('Corte dominical', `${ministerio} reportó un saldo de $${(Number(saldo) || 0).toLocaleString('es-MX')}.`);
+        };
+
+        function renderizarResponsablesTesoreria() {
+            const grid = document.getElementById('grid-responsables-tesoreria');
+            if (grid) {
+                grid.innerHTML = responsablesTesoreria.map(r => `
+                    <div class="bg-white/70 rounded-[20px] p-4 border border-white">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fa-solid ${r.icon} text-cream-accent"></i>
+                            <span class="text-xs font-bold text-cream-dark">${r.ministerio}</span>
+                        </div>
+                        <p class="text-[11px] text-cream-gray">${r.responsable}</p>
+                    </div>
+                `).join('');
+            }
+
+            const lista = document.getElementById('lista-reportes-dominicales');
+            if (lista) {
+                lista.innerHTML = reportesDominicales.length
+                    ? reportesDominicales.map(r => `
+                        <div class="bg-white/70 rounded-[18px] p-4 border border-white">
+                            <div class="flex justify-between gap-3">
+                                <div>
+                                    <p class="text-xs font-bold text-cream-dark">${r.ministerio} — ${r.responsable}</p>
+                                    <p class="text-[10px] text-cream-gray">${r.fechaStr} • ${r.estado}</p>
+                                </div>
+                                <span class="text-sm font-bold text-cream-dark">$${Number(r.saldo || 0).toLocaleString('es-MX')}</span>
+                            </div>
+                            ${r.notas ? `<p class="text-[11px] text-cream-gray mt-2">${r.notas}</p>` : ''}
+                        </div>
+                    `).join('')
+                    : '<div class="text-center text-cream-gray text-xs py-10">Sin reportes dominicales registrados</div>';
+            }
+
+            const badge = document.getElementById('badge-cortes-dominicales');
+            if (badge) badge.textContent = `${reportesDominicales.length} / 5 Actualizados este Domingo`;
+        }
+
+        window.guardarConfiguracion = function() {
+            const monto = parseFloat(document.getElementById('input-meta')?.value);
+            if (!monto || monto <= 0) return;
+            META_MENSUAL = monto;
+            localStorage.setItem('mision_meta_mensual', String(META_MENSUAL));
+            actualizarUI();
+            cerrarModal('modal-configuracion');
+        };
+
+        window.exportarCSV = function() {
+            const filas = [['Fecha', 'Ministerio', 'Servidor', 'Destino', 'Monto']];
+            aportaciones.forEach(a => filas.push([
+                a.fechaStr || '',
+                a.ministerio || '',
+                a.servidor || '',
+                a.fondoDestino || '',
+                Number(a.monto || 0)
+            ]));
+            const csv = filas.map(fila => fila.map(valor => `"${String(valor).replace(/"/g, '""')}"`).join(',')).join('\n');
+            const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const enlace = document.createElement('a');
+            enlace.href = url;
+            enlace.download = 'mision-finanzas.csv';
+            enlace.click();
+            URL.revokeObjectURL(url);
+        };
+
+        let notificaciones = JSON.parse(localStorage.getItem('mision_notificaciones')) || [];
+        function agregarNotificacion(titulo, mensaje) {
+            notificaciones.unshift({ id: Date.now(), titulo, mensaje, fecha: new Date().toLocaleString('es-MX') });
+            notificaciones = notificaciones.slice(0, 50);
+            localStorage.setItem('mision_notificaciones', JSON.stringify(notificaciones));
+            renderizarNotificaciones();
+        }
+
+        function renderizarNotificaciones() {
+            const lista = document.getElementById('lista-notificaciones');
+            if (lista) {
+                lista.innerHTML = notificaciones.length
+                    ? notificaciones.map(n => `
+                        <div class="bg-white/70 rounded-[18px] p-4 border border-white">
+                            <p class="text-xs font-bold text-cream-dark">${n.titulo}</p>
+                            <p class="text-[11px] text-cream-gray mt-1">${n.mensaje}</p>
+                            <p class="text-[9px] text-cream-gray mt-2">${n.fecha}</p>
+                        </div>
+                    `).join('')
+                    : '<div class="text-center text-cream-gray text-xs py-10">Sin notificaciones</div>';
+            }
+            const badge = document.getElementById('badge-notif');
+            const badgeMob = document.getElementById('badge-notif-mob');
+            if (badge) badge.classList.toggle('hidden', notificaciones.length === 0);
+            if (badgeMob) badgeMob.classList.toggle('hidden', notificaciones.length === 0);
+        }
+
+        window.agregarContactoWhatsApp = function() {
+            const nombre = document.getElementById('nuevo-contacto-nombre')?.value.trim();
+            const rol = document.getElementById('nuevo-contacto-rol')?.value || 'Contacto';
+            const telefono = formatearTelefonoMX(document.getElementById('nuevo-contacto-tel')?.value);
+            if (!nombre || !telefono) return;
+            contactosWhatsApp.push({ id: Date.now(), nombre, rol, telefono });
+            localStorage.setItem('mision_contactos_wa', JSON.stringify(contactosWhatsApp));
+            document.getElementById('nuevo-contacto-nombre').value = '';
+            document.getElementById('nuevo-contacto-tel').value = '';
+            renderizarContactos();
+        };
+
+        function renderizarContactos() {
+            const lista = document.getElementById('lista-contactos-modal');
+            if (lista) {
+                lista.innerHTML = contactosWhatsApp.map(c => `
+                    <div class="flex items-center justify-between bg-white/70 rounded-[16px] p-3 border border-white">
+                        <div>
+                            <p class="text-xs font-bold text-cream-dark">${c.nombre}</p>
+                            <p class="text-[10px] text-cream-gray">${c.rol} • ${c.telefono}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            const count = document.getElementById('count-contactos-header');
+            if (count) count.textContent = contactosWhatsApp.length;
+
+            ['reu-contactos-list', 'ev-contactos-list'].forEach(id => {
+                const contenedor = document.getElementById(id);
+                if (contenedor) {
+                    contenedor.innerHTML = contactosWhatsApp.map(c =>
+                        `<a href="https://wa.me/${c.telefono}" target="_blank" class="px-2.5 py-1 rounded-full bg-white/80 text-[9px] font-bold text-cream-dark">${c.nombre}</a>`
+                    ).join('');
+                }
+            });
+        }
+
+        function actualizarUI() {
+            const cultos = aportaciones.filter(a => a.tipo === 'culto');
+            const jovenes = aportaciones.filter(a => a.tipo === 'jovenes');
+            const ministerios = aportaciones.filter(a => a.tipo === 'ministerio');
+            const suma = items => items.reduce((total, item) => total + Number(item.monto || 0), 0);
+            const totalCultos = suma(cultos);
+            const totalJovenes = suma(jovenes);
+            const totalMinisterios = suma(ministerios);
+            const granTotal = totalCultos + totalJovenes + totalMinisterios;
+
+            const setText = (id, texto) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = texto;
+            };
+
+            setText('granTotalGlobal', `$${granTotal.toLocaleString('es-MX')}`);
+            setText('subtotalCultos', `$${totalCultos.toLocaleString('es-MX')}`);
+            setText('subtotalJovenes', `$${totalJovenes.toLocaleString('es-MX')}`);
+            setText('subtotalMin', `$${totalMinisterios.toLocaleString('es-MX')}`);
+            setText('texto-meta-objetivo', `$${META_MENSUAL.toLocaleString('es-MX')}`);
+
+            const miercoles = suma(cultos.filter(a => a.ministerio === 'Culto Miércoles'));
+            const domingos = suma(cultos.filter(a => a.ministerio === 'Culto Domingo'));
+            setText('totalMiercoles', `$${miercoles.toLocaleString('es-MX')}`);
+            setText('totalDomingos', `$${domingos.toLocaleString('es-MX')}`);
+            setText('totalSabados', `$${totalJovenes.toLocaleString('es-MX')}`);
+
+            const porcentaje = META_MENSUAL > 0 ? Math.min(100, (granTotal / META_MENSUAL) * 100) : 0;
+            setText('porcentajeMeta', `${Math.round(porcentaje)}%`);
+            const barra = document.getElementById('barra-meta');
+            if (barra) barra.style.width = `${porcentaje}%`;
+
+            const listaCultos = document.getElementById('listaGeneralCultos');
+            if (listaCultos) {
+                const registrosCultos = aportaciones.filter(a => a.tipo === 'culto' || a.tipo === 'jovenes').slice(0, 30);
+                listaCultos.innerHTML = registrosCultos.length
+                    ? registrosCultos.map(a => `
+                        <div class="bg-white/70 rounded-[16px] p-3 border border-white flex justify-between gap-3">
+                            <div><p class="text-xs font-bold text-cream-dark">${a.ministerio}</p><p class="text-[10px] text-cream-gray">${a.servidor} • ${a.fechaStr}</p></div>
+                            <span class="text-xs font-bold text-green-700">$${Number(a.monto || 0).toLocaleString('es-MX')}</span>
+                        </div>
+                    `).join('')
+                    : '<div class="text-center text-cream-gray text-xs py-10 font-semibold">Sin registros de cultos aún</div>';
+            }
+
+            const listaRegistros = document.getElementById('listaRegistros');
+            const mensajeVacio = document.getElementById('mensajeVacio');
+            if (listaRegistros) {
+                const recientes = aportaciones.slice(0, 30);
+                listaRegistros.innerHTML = recientes.map(a => `
+                    <div class="bg-white/70 rounded-[16px] p-3 border border-white flex justify-between gap-3">
+                        <div><p class="text-xs font-bold text-cream-dark">${a.fondoDestino || a.ministerio}</p><p class="text-[10px] text-cream-gray">${a.servidor} • ${a.fechaStr}</p></div>
+                        <span class="text-xs font-bold text-green-700">$${Number(a.monto || 0).toLocaleString('es-MX')}</span>
+                    </div>
+                `).join('');
+                if (mensajeVacio) mensajeVacio.classList.toggle('hidden', recientes.length > 0);
+            }
+
+            renderizarNotificaciones();
+            actualizarBarraPastelSeleccionado();
+        }
+
+        window.agendarReunionCalendario = function() {
+            const titulo = document.getElementById('reu-titulo')?.value.trim();
+            const fecha = document.getElementById('reu-fecha')?.value;
+            const hora = document.getElementById('reu-hora')?.value;
+            const lugar = document.getElementById('reu-lugar')?.value.trim();
+            const audiencia = document.getElementById('reu-audiencia')?.value;
+            if (!titulo || !fecha || !hora) return;
+            eventos.push({
+                id: Date.now(),
+                nombre: titulo,
+                fecha,
+                hora,
+                lugar,
+                audiencia,
+                tipo: 'reunion',
+                presupuesto: 0,
+                participantes: '',
+                decoracion: ''
+            });
+            localStorage.setItem('mision_eventos_cal', JSON.stringify(eventos));
+            document.getElementById('reu-titulo').value = '';
+            renderizarCalendario();
+            renderizarEventos();
+            agregarNotificacion('Reunión agendada', `${titulo}: ${fecha} a las ${hora}, ${lugar}.`);
+        };
+
+        window.crearEvento = function() {
+            const nombre = document.getElementById('ev-nombre')?.value.trim();
+            const fecha = document.getElementById('ev-fecha')?.value;
+            const hora = document.getElementById('ev-hora')?.value;
+            const lugar = document.getElementById('ev-lugar')?.value.trim();
+            if (!nombre || !fecha) return;
+            eventos.push({
+                id: Date.now(),
+                nombre,
+                fecha,
+                hora,
+                lugar,
+                audiencia: document.getElementById('ev-audiencia')?.value,
+                tipo: 'evento',
+                presupuesto: parseFloat(document.getElementById('ev-presupuesto')?.value) || 0,
+                participantes: document.getElementById('ev-participantes')?.value || '',
+                decoracion: document.getElementById('ev-decoracion')?.value.trim() || ''
+            });
+            localStorage.setItem('mision_eventos_cal', JSON.stringify(eventos));
+            document.getElementById('ev-nombre').value = '';
+            renderizarEventos();
+            renderizarCalendario();
+            agregarNotificacion('Evento creado', `${nombre}: ${fecha}${hora ? ' a las ' + hora : ''}.`);
+        };
+
+        window.agregarPendiente = function() {
+            const titulo = document.getElementById('tarea-titulo')?.value.trim();
+            if (!titulo) return;
+            pendientes.push({
+                id: Date.now(),
+                titulo,
+                area: document.getElementById('tarea-area')?.value,
+                prioridad: document.getElementById('tarea-prioridad')?.value,
+                completada: false
+            });
+            localStorage.setItem('mision_pendientes', JSON.stringify(pendientes));
+            document.getElementById('tarea-titulo').value = '';
+            renderizarPendientes();
+        };
+
+        window.togglePendiente = function(id) {
+            const tarea = pendientes.find(p => p.id === id);
+            if (!tarea) return;
+            tarea.completada = !tarea.completada;
+            localStorage.setItem('mision_pendientes', JSON.stringify(pendientes));
+            renderizarPendientes();
+        };
+
+        window.eliminarPendiente = function(id) {
+            pendientes = pendientes.filter(p => p.id !== id);
+            localStorage.setItem('mision_pendientes', JSON.stringify(pendientes));
+            renderizarPendientes();
+        };
+
+        function renderizarPendientes() {
+            const lista = document.getElementById('lista-pendientes');
+            const contador = document.getElementById('contador-pendientes');
+            if (contador) {
+                const activos = pendientes.filter(p => !p.completada).length;
+                contador.textContent = `${activos} Pendiente${activos === 1 ? '' : 's'}`;
+            }
+            if (lista) {
+                lista.innerHTML = pendientes.length
+                    ? pendientes.map(p => `
+                        <div class="bg-white/70 rounded-[20px] p-4 border border-white ${p.completada ? 'opacity-60' : ''}">
+                            <div class="flex items-start justify-between gap-3">
+                                <div>
+                                    <p class="text-xs font-bold text-cream-dark ${p.completada ? 'line-through' : ''}">${p.titulo}</p>
+                                    <p class="text-[10px] text-cream-gray mt-1">${p.area} • ${p.prioridad}</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button onclick="togglePendiente(${p.id})" class="text-green-600"><i class="fa-solid fa-check"></i></button>
+                                    <button onclick="eliminarPendiente(${p.id})" class="text-red-500"><i class="fa-solid fa-trash"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')
+                    : '<div class="md:col-span-2 text-center text-cream-gray text-xs py-10">Sin pendientes registrados</div>';
+            }
+        }
+
+        function renderizarEventos() {
+            const lista = document.getElementById('lista-eventos');
+            if (!lista) return;
+            lista.innerHTML = eventos.length
+                ? eventos.map(ev => `
+                    <div class="bg-white/70 rounded-[20px] p-5 border border-white">
+                        <div class="flex items-start justify-between gap-3">
+                            <div>
+                                <p class="text-sm font-bold text-cream-dark">${ev.nombre}</p>
+                                <p class="text-[11px] text-cream-gray mt-1">${ev.fecha}${ev.hora ? ' • ' + ev.hora : ''}${ev.lugar ? ' • ' + ev.lugar : ''}</p>
+                                ${ev.decoracion ? `<p class="text-[11px] text-cream-gray mt-2">${ev.decoracion}</p>` : ''}
+                            </div>
+                            <span class="text-[9px] px-2 py-1 rounded-full bg-cream-accent/20 text-cream-dark font-bold">${ev.tipo === 'reunion' ? 'REUNIÓN' : 'EVENTO'}</span>
+                        </div>
+                    </div>
+                `).join('')
+                : '<div class="text-center text-cream-gray text-xs py-10">No hay eventos registrados</div>';
+        }
+
+        window.cambiarMesCalendario = function(delta) {
+            calFechaVista = new Date(calFechaVista.getFullYear(), calFechaVista.getMonth() + delta, 1);
+            renderizarCalendario();
+        };
+
+        window.irHoyCalendario = function() {
+            calFechaVista = new Date();
+            calDiaSeleccionado = new Date().toISOString().split('T')[0];
+            renderizarCalendario();
+        };
+
+        function renderizarCalendario() {
+            const titulo = document.getElementById('cal-mes-titulo');
+            const grid = document.getElementById('grid-calendario');
+            if (!grid) return;
+
+            const year = calFechaVista.getFullYear();
+            const month = calFechaVista.getMonth();
+            if (titulo) {
+                titulo.textContent = calFechaVista.toLocaleDateString('es-MX', { month: 'long', year: 'numeric' });
+            }
+
+            const primerDia = new Date(year, month, 1).getDay();
+            const diasMes = new Date(year, month + 1, 0).getDate();
+            let html = '';
+            for (let i = 0; i < primerDia; i++) html += '<div></div>';
+            for (let dia = 1; dia <= diasMes; dia++) {
+                const fecha = `${year}-${String(month + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+                const tieneEventos = eventos.some(ev => ev.fecha === fecha);
+                html += `
+                    <button onclick="seleccionarDiaCalendario('${fecha}')" class="min-h-[58px] rounded-[14px] ${fecha === calDiaSeleccionado ? 'bg-cream-dark text-white' : 'bg-white/60 text-cream-dark'} p-2 text-xs font-bold text-left">
+                        ${dia}${tieneEventos ? '<span class="block w-2 h-2 rounded-full bg-cream-accent mt-2"></span>' : ''}
+                    </button>
+                `;
+            }
+            grid.innerHTML = html;
+            seleccionarDiaCalendario(calDiaSeleccionado);
+        }
+
+        window.seleccionarDiaCalendario = function(fecha) {
+            calDiaSeleccionado = fecha;
+            const detalle = document.getElementById('cal-detalle-fecha-titulo');
+            const count = document.getElementById('cal-detalle-count');
+            const lista = document.getElementById('cal-lista-dia');
+            if (detalle) detalle.textContent = new Date(fecha + 'T12:00:00').toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long' });
+            const eventosDia = eventos.filter(ev => ev.fecha === fecha);
+            if (count) count.textContent = eventosDia.length;
+            if (lista) {
+                lista.innerHTML = eventosDia.length
+                    ? eventosDia.map(ev => `
+                        <div class="bg-white/70 rounded-[16px] p-3 border border-white">
+                            <p class="text-xs font-bold text-cream-dark">${ev.nombre}</p>
+                            <p class="text-[10px] text-cream-gray">${ev.hora || ''}${ev.lugar ? ' • ' + ev.lugar : ''}</p>
+                        </div>
+                    `).join('')
+                    : '<div class="text-center text-cream-gray text-xs py-8">Sin compromisos este día</div>';
+            }
+        };
+
+        window.cargarLogoIglesia = function(event) {
+            const archivo = event?.target?.files?.[0];
+            if (!archivo) return;
+            const lector = new FileReader();
+            lector.onload = () => {
+                localStorage.setItem('mision_logo', lector.result);
+                const img = document.getElementById('church-logo-img');
+                const placeholder = document.getElementById('church-logo-placeholder');
+                if (img) { img.src = lector.result; img.classList.remove('hidden'); }
+                if (placeholder) placeholder.classList.add('hidden');
+            };
+            lector.readAsDataURL(archivo);
+        };
+
         window.actualizarBarraPastelSeleccionado = function() {
             const selectFestejado = document.getElementById('jm-festejado-select');
             const festejado = selectFestejado ? selectFestejado.value : 'Fondo General Pasteles';
@@ -1655,8 +2206,37 @@
         // Inicialización del panel de Misión Central al cargar la página
         document.addEventListener('DOMContentLoaded', () => {
             console.log('Misión Central: Sistemas en línea.');
+
+            const aportacionesGuardadas = JSON.parse(localStorage.getItem('mision_aportaciones'));
+            if (Array.isArray(aportacionesGuardadas)) aportaciones = aportacionesGuardadas;
+
+            const metaGuardada = Number(localStorage.getItem('mision_meta_mensual'));
+            if (metaGuardada > 0) META_MENSUAL = metaGuardada;
+
+            const logoGuardado = localStorage.getItem('mision_logo');
+            if (logoGuardado) {
+                const img = document.getElementById('church-logo-img');
+                const placeholder = document.getElementById('church-logo-placeholder');
+                if (img) { img.src = logoGuardado; img.classList.remove('hidden'); }
+                if (placeholder) placeholder.classList.add('hidden');
+            }
+
+            actualizarServidores();
+            renderizarContactos();
+            renderizarNotificaciones();
+            renderizarResponsablesTesoreria();
             renderizarModuloJovenes();
             actualizarBarraPastelSeleccionado();
+            renderizarCalendario();
+            renderizarEventos();
+            renderizarPendientes();
+            actualizarUI();
+
+            if (currentUser) aplicarRolesYPermisos();
+
+            if (typeof window.cargarDatosDesdeDrive === 'function') {
+                window.cargarDatosDesdeDrive();
+            }
         });
         window.renderizarCooperacionesPastel = function() {
             const listaEl = document.getElementById('jm-lista-aportaciones');
