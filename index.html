@@ -1309,6 +1309,48 @@
         ];
         let contactosWhatsApp = JSON.parse(localStorage.getItem('mision_contactos_wa')) || CONTACTOS_DEFAULT;
 
+        window.contactosSeleccionados = new Set();
+
+        window.renderizarContactosEventos = function() {
+            ['reu-contactos-list', 'ev-contactos-list'].forEach(idDiv => {
+                const div = document.getElementById(idDiv);
+                if (!div) return;
+
+                div.innerHTML = contactosWhatsApp.map(c => `
+                    <button type="button"
+                        onclick="toggleContactoEvento(${c.id})"
+                        class="px-3 py-1.5 rounded-full text-[10.5px] font-bold border transition-all flex items-center gap-1
+                        ${contactosSeleccionados.has(c.id) ? 'bg-[#25D366] text-white border-[#25D366] shadow-sm' : 'bg-white/80 text-cream-gray border-white hover:border-[#25D366]/50'}">
+                        ${contactosSeleccionados.has(c.id) ? '<i class="fa-brands fa-whatsapp"></i>' : ''} ${c.nombre}
+                    </button>
+                `).join('');
+            });
+        };
+
+        window.toggleContactoEvento = function(id) {
+            if (contactosSeleccionados.has(id)) {
+                contactosSeleccionados.delete(id);
+            } else {
+                contactosSeleccionados.add(id);
+            }
+            renderizarContactosEventos();
+        };
+
+        window.notificarContactosSeleccionados = function(mensaje) {
+            const contactosAEnviar = contactosWhatsApp.filter(c => contactosSeleccionados.has(c.id));
+
+            contactosAEnviar.forEach((contacto, index) => {
+                setTimeout(() => {
+                    const textoCodificado = encodeURIComponent(mensaje);
+                    const waLink = `https://api.whatsapp.com/send?phone=${contacto.telefono}&text=${textoCodificado}`;
+                    window.open(waLink, '_blank');
+                }, index * 1000);
+            });
+
+            contactosSeleccionados.clear();
+            renderizarContactosEventos();
+        };
+
         // Responsables de Tesorería (Actualización Dominical)
         const RESPONSABLES_DEFAULT = [
             { ministerio: "Jóvenes", responsable: "Pablo", icon: "fa-fire", pendienteAsignar: false },
@@ -1900,14 +1942,7 @@
             const count = document.getElementById('count-contactos-header');
             if (count) count.textContent = contactosWhatsApp.length;
 
-            ['reu-contactos-list', 'ev-contactos-list'].forEach(id => {
-                const contenedor = document.getElementById(id);
-                if (contenedor) {
-                    contenedor.innerHTML = contactosWhatsApp.map(c =>
-                        `<a href="https://wa.me/${c.telefono}" target="_blank" class="px-2.5 py-1 rounded-full bg-white/80 text-[9px] font-bold text-cream-dark">${c.nombre}</a>`
-                    ).join('');
-                }
-            });
+            renderizarContactosEventos();
         }
 
         function actualizarUI() {
@@ -1996,6 +2031,7 @@
             renderizarCalendario();
             renderizarEventos();
             agregarNotificacion('Reunión agendada', `${titulo}: ${fecha} a las ${hora}, ${lugar}.`);
+            notificarContactosSeleccionados(`Reunión: ${titulo}\nFecha: ${fecha}\nHora: ${hora}\nLugar: ${lugar || 'Por confirmar'}\nAudiencia: ${audiencia || 'General'}`);
         };
 
         window.crearEvento = function() {
@@ -2021,6 +2057,7 @@
             renderizarEventos();
             renderizarCalendario();
             agregarNotificacion('Evento creado', `${nombre}: ${fecha}${hora ? ' a las ' + hora : ''}.`);
+            notificarContactosSeleccionados(`Evento: ${nombre}\nFecha: ${fecha}\nHora: ${hora || 'Por confirmar'}\nLugar: ${lugar || 'Por confirmar'}`);
         };
 
         window.agregarPendiente = function() {
@@ -2223,6 +2260,7 @@
 
             actualizarServidores();
             renderizarContactos();
+            renderizarContactosEventos();
             renderizarNotificaciones();
             renderizarResponsablesTesoreria();
             renderizarModuloJovenes();
