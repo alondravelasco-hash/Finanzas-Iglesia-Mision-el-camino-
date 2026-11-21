@@ -2047,7 +2047,13 @@
             const lugar = document.getElementById('ev-lugar')?.value.trim();
             let mapaUrl = document.getElementById('ev-mapa')?.value.trim() || '';
             if (mapaUrl && !/^https?:\/\//i.test(mapaUrl)) mapaUrl = `https://${mapaUrl}`;
-            if (!nombre || !fecha) return;
+            const detalles = document.getElementById('ev-decoracion')?.value.trim() || '';
+            const audiencia = document.getElementById('ev-audiencia')?.value || 'Toda la Iglesia';
+            if (!nombre || !fecha) {
+                alert('Ingresa el nombre y la fecha del evento.');
+                return;
+            }
+
             eventos.push({
                 id: Date.now(),
                 nombre,
@@ -2055,19 +2061,50 @@
                 hora,
                 lugar,
                 mapaUrl,
-                audiencia: document.getElementById('ev-audiencia')?.value,
+                audiencia,
                 tipo: 'evento',
                 presupuesto: parseFloat(document.getElementById('ev-presupuesto')?.value) || 0,
                 participantes: document.getElementById('ev-participantes')?.value || '',
-                decoracion: document.getElementById('ev-decoracion')?.value.trim() || ''
+                decoracion: detalles
             });
             localStorage.setItem('mision_eventos_cal', JSON.stringify(eventos));
             document.getElementById('ev-nombre').value = '';
             document.getElementById('ev-mapa').value = '';
+            document.getElementById('ev-decoracion').value = '';
             renderizarEventos();
             renderizarCalendario();
             agregarNotificacion('Evento creado', `${nombre}: ${fecha}${hora ? ' a las ' + hora : ''}.`);
-            notificarContactosSeleccionados(`Evento: ${nombre}\nFecha: ${fecha}\nHora: ${hora || 'Por confirmar'}\nLugar: ${lugar || 'Por confirmar'}${mapaUrl ? '\nCómo llegar: ' + mapaUrl : ''}`);
+
+            let textoMensaje = `*Evento:* ${nombre}\n`;
+            textoMensaje += `*Fecha:* ${fecha}\n`;
+            if (hora) textoMensaje += `*Hora:* ${hora}\n`;
+            textoMensaje += `*Lugar:* ${lugar || 'Por confirmar'}\n`;
+            textoMensaje += `*Público:* ${audiencia}\n`;
+            if (mapaUrl) textoMensaje += `*Cómo llegar:* ${mapaUrl}\n`;
+            if (detalles) textoMensaje += `\n${detalles}`;
+
+            const contactosAEnviar = contactosWhatsApp.filter(c => contactosSeleccionados.has(c.id));
+            if (contactosAEnviar.length === 0) {
+                alert('Evento guardado. No se seleccionó a nadie para notificar por WhatsApp.');
+                return;
+            }
+
+            const textoCodificado = encodeURIComponent(textoMensaje);
+            let popupsBloqueados = 0;
+            if (typeof window.open === 'function') {
+                contactosAEnviar.forEach(contacto => {
+                    const waLink = `https://api.whatsapp.com/send?phone=${contacto.telefono}&text=${textoCodificado}`;
+                    const popup = window.open(waLink, '_blank');
+                    if (!popup) popupsBloqueados++;
+                });
+            }
+
+            contactosSeleccionados.clear();
+            renderizarContactosEventos();
+
+            if (popupsBloqueados > 0) {
+                alert(`El navegador bloqueó ${popupsBloqueados} pestaña(s). Permite las ventanas emergentes para este sitio y vuelve a guardar el evento.`);
+            }
         };
 
         window.agregarPendiente = function() {
